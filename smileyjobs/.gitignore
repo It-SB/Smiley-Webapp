@@ -54,5 +54,5 @@ build
 *.gpg
 *.pub
 
-# Firebase config
-firebase.config.js
+# # Firebase config
+# firebase.config.js
