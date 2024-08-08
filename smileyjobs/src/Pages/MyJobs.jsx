@@ -6,6 +6,7 @@ import { db, collection, query, where, getDocs, deleteDoc, doc } from "../fireba
 const MyJobs = () => {
   const { user } = useContext(AuthContext);
   const [jobs, setJobs] = useState([]);
+  const [filteredJobs, setFilteredJobs] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -23,6 +24,7 @@ const MyJobs = () => {
         const querySnapshot = await getDocs(jobsQuery);
         const jobsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setJobs(jobsData);
+        setFilteredJobs(jobsData); // Initialize filteredJobs with the full list of jobs
       } catch (error) {
         console.error("Error fetching jobs: ", error);
       } finally {
@@ -31,13 +33,20 @@ const MyJobs = () => {
     };
 
     fetchJobs();
-  }, [searchText, user]);
+  }, [user]);
 
-  const handleSearch = () => {
+  useEffect(() => {
+    // Apply search filter whenever searchText changes
     const filter = jobs.filter(job =>
       job.jobTitle.toLowerCase().includes(searchText.toLowerCase())
     );
-    setJobs(filter);
+    setFilteredJobs(filter);
+    setCurrentPage(1); // Reset to the first page whenever search changes
+  }, [searchText, jobs]);
+
+  const handleSearch = () => {
+    // Trigger search by updating searchText state
+    setSearchText(searchText);
   };
 
   const handleDelete = async (id) => {
@@ -52,6 +61,7 @@ const MyJobs = () => {
       const querySnapshot = await getDocs(jobsQuery);
       const jobsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setJobs(jobsData);
+      setFilteredJobs(jobsData); // Ensure filteredJobs is also updated
     } catch (error) {
       console.error("Error deleting job: ", error);
     }
@@ -59,10 +69,10 @@ const MyJobs = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentJobs = jobs.slice(indexOfFirstItem, indexOfLastItem);
+  const currentJobs = filteredJobs.slice(indexOfFirstItem, indexOfLastItem);
 
   const nextPage = () => {
-    if (indexOfLastItem < jobs.length) {
+    if (indexOfLastItem < filteredJobs.length) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -180,7 +190,7 @@ const MyJobs = () => {
                 Previous
               </button>
             )}
-            {indexOfLastItem < jobs.length && (
+            {indexOfLastItem < filteredJobs.length && (
               <button onClick={nextPage} className="hover:underline">
                 Next
               </button>

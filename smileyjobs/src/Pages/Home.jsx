@@ -89,47 +89,36 @@ const Home = () => {
 
   const filteredItems = () => {
     let filteredJobs = state.jobs;
-
+  
+    // Filter by queryText
     if (state.queryText) {
-      filteredJobs = filteredJobs.filter(
-        (job) =>
-          job.jobTitle &&
-          job.jobTitle.toLowerCase().includes(state.queryText.toLowerCase())
+      filteredJobs = filteredJobs.filter(job =>
+        job.jobTitle && job.jobTitle.toLowerCase().includes(state.queryText.toLowerCase())
       );
     }
-
+  
+    // Filter by location
     if (state.location) {
-      filteredJobs = filteredJobs.filter(
-        (job) =>
-          job.jobLocation &&
-          job.jobLocation.toLowerCase().includes(state.location.toLowerCase())
+      filteredJobs = filteredJobs.filter(job =>
+        job.jobLocation && job.jobLocation.toLowerCase().includes(state.location.toLowerCase())
       );
     }
-
+  
+    // Filter by selectedCategory
     if (state.selectedCategory) {
-      filteredJobs = filteredJobs.filter(
-        ({
-          jobLocation,
-          salaryType,
-          experienceLevel,
-          maxPrice,
-          postingDate,
-          employmentType,
-        }) =>
-          (jobLocation &&
-            jobLocation.toLowerCase() === state.selectedCategory.toLowerCase()) ||
-          postingDate === state.selectedCategory ||
-          (maxPrice &&
-            parseInt(maxPrice) <= parseInt(state.selectedCategory)) ||
-          (salaryType &&
-            salaryType.toLowerCase() === state.selectedCategory.toLowerCase()) ||
-          (experienceLevel &&
-            experienceLevel.toLowerCase() === state.selectedCategory.toLowerCase()) ||
-          (employmentType &&
-            employmentType.toLowerCase() === state.selectedCategory.toLowerCase())
-      );
+      const category = state.selectedCategory.toLowerCase();
+      filteredJobs = filteredJobs.filter(job => {
+        return (
+          (job.jobLocation && job.jobLocation.toLowerCase() === category) ||
+          (job.postingDate && job.postingDate.toLowerCase() === category) ||
+          (job.maxPrice && parseInt(job.maxPrice, 10) <= parseInt(state.selectedCategory, 10)) ||
+          (job.salaryType && job.salaryType.toLowerCase() === category) ||
+          (job.experienceLevel && job.experienceLevel.toLowerCase() === category) ||
+          (job.employmentType && job.employmentType.toLowerCase() === category)
+        );
+      });
     }
-
+  
     return filteredJobs;
   };
 

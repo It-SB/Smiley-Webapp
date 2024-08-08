@@ -13,8 +13,8 @@ const Banner = ({ handleInputChange, handleLocationChange, query, location, onSu
       </p>
 
       <form onSubmit={onSubmit}>
-        <div className="flex justify-start md:flex-row flex-col md:gap-0 gap-4">
-          <div className="flex md:rounded-s-md rounded shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 md:w-1/2 w-full relative">
+        <div className="flex justify-start md:flex-row flex-col md:gap-3 gap-4">
+          <div className="flex  rounded shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 md:w-1/2 w-full relative">
             <input
               type="text"
               name="query"
@@ -27,7 +27,7 @@ const Banner = ({ handleInputChange, handleLocationChange, query, location, onSu
             <FiSearch className="absolute mt-2.5 ml-2 text-gray-400" />
           </div>
 
-          <div className="flex md:rounded-none rounded ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 md:w-1/3 relative">
+          <div className="flex  rounded ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 md:w-1/3 relative">
             <input
               type="text"
               name="location"
@@ -42,7 +42,7 @@ const Banner = ({ handleInputChange, handleLocationChange, query, location, onSu
 
           <button
             type="submit"
-            className="bg-blue py-2 px-8 text-white md:rounded-e-md md:rounded-s-none rounded"
+            className="bg-blue py-2 px-8 text-white md:rounded-e-md rounded"
           >
             Search
           </button>

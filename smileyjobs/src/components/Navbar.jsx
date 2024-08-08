@@ -26,21 +26,34 @@ const Navbar = () => {
 
   const navItems = [
     { path: "/", title: "Start a search" },
-    { path: "/my-job", title: "My Jobs" },
-    { path: "/salary", title: "Salary estimate" },
+    { path: "/about", title: "About Us" },
+    { path: "/salary", title: "Salary Estimate" },
+    { path: "/contact", title: "Contact" },
   ];
 
   // Add the "Post A Job" item only if the user's email is lettimaks@gmail.com
-  if (user?.email === "lettimaks@gmail.com") {
-    navItems.push({ path: "/post-job", title: "Post A Job" });
+  if (
+    user?.email === "lettimaks@gmail.com" ||
+    user?.email === "Lwando@smileyjobs.co" ||
+    // user?.email === "lethabolesheleba2003@gmail.com" ||
+    user?.email === "Nunuzwane@gmail.com"
+  ) {
+    navItems.push(
+      { path: "/post-job", title: "Post A Job" },
+      { path: "/my-job", title: "My Jobs" }
+    );
   }
 
   return (
     <header className="max-w-screen-2xl container mx-auto xl:px-24 px-4">
       <nav className="flex justify-between items-center py-6">
-        <a href="/" className="flex items-center  text-2xl">
-          <img src="https://smileyjobs.co/assets/img/logo/logo.png" alt=""/>
-          <span>SmileyJobs</span>
+        <a href="/" className="flex items-center text-2xl">
+          <img
+            src="https://smileyjobs.co/assets/img/logo/Smiley%20Jobs%20Logo.png"
+            alt=""
+            className="w-16 h-16 mr-5"
+          />
+          <span className="hidden lg:inline">SmileyJobs</span>
         </a>
 
         {/* Nav items */}
@@ -88,7 +101,10 @@ const Navbar = () => {
               <Link to="/login" className="py-2 px-5 border rounded">
                 Log in
               </Link>
-              <Link to="/sign-up" className="bg-blue py-2 px-5 text-white rounded">
+              <Link
+                to="/sign-up"
+                className="bg-blue py-2 px-5 text-white rounded"
+              >
                 Sign up
               </Link>
             </>
@@ -115,7 +131,10 @@ const Navbar = () => {
       >
         <ul>
           {navItems.map(({ path, title }) => (
-            <li key={path} className="text-base text-white first:text-white py-1">
+            <li
+              key={path}
+              className="text-base text-white first:text-white py-1"
+            >
               <NavLink
                 onClick={handleMenuToggler}
                 to={path}
