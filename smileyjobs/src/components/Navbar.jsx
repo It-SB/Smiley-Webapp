@@ -36,7 +36,7 @@ const Navbar = () => {
     user?.email === "lettimaks@gmail.com" ||
     user?.email === "Lwando@smileyjobs.co" ||
     // user?.email === "lethabolesheleba2003@gmail.com" ||
-    user?.email === "Nunuzwane@gmail.com"
+    user?.email === "skillsbureausites@gmail.com"
   ) {
     navItems.push(
       { path: "/post-job", title: "Post A Job" },
