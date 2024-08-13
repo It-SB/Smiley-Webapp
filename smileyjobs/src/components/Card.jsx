@@ -7,8 +7,16 @@ import {
 } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
+// Helper function to truncate text to a specific number of words
+const truncateDescription = (description, wordLimit) => {
+  const words = description.split(' ');
+  if (words.length > wordLimit) {
+    return words.slice(0, wordLimit).join(' ') + '...';
+  }
+  return description;
+};
+
 const Card = ({ data }) => {
-  console.log(data);
   const {
     id,
     description,
@@ -23,6 +31,7 @@ const Card = ({ data }) => {
     createdAt,
     companyLogo,
   } = data;
+
   return (
     <div>
       <section className="card">
@@ -55,7 +64,9 @@ const Card = ({ data }) => {
               </span>
             </div>
 
-            <p className="text-base text-primary/70 ">{description}</p>
+            <p className="text-base text-primary/70">
+              {truncateDescription(description, 20)}
+            </p>
           </div>
         </Link>
       </section>

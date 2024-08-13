@@ -66,7 +66,7 @@ const JobDetails = () => {
             <p className="text-xl font-medium mb-2">Job type</p>
           </div>
           <button className="bg-blue px-6 py-1 text-white rounded-sm">
-            {job.jobtype || "Employment Type"}
+            {job.jobType || "Employment Type"}
           </button>
           <button
             className="bg-indigo-700 px-6 py-1 text-white rounded-sm ms-2"

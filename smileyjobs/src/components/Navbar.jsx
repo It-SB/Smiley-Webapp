@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unknown-property */
+ 
 import React, { useContext, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { FaBarsStaggered, FaXmark } from "react-icons/fa6";
@@ -25,9 +25,9 @@ const Navbar = () => {
   };
 
   const navItems = [
-    { path: "/", title: "Start a search" },
+    { path: "/", title: "Home" },
     { path: "/about", title: "About Us" },
-    { path: "/salary", title: "Salary Estimate" },
+    // { path: "/salary", title: "Salary Estimate" },
     { path: "/contact", title: "Contact" },
   ];
 
@@ -84,7 +84,7 @@ const Navbar = () => {
                 ) : (
                   <img
                     className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    src="https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png"
                     alt=""
                   />
                 )}
@@ -102,7 +102,7 @@ const Navbar = () => {
                 Log in
               </Link>
               <Link
-                to="/login"
+                to="/signup"
                 className="bg-blue py-2 px-5 text-white rounded"
               >
                 Sign up

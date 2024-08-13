@@ -91,6 +91,7 @@ const MyJobs = () => {
           <input
             onChange={(e) => setSearchText(e.target.value)}
             type="text"
+            placeholder="search"
             className="py-2 pl-3 border focus:outline-none lg:w-6/12 mb-4 w-full"
           />
           <button

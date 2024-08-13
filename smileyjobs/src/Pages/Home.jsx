@@ -21,7 +21,7 @@ const Home = () => {
 
   useEffect(() => {
     getLatestJobList();
-  }, [ ]);
+  },[]);
 
   const getLatestJobList = async () => {
     setState((prevState) => ({ ...prevState, isLoading: true }));

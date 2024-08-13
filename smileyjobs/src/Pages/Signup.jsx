@@ -1,63 +1,58 @@
 import React, { useContext, useState } from "react";
-import {
-  FaFacebook,
-  FaFacebookF,
-  FaGoogle,
-  FaInstagram,
-  FaLinkedin,
-} from "react-icons/fa6";
+import { FaGoogle, FaFacebookF, FaLinkedin, FaInstagram } from "react-icons/fa";
 import { AuthContext } from "../context/AuthProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const Login = () => {
-  const [errorMessage, seterrorMessage] = useState("");
-  const { signUpWithGmail, login } = useContext(AuthContext);
+const SignupPage = () => {
+  const [errorMessage, setErrorMessage] = useState("");
+  const [verificationMessage, setVerificationMessage] = useState("");
+  const { createUser, signUpWithGmail } = useContext(AuthContext);
 
-  // console.log(signUpWithGmail);
   const location = useLocation();
   const navigate = useNavigate();
 
   const from = location.state?.from?.pathname || "/";
 
-  const handleLogin = (event) => {
+  const handleSignup = async (event) => {
     event.preventDefault();
     const form = event.target;
     const email = form.email.value;
     const password = form.password.value;
-    // console.log(email, password)
-    login(email, password)
-      .then((result) => {
-        // Signed in
-        const user = result.user;
-        console.log(user);
-        alert("Login successful!");
+
+    try {
+      const result = await createUser(email, password);
+      const user = result.user;
+
+      // Check if the email is verified
+      if (user.emailVerified) {
         navigate(from, { replace: true });
-        // ...
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        seterrorMessage("Please provide valid email & password!");
-      });
+      } else {
+        setVerificationMessage("Please verify your email address before logging in.");
+        await user.sendEmailVerification();
+      }
+    } catch (error) {
+      setErrorMessage("Error creating account. Please try again.");
+    }
   };
 
-  // login with google
-  const handleRegister = () => {
-    signUpWithGmail()
-      .then((result) => {
-        const user = result.user;
-        navigate(from, { replace: true });
-      })
-      .catch((error) => console.log(error));
+  const handleGoogleSignup = async () => {
+    try {
+      await signUpWithGmail();
+      navigate(from, { replace: true });
+    } catch (error) {
+      console.log(error);
+      setErrorMessage("Error signing up with Google. Please try again.");
+    }
   };
 
   return (
     <div className="h-screen mx-auto container flex items-center justify-center">
       <div className="w-full max-w-xs mx-auto">
         <form
-          onSubmit={handleLogin}
+          onSubmit={handleSignup}
           className="bg-white shadow-md rounded px-8 pt-8 pb-8 mb-4"
         >
-          <h3 className="text-xl font-semibold mb-4">Please Login!</h3>
+          <h3 className="text-xl font-semibold mb-4">Create an Account</h3>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Email Address
@@ -67,6 +62,7 @@ const Login = () => {
               id="email"
               type="email"
               placeholder="name@email.com"
+              required
             />
           </div>
           <div className="mb-6">
@@ -78,58 +74,47 @@ const Login = () => {
               id="password"
               type="password"
               placeholder="******************"
+              required
             />
-
-            {/* show errors */}
-            {errorMessage ? (
-              <p className="text-red-500 text-xs italic">
-                Please choose a password.
-              </p>
-            ) : (
-              ""
+            {errorMessage && (
+              <p className="text-red-500 text-xs italic">{errorMessage}</p>
+            )}
+            {verificationMessage && (
+              <p className="text-yellow-500 text-xs italic">{verificationMessage}</p>
             )}
           </div>
-          <div className="flex items-center justify-between">
-            <input
+          <div className="flex items-center justify-center">
+            <button
               className="bg-blue hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
-              value="Sign in"
-            />
-
-            <a
-              className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-              href="#"
             >
-              Forgot Password?
-            </a>
+              Sign Up
+            </button>
           </div>
-
-          {/* social login */}
           <div className="mt-8 text-center w-full mx-auto">
-            <p className="mb-4">Sign up with Google</p>
-
+            <p className="mb-4">Or sign up with:</p>
             <div className="flex items-center justify-center gap-4 w-full mx-auto">
               <button
-                className=" border-2 text-blue hover:text-white hover:bg-blue font-bold p-3 rounded-full focus:outline-none focus:shadow-outline flex items-center gap-2"
+                className="border-2 border-blue-500 text-blue-500 hover:text-white hover:bg-blue-500 font-bold p-3 rounded-full focus:outline-none focus:shadow-outline flex items-center gap-2"
                 type="button"
-                onClick={handleRegister}
+                onClick={handleGoogleSignup}
               >
                 <FaGoogle />
               </button>
               {/* <button
-                className=" border-2 text-blue hover:text-white hover:bg-blue font-bold p-3 rounded-full focus:outline-none focus:shadow-outline flex items-center gap-2"
+                className="border-2 border-blue-500 text-blue-500 hover:text-white hover:bg-blue-500 font-bold p-3 rounded-full focus:outline-none focus:shadow-outline flex items-center gap-2"
                 type="button"
               >
                 <FaFacebookF />
               </button>
               <button
-                className=" border-2 text-blue hover:text-white hover:bg-blue font-bold p-3 rounded-full focus:outline-none focus:shadow-outline flex items-center gap-2"
+                className="border-2 border-blue-500 text-blue-500 hover:text-white hover:bg-blue-500 font-bold p-3 rounded-full focus:outline-none focus:shadow-outline flex items-center gap-2"
                 type="button"
               >
                 <FaLinkedin />
               </button>
               <button
-                className=" border-2 text-blue hover:text-white hover:bg-blue font-bold p-3 rounded-full focus:outline-none focus:shadow-outline flex items-center gap-2"
+                className="border-2 border-blue-500 text-blue-500 hover:text-white hover:bg-blue-500 font-bold p-3 rounded-full focus:outline-none focus:shadow-outline flex items-center gap-2"
                 type="button"
               >
                 <FaInstagram />
@@ -138,11 +123,11 @@ const Login = () => {
           </div>
         </form>
         <p className="text-center text-gray-500 text-xs">
-          &copy;2024 SmielytJobs. All rights reserved.
+          &copy;2024 SmileyJobs. All rights reserved.
         </p>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default SignupPage;

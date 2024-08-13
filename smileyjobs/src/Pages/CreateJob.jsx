@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unknown-property */
+ 
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import CreatableSelect from "react-select/creatable";
@@ -155,9 +155,11 @@ const CreateJob = () => {
                 className="create-job-input"
               >
                 <option value="">Select Your Experience Level</option>
-                <option value="NoExperience">No experience</option>
-                <option value="Internship">Internship</option>
-                <option value="Work remotely">Work remotely</option>
+                <option value="0 - 2 years">0 - 2 years</option>
+                <option value="2 - 4 years">2 - 4 years</option>
+                <option value="4 - 6 years">4 - 6 years</option>
+                <option value="6 - 10 years">6 - 10 years</option>
+                <option value="10+ years">10+ years</option>
               </select>
             </div>
           </div>
