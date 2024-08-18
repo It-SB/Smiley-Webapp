@@ -1,22 +1,17 @@
- 
 import React, { useContext, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { FaBarsStaggered, FaXmark } from "react-icons/fa6";
 import { AuthContext } from "../context/AuthProvider";
+import { useUser, useClerk } from "@clerk/clerk-react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, logOut } = useContext(AuthContext);
+  const { user } = useUser(); // Clerk hook to get the user object
+  const { signOut } = useClerk();
   console.log(user);
 
   const handleLogout = () => {
-    logOut()
-      .then(() => {
-        // Sign-out successful.
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    signOut();
   };
 
   // Menu toggle button
@@ -33,10 +28,10 @@ const Navbar = () => {
 
   // Add the "Post A Job" item only if the user's email is lettimaks@gmail.com
   if (
-    user?.email === "lettimaks@gmail.com" ||
-    user?.email === "Lwando@smileyjobs.co" ||
+    user?.primaryEmailAddress?.emailAddress === "lettimaks@gmail.com" ||
+    user?.primaryEmailAddress?.emailAddress === "Lwando@smileyjobs.co" ||
     // user?.email === "lethabolesheleba2003@gmail.com" ||
-    user?.email === "skillsbureausites@gmail.com"
+    user?.primaryEmailAddress?.emailAddress === "skillsbureausites@gmail.com"
   ) {
     navItems.push(
       { path: "/post-job", title: "Post A Job" },
@@ -75,10 +70,10 @@ const Navbar = () => {
           {user ? (
             <div className="flex gap-4 items-center">
               <div className="flex -space-x-2 overflow-hidden">
-                {user.photoURL ? (
+                {user.imageUrl ? (
                   <img
                     className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
-                    src={user.photoURL}
+                    src={user.imageUrl}
                     alt=""
                   />
                 ) : (
@@ -98,11 +93,11 @@ const Navbar = () => {
             </div>
           ) : (
             <>
-              <Link to="/login" className="py-2 px-5 border rounded">
+              <Link to="https://relevant-alpaca-95.accounts.dev/sign-in?redirect_url=http%3A%2F%2Flocalhost%3A5173%2F" className="py-2 px-5 border rounded">
                 Log in
               </Link>
               <Link
-                to="/signup"
+                to="https://relevant-alpaca-95.accounts.dev/sign-up?redirect_url=http%3A%2F%2Flocalhost%3A5173%2F"
                 className="bg-blue py-2 px-5 text-white rounded"
               >
                 Sign up
@@ -147,7 +142,7 @@ const Navbar = () => {
 
           {!user && (
             <li className="text-white py-1">
-              <Link to="/login">Log in</Link>
+              <Link to="/logins">Log in</Link>
             </li>
           )}
         </ul>

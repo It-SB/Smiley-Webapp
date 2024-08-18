@@ -1,6 +1,5 @@
-import React from 'react'
-
-import {createBrowserRouter,} from "react-router-dom";
+import React from 'react';
+import { createBrowserRouter } from 'react-router-dom';
 import App from '../App';
 import Home from '../Pages/Home';
 import MyJobs from '../Pages/MyJobs';
@@ -13,55 +12,77 @@ import PrivateRoute from '../PrivateRoute/PrivateRoute';
 import About from '../Pages/About';
 import Contact from '../Pages/Contact';
 import SignupPage from '../Pages/Signup';
+import { SignIn, SignUp } from '@clerk/clerk-react';
 
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <App/>,
-      children: [
-        {
-            path: "/",
-            element: <Home/>
-        },
-        {
-            path: "/about",
-            element: <About/>
-        },
-        {
-            path: "/contact",
-            element: <Contact/>
-        },
-        {
-            path: "/my-job",
-            element: <PrivateRoute><MyJobs/></PrivateRoute>
-        },
-        {
-            path: "/salary",
-            element: <SalaryPage/>
-        },
-        {
-          path: "/post-job",
-          element: <CreateJob/>
-        },
-        {
-          path: "edit-job/:id",
-          element: <UpdateJob/>,
-          loader: ({params}) => fetch(`http://localhost:5174/all-jobs/${params.id}`)
-        },
-        {
-          path:"/jobs/:id",
-          element: <JobDetails/>,
-        }
-      ]
-    },
-    {
-      path: "/login",
-      element: <Login/>
-    },
-    {
-      path: "/signup",
-      element: <SignupPage/>
-    }
-  ]);
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      {
+        path: "/",
+        element: <Home />  // Public route
+      },
+      {
+        path: "/about",
+        element: <About />  // Public route
+      },
+      {
+        path: "/contact",
+        element: <Contact />  // Public route
+      },
+      {
+        path: "/my-job",
+        element: (
+          <PrivateRoute>
+            <MyJobs />
+          </PrivateRoute>
+        )  // Protected route
+      },
+      {
+        path: "/salary",
+        element: <SalaryPage />  // Public route
+      },
+      {
+        path: "/post-job",
+        element: (
+          <PrivateRoute>
+            <CreateJob />
+          </PrivateRoute>
+        )  // Protected route
+      },
+      {
+        path: "/edit-job/:id",
+        element: (
+          <PrivateRoute>
+            <UpdateJob />
+          </PrivateRoute>
+        ),
+        loader: ({ params }) => fetch(`http://localhost:5174/all-jobs/${params.id}`)
+      },
+      {
+        path: "/jobs/:id",
+        element: <JobDetails />  // Public route
+      }
+    ]
+  },
+  {
+    path: "/login",
+    element: <Login />  // Public route
+  },
+  {
+    path: "/signup",
+    element: <SignupPage />  // Public route
+  },
+  {
+    path: "/logins",
+    element: <SignIn />  // Public route
+  },
+  {
+    path: "/signups",
+    element: <SignUp />  // Public route
+  }
+]);
 
-  export default router;
+
+export default router;

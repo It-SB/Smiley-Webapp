@@ -1,23 +1,20 @@
- 
 import React, { useContext } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { AuthContext } from "../context/AuthProvider";
+import { useUser } from "@clerk/clerk-react";
 
 const PrivateRoute = ({ children }) => {
-  const { user, loading } = useContext(AuthContext);
+  const { user, isLoaded } = useUser();
   const location = useLocation();
 
-  if (loading) {
-    return (
-      <div>Loading...</div>
-    );
+  if (!isLoaded) {
+    return <div>Loading...</div>; // Show loading state while checking auth
   }
 
   if (user) {
-    return children;
+    return children; // If the user is authenticated, render the protected page
   }
 
-  return <Navigate to="/login" state={{ from: location }} replace></Navigate>;
+  return <Navigate to="/login" state={{ from: location }} replace />;
 };
 
 export default PrivateRoute;
