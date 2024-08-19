@@ -100,7 +100,7 @@ const Navbar = () => {
                 to="https://relevant-alpaca-95.accounts.dev/sign-up?redirect_url=http%3A%2F%2Flocalhost%3A5173%2F"
                 className="bg-blue py-2 px-5 text-white rounded"
               >
-                Sign ups
+                Sign up
               </Link>
             </>
           )}
