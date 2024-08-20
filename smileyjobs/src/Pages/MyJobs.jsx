@@ -77,7 +77,7 @@ const MyJobs = () => {
   };
 
   return (
-    <div className="max-w-screen-2xl container mx-auto xl:px-26 px-4">
+    <div className="max-w-screen-2xl container mx-auto xl:px-30 px-4">
       <div className="my-jobs-container">
         <h1 className="text-center p-4">ALL My Jobs</h1>
         <div className="search-box p-2 text-center mb-2">
@@ -111,7 +111,7 @@ const MyJobs = () => {
                     <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
                       <Link
                         to="/post-job"
-                        className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                        className="bg-blue text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                       >
                         Post A New Job
                       </Link>
@@ -139,6 +139,12 @@ const MyJobs = () => {
                           Salary Type
                         </th>
                         <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                          View
+                        </th>
+                        <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                          Edit
+                        </th>
+                        <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                           Delete
                         </th>
                       </tr>
@@ -161,6 +167,12 @@ const MyJobs = () => {
                           </td>
                           <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                             {job.salaryType}
+                          </td>
+                          <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                          <Link to={`/jobs/${job?.id}`}> <button className="bg-yellow-300 py-2 px-6 text-blue rounded-sm">View Job</button></Link>
+                          </td>
+                          <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                          <Link to={`/edit-job/${job?.id}`}> <button className="bg-blue py-2 px-6 text-white rounded-sm">Edit</button></Link>
                           </td>
                           <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                             <button

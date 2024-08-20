@@ -28,21 +28,34 @@ const JobDetails = () => {
   }, [id, db]);
 
   const handleJobApply = async () => {
-    const { value: url } = await Swal.fire({
-      input: "url",
-      inputLabel: "CV or Resume URL address",
-      inputPlaceholder: "Enter the URL",
-    });
+    // const { value: url } = await Swal.fire({
+    //   input: "url",
+    //   inputLabel: "CV or Resume URL address",
+    //   inputPlaceholder: "Enter the URL",
+    // });
 
-    if (url) {
-      Swal.fire(`Entered URL: ${url}`).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire("Application Submitted Successfully!", "", "success");
-        } else if (result.isDenied) {
-          Swal.fire("Changes are not saved", "", "info");
-        }
-      });
-    }
+    // if (url) {
+    //   Swal.fire(`Entered URL: ${url}`).then((result) => {
+    //     if (result.isConfirmed) {
+    //       Swal.fire("Application Submitted Successfully!", "", "success");
+    //     } else if (result.isDenied) {
+    //       Swal.fire("Changes are not saved", "", "info");
+    //     }
+    //   });
+    // }
+    const confirmApply = window.confirm("Are you sure you want to apply for this job?");
+
+  if (confirmApply) {
+    const subject = "Regarding " + (job.jobTitle || "Job Application") + "Job Post";
+    const body =
+      "Hi " +
+      (job?.userName || "Employer") +
+      ",\n\n" +
+      "I am interested in applying for this job.";
+
+    // Open the default email client
+    window.location.href = `mailto:${job?.postedBy || ""}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  }
   };
 
   if (!job) {

@@ -65,7 +65,7 @@ const CreateJob = () => {
     { value: "Communications", label: "Communications" },
     { value: "Education", label: "Education" },
     { value: "Legal", label: "Legal" },
-    { value: "Marketing", label: "Legal" },
+    { value: "Marketing", label: "Marketing" },
 
 
     // Add more categories as needed
