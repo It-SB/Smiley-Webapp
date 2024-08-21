@@ -62,7 +62,7 @@ const CreateJob = () => {
     { value: "Health", label: "Health" },
     { value: "Finance", label: "Finance" },
     { value: "HR", label: "HR" },
-    { value: "Communications", label: "Communications" },
+    { value: "IT Consulting", label: "IT Consulting" },
     { value: "Education", label: "Education" },
     { value: "Legal", label: "Legal" },
     { value: "Marketing", label: "Marketing" },
