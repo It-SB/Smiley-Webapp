@@ -93,11 +93,15 @@ const Navbar = () => {
             </div>
           ) : (
             <>
-              <Link to="/logins" className="py-2 px-5 border rounded">
+              <Link 
+              // to="https://relevant-alpaca-95.accounts.dev/sign-in?redirect_url=https%3A%2F%2Fsmiley-webapp.vercel.app%2F" 
+              to ='/logins'
+              className="py-2 px-5 border rounded">
                 Log in
               </Link>
               <Link
-                to="https://relevant-alpaca-95.accounts.dev/sign-up?redirect_url=https%3A%2F%2Fsmiley-webapp.vercel.app%2F"
+                // to="https://relevant-alpaca-95.accounts.dev/sign-up?redirect_url=https%3A%2F%2Fsmiley-webapp.vercel.app%2F"
+              to ='/signups'
                 className="bg-blue py-2 px-5 text-white rounded"
               >
                 Sign up
