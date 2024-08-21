@@ -87,14 +87,14 @@ const router = createBrowserRouter([
       },
     ],
   },
-  {
-    path: "/login",
-    element: <Login />, // Public route
-  },
-  {
-    path: "/signup",
-    element: <SignupPage />, // Public route
-  },
+  // {
+  //   path: "/login",
+  //   element: <Login />, // Public route
+  // },
+  // {
+  //   path: "/signup",
+  //   element: <SignupPage />, // Public route
+  // },
   {
     path: "/logins",
     element: <SignIn />, // Public route

@@ -69,21 +69,23 @@ const Navbar = () => {
         <div className="text-base text-primary font-medium space-x-5 hidden lg:block">
           {user ? (
             <div className="flex gap-4 items-center">
-              <div className="flex -space-x-2 overflow-hidden">
-                {user.imageUrl ? (
-                  <img
-                    className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
-                    src={user.imageUrl}
-                    alt=""
-                  />
-                ) : (
-                  <img
-                    className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
-                    src="https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png"
-                    alt=""
-                  />
-                )}
-              </div>
+              <Link to="https://relevant-alpaca-95.accounts.dev/user">
+                <div className="flex -space-x-2 overflow-hidden">
+                  {user.imageUrl ? (
+                    <img
+                      className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
+                      src={user.imageUrl}
+                      alt=""
+                    />
+                  ) : (
+                    <img
+                      className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
+                      src="https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png"
+                      alt=""
+                    />
+                  )}
+                </div>
+              </Link>
               <button
                 onClick={handleLogout}
                 className="py-2 px-5 border rounded hover:bg-blue hover:text-white"
@@ -93,15 +95,16 @@ const Navbar = () => {
             </div>
           ) : (
             <>
-              <Link 
-              // to="https://relevant-alpaca-95.accounts.dev/sign-in?redirect_url=https%3A%2F%2Fsmiley-webapp.vercel.app%2F" 
-              to ='/logins'
-              className="py-2 px-5 border rounded">
+              <Link
+                // to="https://relevant-alpaca-95.accounts.dev/sign-in?redirect_url=https%3A%2F%2Fsmiley-webapp.vercel.app%2F"
+                to="/logins"
+                className="py-2 px-5 border rounded"
+              >
                 Log in
               </Link>
               <Link
                 // to="https://relevant-alpaca-95.accounts.dev/sign-up?redirect_url=https%3A%2F%2Fsmiley-webapp.vercel.app%2F"
-              to ='/signups'
+                to="/signups"
                 className="bg-blue py-2 px-5 text-white rounded"
               >
                 Sign up
