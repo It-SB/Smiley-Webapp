@@ -8,7 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # Dependency directories
-# node_modules
+node_modules
 
 # Build directories
 dist
@@ -16,7 +16,7 @@ dist-ssr
 build
 
 # Local environment files
-# *.local
+*.local
 
 # Editor directories and files
 .vscode/*
@@ -34,9 +34,9 @@ build
 *.bak
 
 # Environment files
-# .env
-# .env.local
-# .env.development.local
+.env
+.env.local
+.env.development.local
 .env.test.local
 .env.production.local
 
