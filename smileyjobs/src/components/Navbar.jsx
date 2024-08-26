@@ -149,6 +149,9 @@ const Navbar = () => {
               <Link to="/logins">Log in</Link>
             </li>
           )}
+          <li className="text-white py-1">
+            <Link to="/signups">Signup</Link>
+          </li>
         </ul>
       </div>
     </header>

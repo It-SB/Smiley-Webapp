@@ -46,7 +46,7 @@ const JobDetails = () => {
     const confirmApply = window.confirm("Are you sure you want to apply for this job?");
 
   if (confirmApply) {
-    const subject = "Regarding " + (job.jobTitle || "Job Application") + "Job Post";
+    const subject = "Regarding " + (job.jobTitle || " Job Application") + "Job Post";
     const body =
       "Hi " +
       (job?.userName || "Employer") +
