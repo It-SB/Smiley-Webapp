@@ -34,7 +34,7 @@ const Card = ({ data }) => {
 
   return (
     <div>
-      <section className="card">
+      <section className="card border border-blue rounded">
         <Link
           to={`/jobs/${id}`}
           className="flex gap-4 flex-col sm:flex-row items-start"

@@ -5,6 +5,10 @@ import Jobs from "./Jobs";
 import app from "../firebase/firebase.config";
 import { collection, getDocs, getFirestore, orderBy, query } from "firebase/firestore";
 import Newsletter from "../components/Newsletter";
+import { Header1 } from "../components/Header";
+import { Contact24 } from "../components/Footer";
+import { Team1 } from "../components/Header6";
+import { Layout423 } from "../components/DownloadApp";
 
 const Home = () => {
   const [state, setState] = useState({
@@ -129,6 +133,8 @@ const Home = () => {
 
   return (
     <div>
+      {/* <Team1/> */}
+      <Header1/>
       <Banner
         handleInputChange={handleInputChange}
         handleLocationChange={handleLocationChange}
@@ -136,11 +142,11 @@ const Home = () => {
         location={state.location}
       />
 
-      <div className="bg-[#FAFAFA] md:grid grid-cols-4 gap-8 lg:px-24 px-4 py-12">
-        <div className="bg-white p-4 rounded">
+      <div className="bg-white md:grid grid-cols-4 gap-8 lg:px-24 px-4 py-12">
+        <div className="bg-white p-4 rounded border border-blue">
           <Sidebar handleChange={handleChange} handleClick={handleClick} />
         </div>
-        <div className="col-span-2 bg-white p-4 rounded">
+        <div className="col-span-2 bg-white p-4 rounded border border-blue">
           {state.isLoading ? (
             <p className="font-medium">Loading...</p>
           ) : result.length > 0 ? (
@@ -178,10 +184,12 @@ const Home = () => {
             </div>
           )}
         </div>
-        <div className="bg-white p-4 rounded">
+        <div className="bg-white p-4 rounded border border-blue">
           <Newsletter />
         </div>
       </div>
+      <Layout423/>
+      <Contact24/>
     </div>
   );
 };

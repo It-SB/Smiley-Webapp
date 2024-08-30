@@ -1,17 +1,32 @@
  
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import CreatableSelect from "react-select/creatable";
 import { db } from '../firebase/firebase.config'; // Adjust import path if needed
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc,getDocs } from "firebase/firestore";
 
 const CreateJob = () => {
-  const [selectedOption, setSelectedOption] = useState([]);
+const [selectedOption, setSelectedOption] = useState([]);
   const [benefitsList, setBenefitsList] = useState([]);
-  const [jobType, setJobType] = useState(""); // New state for job type
-  const [category, setCategory] = useState(""); // New state for category
+  const [jobType, setJobType] = useState(""); 
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [category, setCategory] = useState([]); 
 
   const { register, handleSubmit, reset, watch } = useForm();
+
+  // Fetch categories from Firestore
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const querySnapshot = await getDocs(collection(db, "Catergory"));
+      const categoriesFromDb = querySnapshot.docs.map(doc => ({
+        value: doc.id,
+        label: doc.data().name,
+      }));
+      setCategoryOptions(categoriesFromDb);
+    };
+
+    fetchCategories();
+  }, []);
 
   const onSubmit = async (data) => {
     data.skills = selectedOption.map(option => option.value); // Convert skills to an array of strings
@@ -58,18 +73,6 @@ const CreateJob = () => {
     { value: "On-site", label: "On-site" },
   ];
 
-  const categoryOptions = [
-    { value: "Health", label: "Health" },
-    { value: "Finance", label: "Finance" },
-    { value: "HR", label: "HR" },
-    { value: "IT Consulting", label: "IT Consulting" },
-    { value: "Education", label: "Education" },
-    { value: "Legal", label: "Legal" },
-    { value: "Marketing", label: "Marketing" },
-
-
-    // Add more categories as needed
-  ];
 
   return (
     <div className="max-w-screen-2xl container mx-auto xl:px-24 px-4">
@@ -209,18 +212,12 @@ const CreateJob = () => {
 
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Category</label>
-              <select
+              <CreatableSelect
+                className="create-job-input py-4"
                 value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="create-job-input"
-              >
-                <option value="">Select Category</option>
-                {categoryOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
+                onChange={setCategory}
+                options={categoryOptions}
+              />
             </div>
           </div>
 

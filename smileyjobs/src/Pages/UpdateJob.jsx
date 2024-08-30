@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useLoaderData, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import CreatableSelect from "react-select/creatable";
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { db } from '../firebase/firebase.config'; // Adjust the import path if needed
+import { collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
+import { db } from '../firebase/firebase.config';
 import PageHeader from '../components/PageHeader';
 
 const UpdateJob = () => {
   const { id } = useParams();
   const { register, handleSubmit, reset } = useForm();
   const [selectedOption, setSelectedOption] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState([]);
   const [jobData, setJobData] = useState(null);
+  const [categoryOptions, setCategoryOptions] = useState([]);
 
   useEffect(() => {
     const fetchJobData = async () => {
@@ -21,7 +23,8 @@ const UpdateJob = () => {
           const data = docSnap.data();
           setJobData(data);
           setSelectedOption(data.skills.map(skill => ({ value: skill, label: skill })));
-          reset(data); // Populate the form with the existing job data
+          setSelectedCategory(data.category.map(cat => ({ value: cat, label: cat })));
+          reset(data);
         } else {
           console.log("No such document!");
         }
@@ -33,8 +36,27 @@ const UpdateJob = () => {
     fetchJobData();
   }, [id, reset]);
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "Catergory"));
+        const categoriesFromDb = querySnapshot.docs.map(doc => ({
+          value: doc.id,
+          label: doc.data().name,
+        }));
+        setCategoryOptions(categoriesFromDb);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   const onSubmit = async (data) => {
-    data.skills = selectedOption.map(option => option.value); // Convert skills to an array of strings
+    data.skills = selectedOption.map(option => option.value);
+    data.category = selectedCategory.map(option => option.value);
+
     try {
       const jobRef = doc(db, 'Otherjobs', id);
       await updateDoc(jobRef, data);
@@ -156,8 +178,8 @@ const UpdateJob = () => {
             </div>
           </div>
 
-          {/* 5th row */}
-          <div className="">
+          {/* 5th row: Required Skills */}
+          <div>
             <label className="block mb-2 text-lg">Required Skill Sets:</label>
             <CreatableSelect
               value={selectedOption}
@@ -168,36 +190,33 @@ const UpdateJob = () => {
             />
           </div>
 
-          {/* 6th row */}
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-            <div className="lg:w-1/2 w-full">
-              <label className="block mb-2 text-lg">Company Logo</label>
-              <input
-                defaultValue={jobData?.companyLogo}
-                {...register("companyLogo")}
-                type="url"
-                className="block w-full flex-1 border-1 bg-white py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6"
-              />
-            </div>
+          {/* 6th row: Category */}
+          <div>
+            <label className="block mb-2 text-lg">Category</label>
+            <CreatableSelect
+              value={selectedCategory}
+              onChange={setSelectedCategory}
+              options={categoryOptions}
+              isMulti
+              className="create-job-input py-4"
+            />
           </div>
 
-          {/* 7th row: Job Description */}
-          <div className="w-full">
+          {/* 7th row */}
+          <div>
             <label className="block mb-2 text-lg">Job Description</label>
             <textarea
               defaultValue={jobData?.description}
               {...register("description")}
-              rows={6}
+              rows="5"
               className="block w-full flex-1 border-1 bg-white py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6"
             />
           </div>
 
-          <div className="w-full">
-            <input
-              type="submit"
-              value="Submit"
-              className="block w-full cursor-pointer border border-transparent bg-[#0559FD] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#003ED9] focus:outline-none focus:ring-2 focus:ring-[#003ED9] focus:ring-offset-2 sm:text-lg"
-            />
+          <div className="text-center mt-6">
+            <button type="submit" className="bg-primary text-white py-2 px-4 rounded">
+              Update Job
+            </button>
           </div>
         </form>
       </div>

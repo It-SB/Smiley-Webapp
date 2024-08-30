@@ -1,9 +1,11 @@
 import React from "react";
 import { FiMapPin, FiSearch } from "react-icons/fi";
+import { Header1 } from "./Header";
 
 const Banner = ({ handleInputChange, handleLocationChange, query, location, onSubmit }) => {
   return (
     <div className="max-w-screen-2xl container mx-auto xl:px-24 md:py-20 py-14 px-4">
+
       <h1 className="text-5xl font-bold text-primary mb-3">
         Find your <span className="text-blue">new job</span> today
       </h1>
@@ -13,8 +15,8 @@ const Banner = ({ handleInputChange, handleLocationChange, query, location, onSu
       </p>
 
       <form onSubmit={onSubmit}>
-        <div className="flex justify-start md:flex-row flex-col md:gap-3 gap-4">
-          <div className="flex  rounded shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 md:w-1/2 w-full relative">
+        <div className="flex justify-start md:flex-row flex-col md:gap-3 gap-4 ">
+          <div className="flex  rounded shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 md:w-1/2 w-full relative border border-blue">
             <input
               type="text"
               name="query"
@@ -27,7 +29,7 @@ const Banner = ({ handleInputChange, handleLocationChange, query, location, onSu
             <FiSearch className="absolute mt-2.5 ml-2 text-gray-400" />
           </div>
 
-          <div className="flex  rounded ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 md:w-1/3 relative">
+          <div className="flex  rounded ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 md:w-1/3 relative border border-blue">
             <input
               type="text"
               name="location"

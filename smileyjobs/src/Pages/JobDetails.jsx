@@ -42,21 +42,21 @@ const JobDetails = () => {
     //       Swal.fire("Changes are not saved", "", "info");
     //     }
     //   });
-    // }
-    const confirmApply = window.confirm("Are you sure you want to apply for this job?");
+  //   // }
+  //   const confirmApply = window.confirm("Are you sure you want to apply for this job?");
 
-  if (confirmApply) {
+  // if (confirmApply) {
     const subject = "Regarding " + (job.jobTitle || " Job Application") + "Job Post";
     const body =
       "Hi " +
-      (job?.userName || "Employer") +
+      (job?.username || "Recruiter") +
       ",\n\n" +
       "I am interested in applying for this job.";
 
     // Open the default email client
     window.location.href = `mailto:${job?.postedBy || ""}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }
-  };
+  // };
 
   if (!job) {
     return <p>Loading...</p>;

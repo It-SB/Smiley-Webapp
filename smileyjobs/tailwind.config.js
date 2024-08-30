@@ -3,15 +3,15 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@relume_io/relume-ui/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
       colors: {
-        "primary": "#141414",
-        "blue": "#001f39"
-      }
+        primary: "#141414",
+        blue: "#001f39",
+      },
     },
   },
   plugins: [],
-}
-
+};
