@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useNavigate } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import CreatableSelect from "react-select/creatable";
@@ -7,77 +7,65 @@ import { db } from '../firebase/firebase.config';
 import PageHeader from '../components/PageHeader';
 
 const UpdateJob = () => {
-  const { jobId } = useParams(); // Assuming the job ID is passed as a route parameter
-  const navigate = useNavigate();
+  const { id } = useParams();
+  const { register, handleSubmit, reset } = useForm();
   const [selectedOption, setSelectedOption] = useState([]);
-  const [benefitsList, setBenefitsList] = useState([]);
-  const [jobType, setJobType] = useState("");
-  const [categoryOptions, setCategoryOptions] = useState([]);
-  const [category, setCategory] = useState([]);
-  const { register, handleSubmit, reset, setValue } = useForm();
-  const [jobData, setJobData] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState([]);
-  // Fetch job data and categories from Firestore
+  const [jobData, setJobData] = useState(null);
+  const [categoryOptions, setCategoryOptions] = useState([]);
+
   useEffect(() => {
     const fetchJobData = async () => {
-      const jobRef = doc(db, "Otherjobs", jobId);
-      const jobDoc = await getDoc(jobRef);
-
-      if (jobDoc.exists()) {
-        const jobData = jobDoc.data();
-        setSelectedOption(jobData.skills.map(skill => ({ value: skill, label: skill })));
-        setBenefitsList(jobData.benefits || []);
-        setJobType(jobData.jobType || "");
-        setCategory(jobData.category || []);
-        
-        // Populate the form with the job data
-        Object.keys(jobData).forEach(key => {
-          setValue(key, jobData[key]);
-        });
+      try {
+        const docRef = doc(db, 'Otherjobs', id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setJobData(data);
+          setSelectedOption(data.skills.map(skill => ({ value: skill, label: skill })));
+          setSelectedCategory(data.category.map(cat => ({ value: cat, label: cat })));
+          reset(data);
+        } else {
+          console.log("No such document!");
+        }
+      } catch (error) {
+        console.error("Error fetching job data:", error);
       }
     };
 
+    fetchJobData();
+  }, [id, reset]);
+
+  useEffect(() => {
     const fetchCategories = async () => {
-      const querySnapshot = await getDocs(collection(db, "Catergory"));
-      const categoriesFromDb = querySnapshot.docs.map(doc => ({
-        value: doc.id,
-        label: doc.data().name,
-      }));
-      setCategoryOptions(categoriesFromDb);
+      try {
+        const querySnapshot = await getDocs(collection(db, "Catergory"));
+        const categoriesFromDb = querySnapshot.docs.map(doc => ({
+          value: doc.id,
+          label: doc.data().name,
+        }));
+        setCategoryOptions(categoriesFromDb);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
     };
 
-    fetchJobData();
     fetchCategories();
-  }, [jobId, setValue]);
+  }, []);
 
   const onSubmit = async (data) => {
     data.skills = selectedOption.map(option => option.value);
-    data.benefits = benefitsList;
-    data.jobType = jobType;
-    data.category = category;
+    data.category = selectedCategory.map(option => option.value);
 
     try {
-      const jobRef = doc(db, 'Otherjobs', jobId);
+      const jobRef = doc(db, 'Otherjobs', id);
       await updateDoc(jobRef, data);
       alert("Job Updated Successfully!!");
-      navigate(`/job/${jobId}`); // Redirect to the job detail page or any other page
     } catch (error) {
       console.error("Error updating job:", error);
       alert("Error updating job. Please try again.");
     }
   };
-
-  const handleBenefitsChange = (e) => {
-    const value = e.target.value;
-    const lines = value.split('\n').filter(line => line.trim() !== '');
-    setBenefitsList(lines);
-  };
-
-  const jobTypeOptions = [
-    { value: "Remote", label: "Remote" },
-    { value: "Hybrid", label: "Hybrid" },
-    { value: "On-site", label: "On-site" },
-  ];
 
   const options = [
     { value: "JavaScript", label: "JavaScript" },

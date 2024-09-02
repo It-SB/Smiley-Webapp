@@ -1,38 +1,23 @@
  
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import CreatableSelect from "react-select/creatable";
 import { db } from '../firebase/firebase.config'; // Adjust import path if needed
-import { collection, addDoc,getDocs } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 
 const CreateJob = () => {
-const [selectedOption, setSelectedOption] = useState([]);
+  const [selectedOption, setSelectedOption] = useState([]);
   const [benefitsList, setBenefitsList] = useState([]);
-  const [jobType, setJobType] = useState(""); 
-  const [categoryOptions, setCategoryOptions] = useState([]);
-  const [category, setCategory] = useState([]); 
+  const [jobType, setJobType] = useState(""); // New state for job type
+  const [category, setCategory] = useState([]); // New state for category
 
   const { register, handleSubmit, reset, watch } = useForm();
-
-  // Fetch categories from Firestore
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const querySnapshot = await getDocs(collection(db, "Catergory"));
-      const categoriesFromDb = querySnapshot.docs.map(doc => ({
-        value: doc.id,
-        label: doc.data().name,
-      }));
-      setCategoryOptions(categoriesFromDb);
-    };
-
-    fetchCategories();
-  }, []);
 
   const onSubmit = async (data) => {
     data.skills = selectedOption.map(option => option.value); // Convert skills to an array of strings
     data.benefits = benefitsList;
     data.jobType = jobType; // Add jobType to the data
-    data.category = category; // Add category to the data
+    data.category = selectedOption.map(option => option.value); // Add category to the data
 
     try {
       console.log("Data before adding:", data);
@@ -43,7 +28,7 @@ const [selectedOption, setSelectedOption] = useState([]);
       setSelectedOption([]); // Clear selected skills
       setBenefitsList([]); // Clear benefits list
       setJobType(""); // Clear job type selection
-      setCategory(""); // Clear category selection
+      setCategory([]); // Clear category selection
     } catch (error) {
       console.error("Error posting job:", error);
       alert("Error posting job. Please try again.");
@@ -73,17 +58,27 @@ const [selectedOption, setSelectedOption] = useState([]);
     { value: "On-site", label: "On-site" },
   ];
 
+  const categoryOptions = [
+    { value: "Health", label: "Health" },
+    { value: "Finance", label: "Finance" },
+    { value: "HR", label: "HR" },
+    { value: "IT Consulting", label: "IT Consulting" },
+    { value: "Education", label: "Education" },
+    { value: "Legal", label: "Legal" },
+    { value: "Marketing", label: "Marketing" },
+    { value: "Engineering", label: "Engineering" },
+  ];
 
   return (
     <div className="max-w-screen-2xl container mx-auto xl:px-24 px-4">
-      <div className="bg-[#fafafa] py-10 px-4 lg:px-16 rounded border border-blue">
+      <div className="bg-[#FAFAFA] py-10 px-4 lg:px-16 rounded border border-blue">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           {/* 1st row */}
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-8 ">
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Job Title</label>
               <input
-                defaultValue="Web Developer"
+                placeholder="Web Developer"
                 {...register("jobTitle")}
                 className="block w-full flex-1 border-1 bg-white py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6 rounded border border-blue"
               />
@@ -93,7 +88,7 @@ const [selectedOption, setSelectedOption] = useState([]);
               <input
                 placeholder="Ex: Microsoft"
                 {...register("companyName")}
-                className="create-job-input rounded border border-blue rounded border border-blue"
+                className="create-job-input rounded border border-blue"
               />
             </div>
           </div>
@@ -146,7 +141,7 @@ const [selectedOption, setSelectedOption] = useState([]);
               <input
                 className="create-job-input rounded border border-blue"
                 {...register("createdAt")}
-                placeholder="Ex: 2023-11-03"
+                placeholder="Ex: 2024-11-03"
                 type="date"
               />
             </div>
@@ -171,10 +166,22 @@ const [selectedOption, setSelectedOption] = useState([]);
           <div className="">
             <label className="block mb-2 text-lg">Required Skill Sets:</label>
             <CreatableSelect
-              className="create-job-input  py-4"
+              className="create-job-input rounded bg-[#FAFAFA] py-4"
               value={selectedOption}
               onChange={setSelectedOption}
               options={options}
+              isMulti
+            />
+          </div>
+
+           {/* 5th row */}
+           <div className="">
+            <label className="block mb-2 text-lg">Category:</label>
+            <CreatableSelect
+              className="create-job-input rounded bg-[#FAFAFA] py-4"
+              value={category}
+              onChange={setCategory}
+              options={categoryOptions}
               isMulti
             />
           </div>
@@ -210,15 +217,21 @@ const [selectedOption, setSelectedOption] = useState([]);
               </select>
             </div>
 
-            <div className="lg:w-1/2 w-full">
+            {/* <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Category</label>
-              <CreatableSelect
-                className="create-job-input rounded  py-4"
+              <select
                 value={category}
-                onChange={setCategory}
-                options={categoryOptions}
-              />
-            </div>
+                onChange={(e) => setCategory(e.target.value)}
+                className="create-job-input rounded border border-blue"
+              >
+                <option value="">Select Category</option>
+                {categoryOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div> */}
           </div>
 
           {/* 8th row: Job Description */}
@@ -243,10 +256,10 @@ const [selectedOption, setSelectedOption] = useState([]);
               placeholder="Enter each benefit on a new line"
             />
             <div className="mt-4">
-              <label className="block mb-2 text-lg ">Benefits List</label>
+              <label className="block mb-2 text-lg">Benefits List</label>
               <div className="pl-3">
                 {benefitsList.map((benefit, index) => (
-                  <div key={index} className="flex items-start ">
+                  <div key={index} className="flex items-start">
                     <span className="mr-2">{index + 1}.</span>
                     <span>{benefit}</span>
                   </div>

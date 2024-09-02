@@ -38,7 +38,7 @@ const Contact24Defaults = {
       title: "Office",
       description: "18th floor, Green Park Corner ",
       link: {
-        label: "13 Lower Road Morningside, Sandton",
+        label: "3 Lower Road Morningside, Sandton",
         // url: "#",
       },
     },

@@ -4,14 +4,28 @@ import logo from "../assets/Blue.png"
 
 const Header1Defaults = {
   heading: "Welcome to SmileyJobs",
-  description:
-    "Belong & Smile” At Smiley Jobs, we believe in the power of belonging and a perfect fit. Our dedication goes beyond the resume; we value our candidates as much as our clients. We're committed to putting a smile on faces — not just for the roles we fill but for the relationships we build.",
-//   buttons: [{ title: "Button" }, { title: "Button", variant: "secondary" }],
+  description: (
+    <>
+      <p>“Belong & Smile”</p>
+      <p className='invisible'> jhk</p>
+      <p>At SmileyJobs, we believe in the power of belonging and a perfect fit.</p>
+      <p className='invisible'> jhk</p>
+      <p>Our dedication goes beyond the resume; we value our candidates as much as our clients. </p>
+      <p className='invisible'> jhk</p>
+      <p> We are committed to putting a smile on faces — not just for the roles we fill but for the relationships we build.</p>
+    </>
+  ),
+  buttons: [
+    { title: "Button" }, 
+    { title: "Button", variant: "secondary" }
+  ],
   image: {
     src: logo,
-    alt: "Placeholder image",
+    alt: "SmileyJobs logo",
   },
 };
+
+
 
 const Header1 = (props) => {
   const { heading, description, buttons, image } = {

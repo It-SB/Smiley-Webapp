@@ -56,14 +56,67 @@ const Newsletter = () => {
 
   return (
     <div>
+      <div className="">
+        <h3 className="text-lg font-bold mb-2 flex items-center gap-2">
+          <MdAccountCircle /> Create A Profile
+        </h3>
+        <p className="text-primary/75 text-base mb-4">
+          Create a profile and access personalised job opportunities, aligned to
+          your career aspirations.
+        </p>
+        <p className="text-primary/75 text-base mb-4">
+          Get notified on new job opportunities in your niche.
+        </p>
+        <p className="text-primary/75 text-base mb-4">
+          Upload your Resume and key information to be well positioned every
+          opportunity you apply for…
+        </p>
+        <div className="w-full space-y-4">
+          <Link to={`/create-profile`}>
+            <input
+              type="button"
+              value="Create Profile"
+              className="w-full block py-2 bg-blue rounded-sm text-white cursor-pointer font-semibold"
+            />
+          </Link>
+        </div>
+      </div>
+
+      <div className="mt-20">
+        <h3 className="text-lg font-bold mb-2 flex items-center gap-2">
+          <FaRocket /> Boost Your Visibility
+        </h3>
+        <p className="text-primary/75 text-base mb-4">
+          Upload your Resume and our team will keep you in our database to be
+        </p>
+
+        <p className="text-primary/75 text-base mb-4">
+          considered for employment opportunities in line with your career path.
+        </p>
+        <div className="w-full space-y-4">
+          <input
+            type="button"
+            value="Upload Your Resume"
+            onClick={handleResumeUpload}
+            className="w-full block py-2 bg-blue rounded-sm text-white cursor-pointer font-semibold"
+          />
+        </div>
+      </div>
+
       {!isSubscribed && (
-        <div>
+        <div className="mt-20">
           <h3 className="text-lg font-bold mb-2 flex items-center gap-2">
             <FaEnvelopeOpenText /> Subscribe for Job Alerts
           </h3>
           <p className="text-primary/75 text-base mb-4">
+            Not ready to create a profile, or upload your Resume?
+          </p>
+          <p className="text-primary/75 text-base mb-4">
             Stay updated with the latest job opportunities by subscribing to our
-            email notifications. Never miss a chance to advance your career.
+            email notifications.
+          </p>
+          <p className="text-primary/75 text-base mb-4">
+            Never miss a chance to advance your career.
           </p>
           <form onSubmit={handleEmailSubmit} className="w-full space-y-4 ">
             <input
@@ -81,41 +134,6 @@ const Newsletter = () => {
           </form>
         </div>
       )}
-
-      <div className="mt-20">
-        <h3 className="text-lg font-bold mb-2 flex items-center gap-2">
-          <FaRocket /> Boost Your Visibility
-        </h3>
-        <p className="text-primary/75 text-base mb-4">
-          Upload your resume to increase your chances of being noticed by top
-          employers. Make sure your profile stands out!
-        </p>
-        <div className="w-full space-y-4">
-          <input
-            type="button"
-            value="Upload Your Resume"
-            onClick={handleResumeUpload}
-            className="w-full block py-2 bg-blue rounded-sm text-white cursor-pointer font-semibold"
-          />
-        </div>
-      </div>
-
-      <div className="mt-20">
-        <h3 className="text-lg font-bold mb-2 flex items-center gap-2">
-          <MdAccountCircle /> Create A Profile
-        </h3>
-        <p className="text-primary/75 text-base mb-4">
-        Create a profile to access personalized job opportunities tailored to your career aspirations.
-        </p>
-        <div className="w-full space-y-4">
-          <Link to={`/create-profile`}><input
-            type="button"
-            value="Create Profile"
-            className="w-full block py-2 bg-blue rounded-sm text-white cursor-pointer font-semibold"
-          /></Link>
-          
-        </div>
-      </div>
     </div>
   );
 };
