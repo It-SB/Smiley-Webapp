@@ -65,13 +65,13 @@ const Newsletter = () => {
             Stay updated with the latest job opportunities by subscribing to our
             email notifications. Never miss a chance to advance your career.
           </p>
-          <form onSubmit={handleEmailSubmit} className="w-full space-y-4">
+          <form onSubmit={handleEmailSubmit} className="w-full space-y-4 ">
             <input
               type="email"
               value={email}
               onChange={handleEmailChange}
               placeholder="Enter your email"
-              className="w-full block py-2 pl-3 border focus:outline-none"
+              className="w-full block py-2 pl-3 border border-blue focus:outline-none"
             />
             <input
               type="submit"

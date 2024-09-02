@@ -76,7 +76,7 @@ const [selectedOption, setSelectedOption] = useState([]);
 
   return (
     <div className="max-w-screen-2xl container mx-auto xl:px-24 px-4">
-      <div className="bg-[#FAFAFA] py-10 px-4 lg:px-16">
+      <div className="bg-[#fafafa] py-10 px-4 lg:px-16 rounded border border-blue">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           {/* 1st row */}
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
@@ -85,7 +85,7 @@ const [selectedOption, setSelectedOption] = useState([]);
               <input
                 defaultValue="Web Developer"
                 {...register("jobTitle")}
-                className="block w-full flex-1 border-1 bg-white py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6"
+                className="block w-full flex-1 border-1 bg-white py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6 rounded border border-blue"
               />
             </div>
             <div className="lg:w-1/2 w-full">
@@ -93,7 +93,7 @@ const [selectedOption, setSelectedOption] = useState([]);
               <input
                 placeholder="Ex: Microsoft"
                 {...register("companyName")}
-                className="create-job-input"
+                className="create-job-input rounded border border-blue rounded border border-blue"
               />
             </div>
           </div>
@@ -105,7 +105,7 @@ const [selectedOption, setSelectedOption] = useState([]);
               <input
                 placeholder="$20k"
                 {...register("minPrice")}
-                className="create-job-input"
+                className="create-job-input rounded border border-blue"
               />
             </div>
             <div className="lg:w-1/2 w-full">
@@ -113,7 +113,7 @@ const [selectedOption, setSelectedOption] = useState([]);
               <input
                 placeholder="$100k"
                 {...register("maxPrice")}
-                className="create-job-input"
+                className="create-job-input rounded border border-blue"
               />
             </div>
           </div>
@@ -122,7 +122,7 @@ const [selectedOption, setSelectedOption] = useState([]);
           <div className="create-job-flex">
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Salary Type</label>
-              <select {...register("salaryType")} className="create-job-input">
+              <select {...register("salaryType")} className="create-job-input rounded border border-blue">
                 <option value="">Choose your salary</option>
                 <option value="Hourly">Hourly</option>
                 <option value="Monthly">Monthly</option>
@@ -134,7 +134,7 @@ const [selectedOption, setSelectedOption] = useState([]);
               <input
                 placeholder="Ex: New York"
                 {...register("jobLocation")}
-                className="create-job-input"
+                className="create-job-input rounded border border-blue"
               />
             </div>
           </div>
@@ -144,8 +144,8 @@ const [selectedOption, setSelectedOption] = useState([]);
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Job Posting Date</label>
               <input
-                className="create-job-input"
-                {...register("createdAt")}
+                className="create-job-input rounded border border-blue"
+                {...register("postingDate")}
                 placeholder="Ex: 2023-11-03"
                 type="date"
               />
@@ -155,7 +155,7 @@ const [selectedOption, setSelectedOption] = useState([]);
               <label className="block mb-2 text-lg">Experience Level</label>
               <select
                 {...register("experienceLevel")}
-                className="create-job-input"
+                className="create-job-input rounded border border-blue"
               >
                 <option value="">Select Your Experience Level</option>
                 <option value="0 - 2 years">0 - 2 years</option>
@@ -171,7 +171,7 @@ const [selectedOption, setSelectedOption] = useState([]);
           <div className="">
             <label className="block mb-2 text-lg">Required Skill Sets:</label>
             <CreatableSelect
-              className="create-job-input py-4"
+              className="create-job-input  py-4"
               value={selectedOption}
               onChange={setSelectedOption}
               options={options}
@@ -187,7 +187,7 @@ const [selectedOption, setSelectedOption] = useState([]);
                 type="url"
                 placeholder="Paste your image url: https://weshare.com/img1.jpg"
                 {...register("companyLogo")}
-                className="create-job-input"
+                className="create-job-input rounded border border-blue"
               />
             </div>
           </div>
@@ -199,7 +199,7 @@ const [selectedOption, setSelectedOption] = useState([]);
               <select
                 value={jobType}
                 onChange={(e) => setJobType(e.target.value)}
-                className="create-job-input"
+                className="create-job-input rounded border border-blue"
               >
                 <option value="">Select Job Type</option>
                 {jobTypeOptions.map((option) => (
@@ -213,7 +213,7 @@ const [selectedOption, setSelectedOption] = useState([]);
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Category</label>
               <CreatableSelect
-                className="create-job-input py-4"
+                className="create-job-input rounded  py-4"
                 value={category}
                 onChange={setCategory}
                 options={categoryOptions}
@@ -225,11 +225,11 @@ const [selectedOption, setSelectedOption] = useState([]);
           <div className="w-full">
             <label className="block mb-2 text-lg">Job Description</label>
             <textarea
-              className="w-full pl-3 py-1.5 focus:outline-none"
+              className="w-full pl-3 py-1.5 focus:outline-none rounded border border-blue"
               rows={6}
               {...register("description")}
-              placeholder="job description"
-              defaultValue={"Mollit in laborum tempor Lorem incididunt irure. Aute eu ex ad sunt. Pariatur sint culpa do incididunt eiusmod eiusmod culpa. laborum tempor Lorem incididunt."}
+              // placeholder="job description"
+              placeholder={"Mollit in laborum tempor Lorem incididunt irure. Aute eu ex ad sunt. Pariatur sint culpa do incididunt eiusmod eiusmod culpa. laborum tempor Lorem incididunt."}
             />
           </div>
 
@@ -237,16 +237,16 @@ const [selectedOption, setSelectedOption] = useState([]);
           <div className="w-full">
             <label className="block mb-2 text-lg">Job Benefits (one per line)</label>
             <textarea
-              className="w-full pl-3 py-1.5 focus:outline-none"
+              className="w-full pl-3 py-1.5 focus:outline-none rounded border border-blue"
               rows={3}
               onChange={handleBenefitsChange}
               placeholder="Enter each benefit on a new line"
             />
             <div className="mt-4">
-              <label className="block mb-2 text-lg">Benefits List</label>
+              <label className="block mb-2 text-lg ">Benefits List</label>
               <div className="pl-3">
                 {benefitsList.map((benefit, index) => (
-                  <div key={index} className="flex items-start">
+                  <div key={index} className="flex items-start ">
                     <span className="mr-2">{index + 1}.</span>
                     <span>{benefit}</span>
                   </div>
@@ -259,7 +259,7 @@ const [selectedOption, setSelectedOption] = useState([]);
           <div className="w-full">
             <label className="block mb-2 text-lg">Growth Potential</label>
             <textarea
-              className="w-full pl-3 py-1.5 focus:outline-none"
+              className="w-full pl-3 py-1.5 focus:outline-none rounded border border-blue"
               rows={3}
               {...register("growthPotential")}
               placeholder="Describe the growth potential of the position"
@@ -270,7 +270,7 @@ const [selectedOption, setSelectedOption] = useState([]);
           <div className="w-full">
             <label className="block mb-2 text-lg">Additional Comments</label>
             <textarea
-              className="w-full pl-3 py-1.5 focus:outline-none"
+              className="w-full pl-3 py-1.5 focus:outline-none rounded border border-blue"
               rows={3}
               {...register("additionalComments")}
               placeholder="Any additional comments about the job"
@@ -283,7 +283,7 @@ const [selectedOption, setSelectedOption] = useState([]);
             <input
               type="email"
               // value={user?.email}
-              className="w-full pl-3 py-1.5 focus:outline-none"
+              className="w-full pl-3 py-1.5 focus:outline-none rounded border border-blue"
               {...register("postedBy")}
               placeholder="your email"
             />

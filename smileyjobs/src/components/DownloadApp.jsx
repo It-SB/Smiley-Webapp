@@ -27,11 +27,11 @@ export const Layout423 = (props) => {
   const [hoveredFeatureIdx, setHoveredFeatureIdx] = useState(null);
 
   return (
-    <section className="px-[5%] py-16 md:py-24 lg:py-28">
+    <section className="px-[5%] py-16 md:py-24 lg:py-28 border border-b-blue">
       <div className="container">
         <div className="mx-auto mb-12 w-full max-w-lg text-center md:mb-18 lg:mb-20">
           <p className="mb-3 font-semibold md:mb-4">{tagline}</p>
-          <h2 className="mb-5 text-5xl font-bold md:mb-6 md:text-7xl lg:text-8xl ">{heading}</h2>
+          <h2 className="mb-5 text-5xl font-bold md:mb-6 md:text-4xl lg:text-6xl ">{heading}</h2>
           <p className="md:text-md">{description}</p>
         </div>
         <div className="flex flex-col items-stretch justify-between gap-6 md:gap-8 lg:flex-row">
@@ -78,7 +78,7 @@ export const Layout423 = (props) => {
                           iconLeft={feature.button.iconLeft}
                           className="text-text-alternative text-white"
                         >
-                          Button
+                          Download from PlayStore
                         </Button>
                       </div>
                     </motion.div>
@@ -94,7 +94,7 @@ export const Layout423 = (props) => {
                       iconLeft={feature.button.iconLeft}
                       className="text-text-alternative"
                     >
-                      Button
+                      Download from Apple App Store
                     </Button>
                   </div>
                 </div>
@@ -108,19 +108,17 @@ export const Layout423 = (props) => {
 };
 
 export const Layout423Defaults = {
-  tagline: "We are mobile",
+  tagline: "Stay Connected",
   heading: "Download Our Mobile App",
-//   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   features: [
     {
-    //   tagline: "Tagline",
       url: "#",
-      heading: "Medium length section heading goes here",
+      heading: "Get it on iOS",
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.",
+        "Download our app on iOS and enjoy seamless access to all our features. Stay updated and connected on the go.",
       image: {
         src: "https://static.vecteezy.com/system/resources/previews/021/515/122/non_2x/ios-icon-logo-software-apple-symbol-with-name-white-design-mobile-illustration-with-black-background-free-vector.jpg",
-        alt: "Placeholder image 1",
+        alt: "iOS App Icon",
       },
       button: {
         variant: "link",
@@ -129,14 +127,13 @@ export const Layout423Defaults = {
       },
     },
     {
-    //   tagline: "Tagline", 
       url: "#",
-      heading: "Medium length section heading goes here",
+      heading: "Get it on Android",
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.",
+        "Download our app on Android to experience everything we offer. Easy to use, reliable, and available anytime.",
       image: {
         src: "https://www.goodworklabs.com/wp-content/uploads/2014/05/Android.jpg",
-        alt: "Placeholder image 2",
+        alt: "Android App Icon",
       },
       button: {
         variant: "link",
@@ -144,21 +141,5 @@ export const Layout423Defaults = {
         iconRight: <RxChevronRight />,
       },
     },
-    // {
-    //   tagline: "Tagline",
-    //   url: "#",
-    //   heading: "Medium length section heading goes here",
-    //   description:
-    //     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.",
-    //   image: {
-    //     src: "https://relume-assets.s3.amazonaws.com/placeholder-image.svg",
-    //     alt: "Placeholder image 3",
-    //   },
-    //   button: {
-    //     variant: "link",
-    //     size: "link",
-    //     iconRight: <RxChevronRight />,
-    //   },
-    // },
   ],
 };

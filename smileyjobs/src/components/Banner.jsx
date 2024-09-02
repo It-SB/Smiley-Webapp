@@ -26,7 +26,7 @@ const Banner = ({ handleInputChange, handleLocationChange, query, location, onSu
               onChange={handleInputChange}
               value={query}
             />
-            <FiSearch className="absolute mt-2.5 ml-2 text-gray-400" />
+            <FiSearch className="absolute mt-2.5 ml-2 text-blue" />
           </div>
 
           <div className="flex  rounded ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 md:w-1/3 relative border border-blue">
@@ -39,7 +39,7 @@ const Banner = ({ handleInputChange, handleLocationChange, query, location, onSu
               onChange={handleLocationChange}
               value={location}
             />
-            <FiMapPin className="absolute mt-2.5 ml-2 text-gray-400" />
+            <FiMapPin className="absolute mt-2.5 ml-2 text-blue" />
           </div>
 
           <button

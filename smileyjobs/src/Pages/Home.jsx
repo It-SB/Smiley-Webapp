@@ -29,7 +29,11 @@ const Home = () => {
 
   const getLatestJobList = async () => {
     setState((prevState) => ({ ...prevState, isLoading: true }));
-    const q = query(collection(db, "Otherjobs"), orderBy("createdAt", "desc"));
+    const q = query(
+      collection(db, "Otherjobs"),
+      // orderBy("createdAt", "desc"),
+      orderBy("postingDate", "desc")
+    );
     const querySnapShot = await getDocs(q);
     const jobsData = querySnapShot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     setState((prevState) => ({
