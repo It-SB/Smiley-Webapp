@@ -145,7 +145,7 @@ const [selectedOption, setSelectedOption] = useState([]);
               <label className="block mb-2 text-lg">Job Posting Date</label>
               <input
                 className="create-job-input rounded border border-blue"
-                {...register("postingDate")}
+                {...register("createdAt")}
                 placeholder="Ex: 2023-11-03"
                 type="date"
               />

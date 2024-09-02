@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Banner from "../components/Banner";
 import Sidebar from "../sidebar/Sidebar";
 import Jobs from "./Jobs";
@@ -23,16 +23,12 @@ const Home = () => {
   const itemsPerPage = 6;
   const db = getFirestore(app);
 
-  useEffect(() => {
-    getLatestJobList();
-  },[]);
-
-  const getLatestJobList = async () => {
+  const getLatestJobList = useCallback(async () => {
     setState((prevState) => ({ ...prevState, isLoading: true }));
     const q = query(
       collection(db, "Otherjobs"),
-      // orderBy("createdAt", "desc"),
-      orderBy("postingDate", "desc")
+      orderBy("createdAt", "desc"),
+      // orderBy("postingDate", "desc")
     );
     const querySnapShot = await getDocs(q);
     const jobsData = querySnapShot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -41,7 +37,11 @@ const Home = () => {
       jobs: jobsData,
       isLoading: false,
     }));
-  };
+  }, [db]);
+
+  useEffect(() => {
+    getLatestJobList();
+  }, [getLatestJobList]);
 
   const handleInputChange = (event) => {
     setState((prevState) => ({

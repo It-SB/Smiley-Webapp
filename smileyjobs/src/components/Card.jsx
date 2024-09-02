@@ -8,13 +8,16 @@ import {
 import { Link } from "react-router-dom";
 
 // Helper function to truncate text to a specific number of words
-const truncateDescription = (description, wordLimit) => {
-  const words = description.split(' ');
-  if (words.length > wordLimit) {
-    return words.slice(0, wordLimit).join(' ') + '...';
-  }
-  return description;
+// Example of the truncateDescription function in Card.jsx
+const truncateDescription = (description, maxLength) => {
+  // Provide a fallback value if description is undefined or null
+  if (!description) return "";
+
+  return description.length > maxLength
+    ? description.split(" ").slice(0, maxLength).join(" ") + "..."
+    : description;
 };
+
 
 const Card = ({ data }) => {
   const {
