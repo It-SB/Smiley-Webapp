@@ -2,10 +2,15 @@ import React from "react";
 import { FiMapPin, FiSearch } from "react-icons/fi";
 import { Header1 } from "./Header";
 
-const Banner = ({ handleInputChange, handleLocationChange, query, location, onSubmit }) => {
+const Banner = ({
+  handleInputChange,
+  handleLocationChange,
+  query,
+  location,
+  onSubmit,
+}) => {
   return (
     <div className="max-w-screen-2xl container mx-auto xl:px-24 md:py-20 py-14 px-4">
-
       <h1 className="text-5xl font-bold text-primary mb-3">
         Find your <span className="text-blue">new job</span> today
       </h1>

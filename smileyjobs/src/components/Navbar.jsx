@@ -30,6 +30,8 @@ const Navbar = () => {
   if (
     user?.primaryEmailAddress?.emailAddress === "lettimaks@gmail.com" ||
     user?.primaryEmailAddress?.emailAddress === "Lwando@smileyjobs.co" ||
+    user?.primaryEmailAddress?.emailAddress === "Recruit@skillsbureau.co.za" ||
+
     // user?.email === "lethabolesheleba2003@gmail.com" ||
     user?.primaryEmailAddress?.emailAddress === "skillsbureausites@gmail.com"
   ) {

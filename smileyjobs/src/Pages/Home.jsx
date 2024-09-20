@@ -7,7 +7,6 @@ import { collection, getDocs, getFirestore, orderBy, query } from "firebase/fire
 import Newsletter from "../components/Newsletter";
 import { Header1 } from "../components/Header";
 import { Contact24 } from "../components/Footer";
-import { Team1 } from "../components/Header6";
 import { Layout423 } from "../components/DownloadApp";
 
 const Home = () => {
@@ -133,7 +132,6 @@ const Home = () => {
 
   return (
     <div>
-      {/* <Team1/> */}
       <Header1/>
       <Banner
         handleInputChange={handleInputChange}
