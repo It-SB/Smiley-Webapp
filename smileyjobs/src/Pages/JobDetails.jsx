@@ -8,7 +8,6 @@ import app from "../firebase/firebase.config"; // Adjust the import based on you
 
 const JobDetails = () => {
   const { id } = useParams();
-  // const {desc} = useParams();
   const [job, setJob] = useState(null);
   const db = getFirestore(app);
 
@@ -28,25 +27,7 @@ const JobDetails = () => {
   }, [id, db]);
 
   const handleJobApply = async () => {
-    // const { value: url } = await Swal.fire({
-    //   input: "url",
-    //   inputLabel: "CV or Resume URL address",
-    //   inputPlaceholder: "Enter the URL",
-    // });
-
-    // if (url) {
-    //   Swal.fire(`Entered URL: ${url}`).then((result) => {
-    //     if (result.isConfirmed) {
-    //       Swal.fire("Application Submitted Successfully!", "", "success");
-    //     } else if (result.isDenied) {
-    //       Swal.fire("Changes are not saved", "", "info");
-    //     }
-    //   });
-  //   // }
-  //   const confirmApply = window.confirm("Are you sure you want to apply for this job?");
-
-  // if (confirmApply) {
-    const subject = "Regarding " + (job.jobTitle || " Job Application") + "Job Post";
+    const subject = "Regarding " + (job.jobTitle || " Job Application") + " Job Post";
     const body =
       "Hi " +
       (job?.username || "Recruiter") +
@@ -55,8 +36,7 @@ const JobDetails = () => {
 
     // Open the default email client
     window.location.href = `mailto:${job?.postedBy || ""}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  }
-  // };
+  };
 
   if (!job) {
     return <p>Loading...</p>;
@@ -66,8 +46,6 @@ const JobDetails = () => {
     <div className="max-w-screen-2xl container mx-auto xl:px-24 px-4">
       <PageHeader title={"Job Details Page"} path={"Single Job"} />
       <div className="mt-10">
-        {/* <h3 className="font-semibold mb-2">Job ID: {id}</h3> */}
-
         <div className="my-4">
           <h2 className="text-2xl font-medium text-blue">Position</h2>
           <p className="bg-blue px-6 py-1 text-white rounded-sm">{job.jobTitle}</p>
@@ -89,45 +67,41 @@ const JobDetails = () => {
           </button>
         </div>
 
-        {/* job details */}
-        <div className="flex flex-col md:flex-row justify-between gap-12 mt-12">
-          <div className="md:w-1/3">
-            <h4 className="text-lg font-medium mb-3">Benefits</h4>
+        {/* Job details */}
+        <div className="flex flex-col md:flex-row justify-between gap-12 mt-12 p-5 border border-blue shadow-sm shadow-blue">
+          <div className="md:w-1/3 border p-5 border-blue">
+            <h4 className="text-lg font-medium mb-3">Skills</h4>
             <p className="text-sm text-primary/70 mb-2">
-              Pulled from the full job description
+              Required skills for this position
             </p>
             <ul className="list-disc list-outside text-primary/90 space-y-2 text-base">
-              <li>
-                Salary:
-                {job.minPrice && job.maxPrice
-                  ? ` ${job.minPrice} - ${job.maxPrice} ${job.salaryType}`
-                  : job.range
-                  ? job.range
-                  : "Not available"}
-              </li>
-              {job.benefits && job.benefits.length > 0 ? (
-                job.benefits.map((benefit) => (
-                  <li key={benefit}>
-                    {benefit.id}. {benefit.text}
-                  </li>
+              {job.skills && job.skills.length > 0 ? (
+                job.skills.map((skill, index) => (
+                  <li key={index}>{skill}</li>
                 ))
               ) : (
-                <li>No benefits listed</li>
+                <li>No skills listed</li>
               )}
             </ul>
           </div>
 
-          <div className="md:w-1/3">
-            <h4 className="text-lg font-medium mb-3">OutLine</h4>
+          <div className="md:w-1/3 p-5 border border-blue">
+            <h4 className="text-lg font-medium mb-3">Outline</h4>
             <p className="text-primary/90">{job.desc || job.description}</p>
           </div>
-          <div className="md:w-1/3">
-            <h4 className="text-lg font-medium mb-3">Future Growth</h4>
-            {job.growthPotential || "Not yet provided"}
+          <div className="md:w-1/3 p-5 border border-blue">
+            <h4 className="text-lg font-medium mb-3">Salary</h4>
+            <p className="text-primary/90">
+                {job.minPrice && job.maxPrice
+                  ? `${job.minPrice} - ${job.maxPrice} ${job.salaryType}`
+                  : job.range
+                  ? job.range
+                  : "Not available"}
+              </p>
           </div>
         </div>
 
-        <div className="text-primary/75 my-5 space-y-6">
+        <div className="text-primary/75 my-5 space-y-6 p-5 border border-blue shadow-sm shadow-blue">
           {job.additionalComments}
         </div>
       </div>

@@ -131,7 +131,7 @@ const Home = () => {
   );
 
   return (
-    <div>
+    <div className="">
       <Header1/>
       <Banner
         handleInputChange={handleInputChange}
@@ -140,11 +140,11 @@ const Home = () => {
         location={state.location}
       />
 
-      <div className="bg-white md:grid grid-cols-4 gap-8 lg:px-24 px-4 py-12">
-        <div className="bg-white p-4 rounded border border-blue">
+      <div className="bg-gradient-to-b from-white to-blue md:grid grid-cols-4 gap-8 lg:px-24 px-4 py-12">
+        <div className="backdrop-blur-sm bg-white/30 p-4 rounded border border-blue">
           <Sidebar handleChange={handleChange} handleClick={handleClick} />
         </div>
-        <div className="col-span-2 bg-white p-4 rounded border border-blue">
+        <div className="col-span-2 backdrop-blur-sm bg-white/30 p-4 rounded border border-blue">
           {state.isLoading ? (
             <p className="font-medium">Loading...</p>
           ) : result.length > 0 ? (
@@ -182,11 +182,11 @@ const Home = () => {
             </div>
           )}
         </div>
-        <div className="bg-white p-4 rounded border border-blue">
+        <div className=" backdrop-blur-sm bg-white/30 p-4 rounded border border-blue">
           <Newsletter />
         </div>
       </div>
-      <Layout423/>
+      {/* <Layout423/> */}
       <Contact24/>
     </div>
   );

@@ -8,7 +8,6 @@ import {
 import { Link } from "react-router-dom";
 
 // Helper function to truncate text to a specific number of words
-// Example of the truncateDescription function in Card.jsx
 const truncateDescription = (description, maxLength) => {
   // Provide a fallback value if description is undefined or null
   if (!description) return "";
@@ -18,7 +17,6 @@ const truncateDescription = (description, maxLength) => {
     : description;
 };
 
-
 const Card = ({ data }) => {
   const {
     id,
@@ -27,7 +25,7 @@ const Card = ({ data }) => {
     jobTitle,
     minPrice,
     maxPrice,
-    category,
+    category, // Assuming category is an array now
     userImage,
     userName,
     jobLocation,
@@ -37,7 +35,7 @@ const Card = ({ data }) => {
 
   return (
     <div>
-      <section className="card border border-blue rounded">
+      <section className="card border border-blue hover:shadow-yellow-300 backdrop-blur-sm bg-white/55 rounded shadow-2xl shadow-yellow-300/15">
         <Link
           to={`/jobs/${id}`}
           className="flex gap-4 flex-col sm:flex-row items-start"
@@ -50,16 +48,17 @@ const Card = ({ data }) => {
             className="w-16 h-16 mb-4"
           />
           <div className="card-details">
-            <h4 className="text-primary mb-1">{category}</h4>
+            {/* Display categories as a comma-separated list */}
+            <h4 className="text-primary mb-1">
+              {Array.isArray(category) ? category.join(', ') : category}
+            </h4>
             <h3 className="text-lg font-semibold mb-2">{jobTitle}</h3>
 
             <div className="text-primary/70 text-base flex flex-wrap gap-2 mb-2">
               <span className="flex items-center gap-2">
                 <FiMapPin /> {jobLocation}{" "}
               </span>
-              {/* <span className="flex items-center gap-2"><FiClock/> {category}</span> */}
               <span className="flex items-center gap-2">
-                {" "}
                 {minPrice} - {maxPrice}
               </span>
               <span className="flex items-center gap-2">

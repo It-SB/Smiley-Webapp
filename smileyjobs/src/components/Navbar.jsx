@@ -42,7 +42,7 @@ const Navbar = () => {
   }
 
   return (
-    <header className="max-w-screen-2xl container mx-auto xl:px-24 px-4">
+    <header className="bg-yellow-200  max-w-screen-2xl container mx-auto xl:px-24 px-4 text-blue">
       <nav className="flex justify-between items-center py-6">
         <a href="/" className="flex items-center text-2xl">
           <img
@@ -56,7 +56,7 @@ const Navbar = () => {
         {/* Nav items */}
         <ul className="hidden md:flex gap-12">
           {navItems.map(({ path, title }) => (
-            <li key={path} className="text-base text-primary">
+            <li key={path} className="text-base text-blue">
               <NavLink
                 to={path}
                 className={({ isActive }) => (isActive ? "active" : "")}
@@ -74,13 +74,13 @@ const Navbar = () => {
               <div className="flex -space-x-2 overflow-hidden">
                 {user.imageUrl ? (
                   <img
-                    className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
+                    className="inline-block h-10 w-10 rounded-full ring-2 ring-transparent"
                     src={user.imageUrl}
                     alt=""
                   />
                 ) : (
                   <img
-                    className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
+                    className="inline-block h-10 w-10 rounded-full ring-2 ring-transparent"
                     src="https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png"
                     alt=""
                   />
@@ -88,7 +88,7 @@ const Navbar = () => {
               </div>
               <button
                 onClick={handleLogout}
-                className="py-2 px-5 border rounded hover:bg-blue hover:text-white"
+                className="py-2 px-5 border border-blue rounded hover:bg-blue hover:text-white"
               >
                 Log out
               </button>
@@ -98,13 +98,13 @@ const Navbar = () => {
               <Link 
               // to="https://relevant-alpaca-95.accounts.dev/sign-in?redirect_url=https%3A%2F%2Fsmiley-webapp.vercel.app%2F" 
               to ='/logins'
-              className="py-2 px-5 border rounded">
-                Log in
+              className="py-2 px-5 border border-blue shadow bg-yellow-400 hover:shadow-blue hover:shadowrounded">
+                Log in 
               </Link>
               <Link
                 // to="https://relevant-alpaca-95.accounts.dev/sign-up?redirect_url=https%3A%2F%2Fsmiley-webapp.vercel.app%2F"
               to ='/signups'
-                className="bg-blue py-2 px-5 text-white rounded"
+                className="bg-blue py-2 px-5 shadow-2xl hover:shadow-white text-white rounded"
               >
                 Sign up
               </Link>
@@ -147,7 +147,7 @@ const Navbar = () => {
           ))}
 
           {!user && (
-            <li className="text-white py-1">
+            <li className="text-white py-1 hover:bg-blue">
               <Link to="/logins">Log in</Link>
             </li>
           )}

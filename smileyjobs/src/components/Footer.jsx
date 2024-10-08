@@ -52,7 +52,7 @@ const Contact24 = (props) => {
   };
 
   return (
-    <section className="px-[5%] py-16 md:py-24 lg:py-28">
+    <section className=" px-[5%] py-16 md:py-24 lg:py-28">
       <div className="max-w-screen-2xl container mx-auto xl:px-24 md:py-20 py-14 px-4">
         <div className="mb-12 max-w-lg md:mb-18 lg:mb-20">
           <p className="mb-3 font-semibold md:mb-4">{tagline}</p>

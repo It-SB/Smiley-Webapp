@@ -12,7 +12,7 @@ const UpdateJob = () => {
   const [selectedOption, setSelectedOption] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [jobData, setJobData] = useState(null);
-  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [category, setCategoryOptions] = useState([]);
 
   useEffect(() => {
     const fetchJobData = async () => {
@@ -36,22 +36,22 @@ const UpdateJob = () => {
     fetchJobData();
   }, [id, reset]);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "Catergory"));
-        const categoriesFromDb = querySnapshot.docs.map(doc => ({
-          value: doc.id,
-          label: doc.data().name,
-        }));
-        setCategoryOptions(categoriesFromDb);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchCategories = async () => {
+  //     try {
+  //       const querySnapshot = await getDocs(collection(db, "Catergory")); // Check collection name
+  //       const categoriesFromDb = querySnapshot.docs.map(doc => ({
+  //         value: doc.data().name,
+  //         label: doc.data().name,
+  //       }));
+  //       setCategoryOptions(categoriesFromDb);
+  //     } catch (error) {
+  //       console.error("Error fetching categories:", error);
+  //     }
+  //   };
 
-    fetchCategories();
-  }, []);
+  //   fetchCategories();
+  // }, []);
 
   const onSubmit = async (data) => {
     data.skills = selectedOption.map(option => option.value);
@@ -76,6 +76,17 @@ const UpdateJob = () => {
     { value: "Node", label: "Node" },
     { value: "MongoDB", label: "MongoDB" },
     { value: "Redux", label: "Redux" },
+  ];
+
+  const categoryOptions = [
+    { value: "Health", label: "Health" },
+    { value: "Finance", label: "Finance" },
+    { value: "HR", label: "HR" },
+    { value: "IT Consulting", label: "IT Consulting" },
+    { value: "Education", label: "Education" },
+    { value: "Legal", label: "Legal" },
+    { value: "Marketing", label: "Marketing" },
+    { value: "Engineering", label: "Engineering" },
   ];
 
   return (
