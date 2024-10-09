@@ -8,7 +8,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user } = useUser(); // Clerk hook to get the user object
   const { signOut } = useClerk();
-  console.log(user);
+  // console.log(user);
 
   const handleLogout = () => {
     signOut();
