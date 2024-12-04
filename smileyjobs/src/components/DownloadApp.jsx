@@ -74,7 +74,7 @@ export const Layout423 = (props) => {
                         {feature.description}
                       </p>
                       <div className="mt-6 md:mt-8">
-                        <a href="/app-release.apk" download>
+                        <a  >
                           <Button
                             variant={feature.button.variant}
                             size={feature.button.size}
@@ -95,7 +95,7 @@ export const Layout423 = (props) => {
                     {feature.description}
                   </p>
                   <div className="mt-6 md:mt-8">
-                    <a href="/app-release.apk" download>
+                    <a  >
                       <Button
                         variant={feature.button.variant}
                         size={feature.button.size}

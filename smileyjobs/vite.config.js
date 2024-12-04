@@ -41,6 +41,12 @@ export default defineConfig({
   ],
   build: {
     rollupOptions: {
+      onLog(level, log, handler) {
+        if (log.cause && log.cause.message === `Can't resolve original location of error.`) {
+          return
+        }
+        handler(level, log)
+      },
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
