@@ -9,7 +9,8 @@
     "build": "vite build",
     "deploy": "node deploy.js",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prebuild": "chmod +x ./node_modules/.bin/vite"
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.4.1",
