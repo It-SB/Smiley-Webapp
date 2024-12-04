@@ -21,7 +21,7 @@ export const Layout423Defaults = {
     },
     {
       url: "#",
-      heading: "Get it on your phone",
+      heading: "Get it on Android",
       description:
         "Download our app on Android to experience everything we offer. Easy to use, reliable, and available anytime.",
       image: {

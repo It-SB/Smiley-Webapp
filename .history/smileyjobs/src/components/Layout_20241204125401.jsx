@@ -10,7 +10,7 @@ export const Layout423Defaults = {
       description:
         "Download our app on iOS and enjoy seamless access to all our features. Stay updated and connected on the go.",
       image: {
-        src: "https://static.vecteezy.com/system/resources/previews/021/515/122/non_2x/ios-icon-logo-software-apple-symbol-with-name-white-design-mobile-illustration-with-black-background-free-vector.jpg",
+        src: "/",
         alt: "iOS App Icon",
       },
       button: {

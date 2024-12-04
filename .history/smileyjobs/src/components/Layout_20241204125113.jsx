@@ -6,7 +6,7 @@ export const Layout423Defaults = {
   features: [
     {
       url: "#",
-      heading: "Get it as an app on your laptop",
+      heading: "Get it on your laptop",
       description:
         "Download our app on iOS and enjoy seamless access to all our features. Stay updated and connected on the go.",
       image: {
@@ -21,7 +21,7 @@ export const Layout423Defaults = {
     },
     {
       url: "#",
-      heading: "Get it on your phone",
+      heading: "Get it on Android",
       description:
         "Download our app on Android to experience everything we offer. Easy to use, reliable, and available anytime.",
       image: {
