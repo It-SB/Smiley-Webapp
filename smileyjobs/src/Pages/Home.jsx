@@ -3,7 +3,13 @@ import Banner from "../components/Banner";
 import Sidebar from "../sidebar/Sidebar";
 import Jobs from "./Jobs";
 import app from "../firebase/firebase.config";
-import { collection, getDocs, getFirestore, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import Newsletter from "../components/Newsletter";
 import { Header1 } from "../components/Header";
 import { Contact24 } from "../components/Footer";
@@ -24,13 +30,16 @@ const Home = () => {
 
   useEffect(() => {
     getLatestJobList();
-  },[]);
+  }, []);
 
   const getLatestJobList = async () => {
     setState((prevState) => ({ ...prevState, isLoading: true }));
     const q = query(collection(db, "Otherjobs"), orderBy("createdAt", "desc"));
     const querySnapShot = await getDocs(q);
-    const jobsData = querySnapShot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const jobsData = querySnapShot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
     setState((prevState) => ({
       ...prevState,
       jobs: jobsData,
@@ -92,36 +101,43 @@ const Home = () => {
 
   const filteredItems = () => {
     let filteredJobs = state.jobs;
-  
+
     // Filter by queryText
     if (state.queryText) {
-      filteredJobs = filteredJobs.filter(job =>
-        job.jobTitle && job.jobTitle.toLowerCase().includes(state.queryText.toLowerCase())
+      filteredJobs = filteredJobs.filter(
+        (job) =>
+          job.jobTitle &&
+          job.jobTitle.toLowerCase().includes(state.queryText.toLowerCase())
       );
     }
-  
+
     // Filter by location
     if (state.location) {
-      filteredJobs = filteredJobs.filter(job =>
-        job.jobLocation && job.jobLocation.toLowerCase().includes(state.location.toLowerCase())
+      filteredJobs = filteredJobs.filter(
+        (job) =>
+          job.jobLocation &&
+          job.jobLocation.toLowerCase().includes(state.location.toLowerCase())
       );
     }
-  
+
     // Filter by selectedCategory
     if (state.selectedCategory) {
       const category = state.selectedCategory.toLowerCase();
-      filteredJobs = filteredJobs.filter(job => {
+      filteredJobs = filteredJobs.filter((job) => {
         return (
           (job.jobLocation && job.jobLocation.toLowerCase() === category) ||
           (job.postingDate && job.postingDate.toLowerCase() === category) ||
-          (job.maxPrice && parseInt(job.maxPrice, 10) <= parseInt(state.selectedCategory, 10)) ||
+          (job.maxPrice &&
+            parseInt(job.maxPrice, 10) <=
+              parseInt(state.selectedCategory, 10)) ||
           (job.salaryType && job.salaryType.toLowerCase() === category) ||
-          (job.experienceLevel && job.experienceLevel.toLowerCase() === category) ||
+          (job.experienceLevel &&
+            job.experienceLevel.toLowerCase() === category) ||
           (job.employmentType && job.employmentType.toLowerCase() === category)
         );
       });
     }
-  
+
     return filteredJobs;
   };
 
@@ -132,7 +148,7 @@ const Home = () => {
 
   return (
     <div className="">
-      <Header1/>
+      <Header1 />
       <Banner
         handleInputChange={handleInputChange}
         handleLocationChange={handleLocationChange}
@@ -186,8 +202,8 @@ const Home = () => {
           <Newsletter />
         </div>
       </div>
-      <Layout423/>
-      <Contact24/>
+      {/* <Layout423/> */}
+      <Contact24 />
     </div>
   );
 };
