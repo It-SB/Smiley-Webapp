@@ -55,7 +55,7 @@ export default defineConfig({
         },
       },
     },
-    sourcemap: true, // Ensure sourcemaps are enabled
+    sourcemap: false, // Ensure sourcemaps are enabled
     chunkSizeWarningLimit: 1000,
   },
 });
