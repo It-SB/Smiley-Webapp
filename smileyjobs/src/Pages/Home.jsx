@@ -13,7 +13,7 @@ import {
 import Newsletter from "../components/Newsletter";
 import { Header1 } from "../components/Header";
 import { Contact24 } from "../components/Footer";
-import { Layout423 } from "../components/DownloadApp";
+// import { Layout423 } from "../components/DownloadApp";
 
 const Home = () => {
   const [state, setState] = useState({

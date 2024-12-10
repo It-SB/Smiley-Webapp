@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { FiMapPin } from "react-icons/fi";
 import PageHeader from "../components/PageHeader";
 import { useParams } from "react-router-dom";
 import { FaBriefcase } from "react-icons/fa6";
@@ -27,7 +28,8 @@ const JobDetails = () => {
   }, [id, db]);
 
   const handleJobApply = async () => {
-    const subject = "Regarding " + (job.jobTitle || " Job Application") + " Job Post";
+    const subject =
+      "Regarding " + (job.jobTitle || " Job Application") + " Job Post";
     const body =
       "Hi " +
       (job?.username || "Recruiter") +
@@ -35,22 +37,28 @@ const JobDetails = () => {
       "I am interested in applying for this job.";
 
     // Open the default email client
-    window.location.href = `mailto:${job?.postedBy || ""}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:${
+      job?.postedBy || ""
+    }?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   if (!job) {
-    return ;
+    return;
   }
 
   return (
     <div className="max-w-screen-2xl container mx-auto xl:px-24 px-4">
-      <PageHeader title={"Job Details Page"} path={"Single Job"} />
+      <PageHeader title={"Job Details Page"} path={"Job"} />
       <div className="mt-10">
         <div className="my-4">
           <h2 className="text-2xl font-medium text-blue">Position</h2>
-          <p className="bg-blue px-6 py-1 text-white rounded-sm">{job.jobTitle}</p>
+          <p className="bg-blue px-6 py-1 text-white rounded-sm flex justify-between items-center">
+            <span>{job.jobTitle}</span>
+            <span className="flex items-center gap-1">
+              <FiMapPin /> {job.jobLocation}
+            </span>
+          </p>
         </div>
-
         <div className="my-4 space-y-2">
           <div className="flex items-center gap-2">
             <FaBriefcase />
@@ -76,9 +84,7 @@ const JobDetails = () => {
             </p>
             <ul className="list-disc list-outside text-primary/90 space-y-2 text-base">
               {job.skills && job.skills.length > 0 ? (
-                job.skills.map((skill, index) => (
-                  <li key={index}>{skill}</li>
-                ))
+                job.skills.map((skill, index) => <li key={index}>{skill}</li>)
               ) : (
                 <li>No skills listed</li>
               )}
@@ -92,12 +98,12 @@ const JobDetails = () => {
           <div className="md:w-1/3 p-5 border border-blue">
             <h4 className="text-lg font-medium mb-3">Salary</h4>
             <p className="text-primary/90">
-                {job.minPrice && job.maxPrice
-                  ? `${job.minPrice} - ${job.maxPrice} ${job.salaryType}`
-                  : job.range
-                  ? job.range
-                  : "Not available"}
-              </p>
+              {job.minPrice && job.maxPrice
+                ? `${job.minPrice} - ${job.maxPrice} ${job.salaryType}`
+                : job.range
+                ? job.range
+                : "Not available"}
+            </p>
           </div>
         </div>
 
