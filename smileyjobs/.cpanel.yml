@@ -1,0 +1,9 @@
+---
+deployment:
+  tasks:
+    - name: "Install dependencies"
+      command: "npm install --production"
+    - name: "Build the project"
+      command: "npm run build"
+    - name: "Deploy files to public_html"
+      command: "rsync -av --delete dist/ /home/smilebgc/public_html/"
