@@ -1,9 +1,22 @@
 import "./App.css";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import { HelmetProvider, Helmet } from "react-helmet-async";
+import { useEffect } from "react";
 
 function App() {
+  const location = useLocation();
+
+  useEffect(() => {
+    const isProduction = window.location.hostname === "smileyjobs.co";
+    if (isProduction) {
+      const baseDomain = "https://smileyjobs.co";
+      const currentPath = location.pathname;
+      const newUrl = `${baseDomain}${currentPath}`;
+      window.history.pushState(null, "", newUrl);
+    }
+  }, [location]);
+
   return (
     <HelmetProvider>
       <Helmet>
