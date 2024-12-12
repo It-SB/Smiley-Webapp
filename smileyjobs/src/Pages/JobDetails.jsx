@@ -73,6 +73,24 @@ const JobDetails = () => {
           >
             Apply Now
           </button>
+          <button
+            className="bg-green-500 px-6 py-1 text-white rounded-sm ms-2"
+            onClick={() => {
+              const jobUrl = `${window.location.origin}/jobs/${id}`;
+              navigator.clipboard
+                .writeText(jobUrl)
+                .then(() => {
+                  alert(
+                    "Job link copied to clipboard! You can now share this link with anyone."
+                  );
+                })
+                .catch((err) => {
+                  console.error("Failed to copy the link: ", err);
+                });
+            }}
+          >
+            Share Job
+          </button>
         </div>
 
         {/* Job details */}
@@ -107,8 +125,40 @@ const JobDetails = () => {
           </div>
         </div>
 
-        <div className="text-primary/75 my-5 space-y-6 p-5 border border-blue shadow-sm shadow-blue">
-          {job.additionalComments}
+        <div className="text-primary/75 my-5 space-y-6 p-5 border border-blue shadow-sm shadow-blue rounded-md">
+          {/* Additional Comments Section */}
+          {(() => {
+            if (job.additionalComments) {
+              return (
+                <div>
+                  <h2 className="font-semibold text-lg">
+                    Additional Comments:
+                  </h2>
+                  <p className="text-primary/90 text-base">
+                    {job.additionalComments}
+                  </p>
+                </div>
+              );
+            }
+            return null;
+          })()}
+
+          {/* Benefits Section */}
+          {(() => {
+            if (job.benefits && job.benefits.length > 0) {
+              return (
+                <div>
+                  <h2 className="font-semibold text-lg">Benefits:</h2>
+                  <ul className="list-disc list-outside text-primary/90 space-y-2 text-base pl-5">
+                    {job.benefits.map((benefit, index) => (
+                      <li key={index}>{benefit}</li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            }
+            return null;
+          })()}
         </div>
       </div>
     </div>
