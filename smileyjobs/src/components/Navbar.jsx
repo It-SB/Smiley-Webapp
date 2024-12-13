@@ -54,7 +54,7 @@ const Navbar = () => {
       <nav className="flex justify-between items-center py-6">
         <a href="/" className="flex items-center text-2xl">
           <img
-            src="https://smileyjobs.co/assets/img/logo/Smiley%20Jobs%20Logo.png"
+            src="/Smiley Jobs Logo.png"
             alt=""
             className="w-16 h-16 mr-5"
           />

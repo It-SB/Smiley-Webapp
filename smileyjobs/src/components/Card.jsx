@@ -41,11 +41,9 @@ const Card = ({ data }) => {
           className="flex gap-4 flex-col sm:flex-row items-start"
         >
           <img
-            src={
-              companyLogo || "https://smileyjobs.co/assets/img/logo/Smiley%20Jobs%20Logo.png"
-            }
-            alt={jobTitle}
-            className="w-16 h-16 mb-4"
+            src={companyLogo || "/Smiley Jobs Logo.png"}
+            alt={jobTitle || "Company Logo"}
+            className="w-16 h-16 mb-4 object-cover"
           />
           <div className="card-details">
             {/* Display categories as a comma-separated list */}
