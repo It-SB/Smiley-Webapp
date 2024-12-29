@@ -20,7 +20,7 @@ const CreateJob = () => {
     data.category = selectedOption.map(option => option.value); // Add category to the data
 
     try {
-      console.log("Data before adding:", data);
+      // console.log("Data before adding:", data);
       const jobsCollection = collection(db, 'Otherjobs'); // Reference to 'Otherjobs' collection
       await addDoc(jobsCollection, data);
       alert("Job Posted Successfully!!");
