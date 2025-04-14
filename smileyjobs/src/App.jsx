@@ -1,4 +1,5 @@
 import "./App.css";
+
 import { Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import { HelmetProvider, Helmet } from "react-helmet-async";
@@ -9,8 +10,7 @@ function App() {
       <Helmet>
         <link rel="manifest" href="/manifest.webmanifest" />
         <link rel="apple-touch-icon" href="/icon-192x192.png" />
-        <link rel="icon" type="image/svg+xml" href="/Smiley Jobs Logo.png" />
-
+        <link rel="icon" type="image/png" href="/Smiley Jobs Logo.png" />
         <meta name="theme-color" content="#fff" />
       </Helmet>
       <div>
