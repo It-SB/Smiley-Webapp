@@ -27,19 +27,24 @@ const JobDetails = () => {
     fetchJob();
   }, [id, db]);
 
-  const handleJobApply = async () => {
+  const handleJobApply = async (name, surname, phoneNumber) => {
     const subject =
-      "Regarding " + (job.jobTitle || " Job Application") + " Job Post";
+      "Regarding " + (job.jobTitle || "Job Application") + " Job Post";
+
     const body =
-      "Hi " +
-      (job?.username || "Recruiter") +
-      ",\n\n" +
-      "I am interested in applying for this job.";
+      `Hi ${job?.username || "Recruiter"},\n\n` +
+      `I am interested in applying for this job.\n\n` +
+      `Name: ${name} ${surname}\n` +
+      `Phone Number: ${phoneNumber}`;
+
+    const ccEmail = "recruite@skillsbureau.co.za";
 
     // Open the default email client
     window.location.href = `mailto:${
       job?.postedBy || ""
-    }?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }?cc=${ccEmail}&subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`;
   };
 
   if (!job) {
@@ -69,7 +74,32 @@ const JobDetails = () => {
           </button>
           <button
             className="bg-indigo-700 px-6 py-1 text-white rounded-sm ms-2"
-            onClick={handleJobApply}
+            onClick={async () => {
+              const { value: formValues } = await Swal.fire({
+                title: "Apply for this Job",
+                html:
+                  '<input id="swal-input1" class="swal2-input" placeholder="First Name">' +
+                  '<input id="swal-input2" class="swal2-input" placeholder="Surname">' +
+                  '<input id="swal-input3" class="swal2-input" placeholder="Phone Number">',
+                focusConfirm: false,
+                preConfirm: () => {
+                  const name = document.getElementById("swal-input1").value;
+                  const surname = document.getElementById("swal-input2").value;
+                  const phoneNumber =
+                    document.getElementById("swal-input3").value;
+                  if (!name || !surname || !phoneNumber) {
+                    Swal.showValidationMessage("All fields are required");
+                    return;
+                  }
+                  return [name, surname, phoneNumber];
+                },
+              });
+
+              if (formValues) {
+                const [name, surname, phoneNumber] = formValues;
+                handleJobApply(name, surname, phoneNumber);
+              }
+            }}
           >
             Apply Now
           </button>
