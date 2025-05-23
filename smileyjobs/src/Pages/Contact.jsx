@@ -1,15 +1,15 @@
-import React from 'react';
-
-const WebView = () => {
+const About = () => {
   return (
-    <div style={{ height: '100vh', width: '100%', overflow: 'hidden' }}>
+    <div className="w-full h-screen">
       <iframe
-        src="https://it-sb.github.io/SJ_interface/contact.html"
-        style={{ border: 'none', width: '100%', height: '100%' }}
+        src="/h_page/contact.html"
         title="About Page"
-      />
+        width="100%"
+        height="100%"
+        className="border-none"
+      ></iframe>
     </div>
   );
 };
 
-export default WebView;
+export default About;
