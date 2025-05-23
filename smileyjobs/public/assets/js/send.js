@@ -23,7 +23,7 @@ $(function () {
         emailContent += "Message:\n" + message + "\n";
         
         // Adjust the recipient email address.
-        var recipient = "Lwando@smileyjobs.co";
+        var recipient = "Lemogang@smileyjobs.co";
 
         // Construct the email subject.
         var subject = "SmileyJobs General Enquiry Form";

@@ -1,5 +1,5 @@
 .vercel
-.history
+.history/
 .env.local
 
 # dependencies

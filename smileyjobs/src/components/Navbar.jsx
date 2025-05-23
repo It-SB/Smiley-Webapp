@@ -37,7 +37,7 @@ const Navbar = () => {
   // Add the "Post A Job" item only if the user's email is lettimaks@gmail.com
   if (
     user?.primaryEmailAddress?.emailAddress === "lettimaks@gmail.com" ||
-    user?.primaryEmailAddress?.emailAddress === "Lwando@smileyjobs.co" ||
+    user?.primaryEmailAddress?.emailAddress === "Lemogang@smileyjobs.co" ||
     user?.primaryEmailAddress?.emailAddress === "Recruit@skillsbureau.co.za" ||
     user?.primaryEmailAddress?.emailAddress === "lemogang@smileyjobs.co" ||
     // user?.email === "lethabolesheleba2003@gmail.com" ||
