@@ -11,7 +11,7 @@ const Contact24Defaults = {
       title: "Email",
       description: "Send us your query anytime!",
       link: {
-        label: "Lwando@smileyjobs.co",
+        label: "Lemogang@smileyjobs.co",
         // url: "#",
       },
     },

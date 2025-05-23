@@ -14,7 +14,7 @@ $(function () {
             var emailContent = "Please find attached my CV.\n\nPlease ensure that the CV is attached before sending this email.";
 
             // Adjust the recipient email address.
-            var recipient = "Lwando@smileyjobs.co";
+            var recipient = "Lemogang@smileyjobs.co";
 
             // Construct the email subject.
             var subject = "New CV Submission";
