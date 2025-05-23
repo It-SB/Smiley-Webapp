@@ -29,7 +29,7 @@ const Contact24Defaults = {
       title: "Phone",
       description: "Mon to Fri 9am to 6pm",
       link: {
-        label: "061 533 7963",
+        label: "061 533 6736",
         // url: "#",
       },
     },
