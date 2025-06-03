@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import Banner from "../components/Banner";
 import Sidebar from "../sidebar/Sidebar";
@@ -12,8 +14,18 @@ import {
 } from "firebase/firestore";
 import Newsletter from "../components/Newsletter";
 import { Header1 } from "../components/Header";
-import { Contact24 } from "../components/Footer";
+import {  Footer3 } from "../components/Footer";
+import Options_Button from "../components/OptionsBtn";
 // import { Layout423 } from "../components/DownloadApp";
+import MapChart from "../components/ComposableMap";
+import Layout192 from "../components/MapSection"; // Adjust the import based on your file structure
+import { Layout250 } from "../components/Layout250";
+import { Testimonial1 } from "../components/Goal";
+import Logo1 from "../components/PartnerLogos";
+import PartnersSection from "../components/PartnerLogos";
+import { SolutionsPage} from "../components/SolutionsSection";
+import { ApproachSection } from "../components/ApproachSection";
+// import {JobShow} from "../components/JobsShow";
 
 const Home = () => {
   const [state, setState] = useState({
@@ -148,7 +160,19 @@ const Home = () => {
 
   return (
     <div className="">
+      
+      {/* <Options_Button /> */}
+      {/* <MapChart /> */}  
       <Header1 />
+      <PartnersSection/>
+
+      <Layout192 />
+      {/* <SolutionsSection/> */}
+      <SolutionsPage/>
+      <ApproachSection/>
+      
+      {/* <Layout250/>
+      <Testimonial1/> */}
       <Banner
         handleInputChange={handleInputChange}
         handleLocationChange={handleLocationChange}
@@ -202,8 +226,10 @@ const Home = () => {
           <Newsletter />
         </div>
       </div>
+      {/* <JobShow/> */}
       {/* <Layout423/> */}
-      <Contact24 />
+      {/* <Contact24 /> */}
+      <Footer3/>
     </div>
   );
 };

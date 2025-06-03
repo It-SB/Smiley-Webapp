@@ -1,83 +1,124 @@
-import React from "react";
-import { BiEnvelope, BiMap, BiMessageDetail, BiPhone } from "react-icons/bi";
+import { FaXTwitter } from "react-icons/fa6";
+import {
+  BiLogoFacebookCircle,
+  BiLogoInstagram,
+  BiLogoLinkedinSquare,
+  BiLogoYoutube,
+} from "react-icons/bi";
+import logo from "/Smiley Jobs Logo.png"
 
-const Contact24Defaults = {
-  //   tagline: "Tagline",
-  heading: "Contact us",
-  //   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  contacts: [
-    {
-      icon: <BiEnvelope className="size-12" />,
-      title: "Email",
-      description: "Send us your query anytime!",
-      link: {
-        label: "Lemogang@smileyjobs.co",
-        // url: "#",
-      },
-    },
-    // {
-    //   icon: <BiMessageDetail className="size-12" />,
-    //   title: "Live chat",
-    //   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in ero.",
-    //   link: {
-    //     label: "Start new chat",
-    //     url: "#",
-    //   },
-    // },
-    {
-      icon: <BiPhone className="size-12" />,
-      title: "Phone",
-      description: "Mon to Fri 9am to 6pm",
-      link: {
-        label: "061 533 6736",
-        // url: "#",
-      },
-    },
-    {
-      icon: <BiMap className="size-12" />,
-      title: "Office",
-      description: "18th floor, Green Park Corner ",
-      link: {
-        label: "3 Lower Road Morningside, Sandton",
-        // url: "#",
-      },
-    },
-  ],
-};
-
-const Contact24 = (props) => {
-  const { tagline, heading, description, contacts } = {
-    ...Contact24Defaults,
+export const Footer3 = (props) => {
+  const {
+    logo,
+    address,
+    contact,
+    columnLinks,
+    socialMediaLinks,
+    footerText,
+    footerLinks,
+  } = {
+    ...Footer3Defaults,
     ...props,
   };
 
   return (
-    <section className=" px-[5%] py-16 md:py-24 lg:py-28">
-      <div className="max-w-screen-2xl container mx-auto xl:px-24 md:py-20 py-14 px-4">
-        <div className="mb-12 max-w-lg md:mb-18 lg:mb-20">
-          <p className="mb-3 font-semibold md:mb-4">{tagline}</p>
-          <h2 className="mb-5 text-5xl font-bold md:mb-6 md:text-7xl lg:text-4xl">
-            {heading}
-          </h2>
-          <p className="md:text-md">{description}</p>
-        </div>
-        <div className="grid grid-cols-1 items-start justify-start gap-x-8 gap-y-12 md:grid-cols-2 md:gap-y-16 lg:grid-cols-4">
-          {contacts.map((contact, index) => (
-            <div key={index}>
-              <div className="mb-5 md:mb-6">{contact.icon}</div>
-              <h3 className="mb-3 text-2xl font-bold md:mb-4 md:text-3xl md:leading-[1.3] lg:text-4xl">
-                {contact.title}
-              </h3>
-              <p className="mb-5 md:mb-6">{contact.description}</p>
-              <a className="underline" href={contact.link.url}>
-                {contact.link.label}
+    <footer id="relume" className="px-[5%] py-12 md:py-18 lg:py-20">
+      <div className="container">
+        <div className="grid grid-cols-1 gap-x-[4vw] gap-y-12 pb-12 md:gap-y-16 md:pb-18 lg:grid-cols-[1fr_0.5fr] lg:gap-y-4 lg:pb-20">
+          <div>
+            <div className="rb-6 mb-6 md:mb-8 w-20 h-20">
+              <a href={logo.url}>
+                <img src={logo.src} alt={logo.alt} className="inline-block" />
               </a>
             </div>
-          ))}
+            <div className="rb-6 mb-6 md:mb-8">
+              <div>
+                <p className="mb-1 text-sm font-semibold">{address.label}</p>
+                <p className="mb-5 text-sm md:mb-6">{address.value}</p>
+              </div>
+              <div>
+                <p className="mb-1 text-sm font-semibold">{contact.label}</p>
+                <p className="flex flex-col text-sm underline decoration-black underline-offset-1 md:mb-6">
+                  <a href={`tel:${contact.phone}`}>{contact.phone}</a>
+                  <a href={`mailto:${contact.email}`}>{contact.email}</a>
+                </p>
+              </div>
+            </div>
+            <div className="grid grid-flow-col grid-cols-[max-content] items-start justify-start gap-x-3">
+              {socialMediaLinks.map((link, index) => (
+                <a key={index} href={link.url}>
+                  {link.icon}
+                </a>
+              ))}
+            </div>
+          </div>
+          <div className="grid grid-cols-1 items-start gap-x-6 gap-y-10 md:grid-cols-2 md:gap-x-8 md:gap-y-4">
+            {columnLinks.map((column, index) => (
+              <ul key={index}>
+                {column.links.map((link, linkIndex) => (
+                  <li key={linkIndex} className="py-2 text-sm font-semibold">
+                    <a href={link.url}>{link.title}</a>
+                  </li>
+                ))}
+              </ul>
+            ))}
+          </div>
+        </div>
+        <div className="h-px w-full bg-black" />
+        <div className="flex flex-col-reverse items-start justify-between pb-4 pt-6 text-sm md:flex-row md:items-center md:pb-0 md:pt-8">
+          <p className="mt-8 md:mt-0">{footerText}</p>
+          <ul className="grid grid-flow-row grid-cols-[max-content] justify-center gap-y-4 text-sm md:grid-flow-col md:gap-x-6 md:gap-y-0">
+            {footerLinks.map((link, index) => (
+              <li key={index} className="underline">
+                <a href={link.url}>{link.title}</a>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
-    </section>
+    </footer>
   );
 };
 
-export { Contact24 };
+export const Footer3Defaults = {
+  logo: {
+    url: "#",
+    src: logo,
+    alt: "Logo image",
+  },
+  address: {
+    label: "Address:",
+    value: "18th floor, Green Park Corner 3 Lower Road Morningside, Sandton",
+  },
+  contact: {
+    label: "Contact:",
+    phone: "061 533 6736",
+    email: "Lemogang@smileyjobs.co",
+  },
+  columnLinks: [
+    {
+      links: [],
+    },
+    {
+      links: [
+        { title: "About Us", url: "/about" },
+        // { title: "Services", url: "/services" },
+        { title: "Contact Us", url: "/contact" },
+        // { title: "Jobs", url: "/all-jobs" },
+      ],
+    },
+  ],
+  socialMediaLinks: [
+    // { url: "#", icon: <BiLogoFacebookCircle className="size-6" /> },
+    // { url: "#", icon: <BiLogoInstagram className="size-6" /> },
+    // { url: "#", icon: <FaXTwitter className="size-6 p-0.5" /> },
+    {
+      url: "https://za.linkedin.com/company/smiley-jobs",
+      icon: <BiLogoLinkedinSquare className="size-6" />,
+    },
+  ],
+  footerText: "© 2025 SmileyJobs. All rights reserved.",
+  footerLinks: [
+
+  ],
+};
