@@ -1,0 +1,70 @@
+import React from "react";
+import "./PartnersSection.css"; // Ensure to create this CSS file or use inline styles as shown below
+
+const partners = [
+  {
+    name: "World Sports Betting",
+    src: "https://cdn.worldsportsbetting.co.za/images/WSBWC/World-Sports-Betting.png", // Placeholder URL; replace with actual logo URL
+    alt: "World Sports Betting Logo",
+  },
+  {
+    name: "Ozow",
+    src: "https://cdn.prod.website-files.com/6282d4840afd19e1afa62e70/6491490c213c45a9d600d387_ozow_small_xs.png", // Placeholder URL; replace with actual logo URL
+    alt: "Ozow Logo",
+  },
+  {
+    name: "Betway",
+    src: "https://cdn2.betway.co.za/images/Shared/sprite/site/Betway_White.png", // Placeholder URL; replace with actual logo URL
+    alt: "Betway Logo",
+  },
+  {
+    name: "EMV Africa",
+    src: "https://emvafrica.co.za/wp-content/uploads/2022/01/EMV-Africa-Logo.png", // Placeholder URL; replace with actual logo URL
+    alt: "EMV Africa Logo",
+  },
+  {
+    name: "Just Solve",
+    src: "https://www.justsolve.solutions/wp-content/uploads/2025/01/justsolve-logo.png", // Placeholder URL; replace with actual logo URL
+    alt: "Just Solve Logo",
+  },
+  {
+    name: "Zapper",
+    src: "data:image/jpeg;base64,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", // Placeholder URL; replace with actual logo URL
+    alt: "Zapper Logo",
+  },
+];
+
+const PartnersSection = () => {
+  return (
+    <section className="partners-section bg-blue" aria-labelledby="partners-heading">
+      <div className="container mx-auto px-4 py-12 text-center">
+        <h2 id="partners-heading" className="partners-heading text-2xl font-bold mb-4">
+          Trusted by Leading South African and Global Brands
+        </h2>
+        <p className="text-md text-gray-100 max-w-2xl mx-auto mb-6">
+          We are proud to collaborate with a diverse network of high-profile companies and fintech pioneers, 
+          including World Sports Betting, Ozow, Betway, EMV Africa, Just Solve, and Zapper. These partnerships 
+          reflect our commitment to excellence, innovation, and reliable service delivery in the tech and financial sectors.
+        </p>
+        <div className="partners-marquee" role="region" aria-label="Our partners and collaborators">
+          <div className="partners-track flex items-center">
+            {partners.map((partner, index) => (
+              <div className="partner-logo" key={index}>
+                <img src={partner.src} alt={partner.alt} />
+              </div>
+            ))}
+            {/* Duplicate logos for seamless looping */}
+            {partners.map((partner, index) => (
+              <div className="partner-logo" key={`duplicate-${index}`}>
+                <img src={partner.src} alt={partner.alt} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+
+export default PartnersSection;
