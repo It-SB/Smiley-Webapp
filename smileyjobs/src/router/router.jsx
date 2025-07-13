@@ -2,6 +2,7 @@ import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import Home from "../Pages/Home";
+import JobSeekersLanding from "../Pages/CV";
 import MyJobs from "../Pages/MyJobs";
 import SalaryPage from "../Pages/SalaryPage";
 import CreateJob from "../Pages/CreateJob";
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
       {
         path: "/create-profile",
         element: <CreateUserProfile />, // Public route
+      },
+      {
+        path: "/job-seekers",
+        element: <JobSeekersLanding />, // Public route
       },
       {
         path: "/post-job",
