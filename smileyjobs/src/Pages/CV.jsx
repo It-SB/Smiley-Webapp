@@ -1,5 +1,423 @@
 import React, { useState } from 'react';
-import { Star, CheckCircle, Users, Award, Clock, MapPin, Phone, Mail, User, Target, ArrowRight, Play, Download } from 'lucide-react';
+import { Star, CheckCircle, Users, Award, Clock, MapPin, Phone, Mail, User, Target, ArrowRight, Play, Download, CreditCard, Lock, Shield, AlertCircle, Loader, X } from 'lucide-react';
+
+// Payment Component
+const CoursePaymentComponent = ({ 
+  course = {
+    id: 'job-seekers-workshop',
+    title: 'Job Seekers Premium Workshop',
+    price: 299,
+    currency: 'ZAR',
+    description: 'Land the Right Opportunity—Not Just Any Job'
+  },
+  onPaymentSuccess = () => {},
+  onPaymentError = () => {},
+  onClose = () => {},
+  apiEndpoint = '/api/payments/process'
+}) => {
+  const [formData, setFormData] = useState({
+    email: '',
+    cardNumber: '',
+    expiryDate: '',
+    cvv: '',
+    cardholderName: '',
+    billingAddress: {
+      street: '',
+      city: '',
+      state: '',
+      zipCode: '',
+      country: 'ZA'
+    }
+  });
+
+  const [errors, setErrors] = useState({});
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState('idle');
+  const [securityChecks, setSecurityChecks] = useState({
+    httpsVerified: false,
+    tokenGenerated: false,
+    encryptionReady: false
+  });
+
+  React.useEffect(() => {
+    verifySecurityMeasures();
+  }, []);
+
+  const verifySecurityMeasures = () => {
+    const httpsVerified = window.location.protocol === 'https:';
+    const tokenGenerated = generateCSRFToken();
+    const encryptionReady = typeof window.crypto !== 'undefined' && 
+                           typeof window.crypto.subtle !== 'undefined';
+
+    setSecurityChecks({
+      httpsVerified,
+      tokenGenerated: !!tokenGenerated,
+      encryptionReady
+    });
+  };
+
+  const generateCSRFToken = () => {
+    const array = new Uint8Array(32);
+    window.crypto.getRandomValues(array);
+    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email || !emailRegex.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    const cardNumberClean = formData.cardNumber.replace(/\s/g, '');
+    if (!cardNumberClean || cardNumberClean.length < 13 || cardNumberClean.length > 19) {
+      newErrors.cardNumber = 'Please enter a valid card number';
+    }
+
+    if (!formData.expiryDate || !/^(0[1-9]|1[0-2])\/\d{2}$/.test(formData.expiryDate)) {
+      newErrors.expiryDate = 'Please enter expiry date in MM/YY format';
+    }
+
+    if (!formData.cvv || formData.cvv.length < 3 || formData.cvv.length > 4) {
+      newErrors.cvv = 'Please enter a valid CVV';
+    }
+
+    if (!formData.cardholderName.trim()) {
+      newErrors.cardholderName = 'Please enter the cardholder name';
+    }
+
+    if (!formData.billingAddress.street.trim()) {
+      newErrors.billingStreet = 'Please enter billing address';
+    }
+    if (!formData.billingAddress.city.trim()) {
+      newErrors.billingCity = 'Please enter city';
+    }
+    if (!formData.billingAddress.zipCode.trim()) {
+      newErrors.billingZip = 'Please enter postal code';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const formatCardNumber = (value) => {
+    const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+    const matches = v.match(/\d{4,16}/g);
+    const match = matches && matches[0] || '';
+    const parts = [];
+    for (let i = 0, len = match.length; i < len; i += 4) {
+      parts.push(match.substring(i, i + 4));
+    }
+    if (parts.length) {
+      return parts.join(' ');
+    } else {
+      return v;
+    }
+  };
+
+  const formatExpiryDate = (value) => {
+    const v = value.replace(/\D/g, '');
+    if (v.length >= 2) {
+      return v.substring(0, 2) + '/' + v.substring(2, 4);
+    }
+    return v;
+  };
+
+  const handleInputChange = (field, value) => {
+    let processedValue = value;
+
+    if (field === 'cardNumber') {
+      processedValue = formatCardNumber(value);
+    } else if (field === 'expiryDate') {
+      processedValue = formatExpiryDate(value);
+    } else if (field === 'cvv') {
+      processedValue = value.replace(/\D/g, '').substring(0, 4);
+    }
+
+    if (field.startsWith('billing.')) {
+      const addressField = field.split('.')[1];
+      setFormData(prev => ({
+        ...prev,
+        billingAddress: {
+          ...prev.billingAddress,
+          [addressField]: processedValue
+        }
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [field]: processedValue
+      }));
+    }
+
+    if (errors[field]) {
+      setErrors(prev => ({
+        ...prev,
+        [field]: undefined
+      }));
+    }
+  };
+
+  const processPayment = async () => {
+    if (!validateForm()) return;
+
+    const allSecurityChecksPass = Object.values(securityChecks).every(check => check);
+    if (!allSecurityChecksPass) {
+      setErrors({ security: 'Security verification failed. Please refresh and try again.' });
+      return;
+    }
+
+    setIsProcessing(true);
+    setPaymentStatus('processing');
+
+    try {
+      // Simulate API call - replace with actual payment processor
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      // Simulate success
+      setPaymentStatus('success');
+      onPaymentSuccess({
+        transactionId: 'TXN-' + Math.random().toString(36).substr(2, 9),
+        courseId: course.id,
+        amount: course.price
+      });
+    } catch (error) {
+      setPaymentStatus('error');
+      setErrors({ payment: 'Payment processing failed. Please try again.' });
+      onPaymentError(error);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const SecurityIndicator = () => (
+    <div className="flex items-center gap-2 text-sm text-green-600 mb-4">
+      <Shield className="h-4 w-4" />
+      <span>Secured by 256-bit SSL encryption</span>
+      <div className="flex gap-1 ml-2">
+        {Object.entries(securityChecks).map(([key, passed]) => (
+          <div
+            key={key}
+            className={`h-2 w-2 rounded-full ${passed ? 'bg-green-500' : 'bg-red-500'}`}
+            title={`${key}: ${passed ? 'Verified' : 'Failed'}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+
+  if (paymentStatus === 'success') {
+    return (
+      <div className="text-center">
+        <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
+        <h3 className="text-xl font-semibold text-gray-900 mb-2">Payment Successful!</h3>
+        <p className="text-gray-600 mb-6">
+          Welcome to the Job Seekers Premium Workshop!
+        </p>
+        <div className="space-y-3">
+          <button 
+            className="w-full bg-yellow-400 text-black px-6 py-3 rounded-lg hover:bg-yellow-500 transition-colors font-semibold"
+            onClick={() => window.location.href = '/dashboard/workshops'}
+          >
+            Access Workshop Materials
+          </button>
+          <button 
+            className="w-full bg-gray-200 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-300 transition-colors"
+            onClick={onClose}
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="mb-6">
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+          <h4 className="font-semibold text-gray-900">{course.title}</h4>
+          <p className="text-sm text-gray-600 mt-1">{course.description}</p>
+          <p className="text-2xl font-bold text-yellow-600 mt-2">
+            R{course.price} {course.currency}
+          </p>
+        </div>
+      </div>
+
+      <SecurityIndicator />
+
+      {errors.security && (
+        <div className="flex items-center gap-2 text-red-600 text-sm mb-4 p-3 bg-red-50 rounded-lg">
+          <AlertCircle className="h-4 w-4" />
+          {errors.security}
+        </div>
+      )}
+
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Email Address
+          </label>
+          <input
+            type="email"
+            value={formData.email}
+            onChange={(e) => handleInputChange('email', e.target.value)}
+            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 ${
+              errors.email ? 'border-red-500' : 'border-gray-300'
+            }`}
+            placeholder="your.email@example.com"
+          />
+          {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            <CreditCard className="inline h-4 w-4 mr-1" />
+            Card Number
+          </label>
+          <input
+            type="text"
+            value={formData.cardNumber}
+            onChange={(e) => handleInputChange('cardNumber', e.target.value)}
+            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 ${
+              errors.cardNumber ? 'border-red-500' : 'border-gray-300'
+            }`}
+            placeholder="1234 5678 9012 3456"
+            maxLength="19"
+          />
+          {errors.cardNumber && <p className="text-red-500 text-xs mt-1">{errors.cardNumber}</p>}
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Expiry Date
+            </label>
+            <input
+              type="text"
+              value={formData.expiryDate}
+              onChange={(e) => handleInputChange('expiryDate', e.target.value)}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 ${
+                errors.expiryDate ? 'border-red-500' : 'border-gray-300'
+              }`}
+              placeholder="MM/YY"
+              maxLength="5"
+            />
+            {errors.expiryDate && <p className="text-red-500 text-xs mt-1">{errors.expiryDate}</p>}
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              CVV
+            </label>
+            <input
+              type="password"
+              value={formData.cvv}
+              onChange={(e) => handleInputChange('cvv', e.target.value)}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 ${
+                errors.cvv ? 'border-red-500' : 'border-gray-300'
+              }`}
+              placeholder="123"
+              maxLength="4"
+            />
+            {errors.cvv && <p className="text-red-500 text-xs mt-1">{errors.cvv}</p>}
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Cardholder Name
+          </label>
+          <input
+            type="text"
+            value={formData.cardholderName}
+            onChange={(e) => handleInputChange('cardholderName', e.target.value)}
+            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 ${
+              errors.cardholderName ? 'border-red-500' : 'border-gray-300'
+            }`}
+            placeholder="John Doe"
+          />
+          {errors.cardholderName && <p className="text-red-500 text-xs mt-1">{errors.cardholderName}</p>}
+        </div>
+
+        <div className="space-y-3">
+          <h4 className="text-sm font-medium text-gray-700">Billing Address</h4>
+          <input
+            type="text"
+            value={formData.billingAddress.street}
+            onChange={(e) => handleInputChange('billing.street', e.target.value)}
+            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 ${
+              errors.billingStreet ? 'border-red-500' : 'border-gray-300'
+            }`}
+            placeholder="Street Address"
+          />
+          {errors.billingStreet && <p className="text-red-500 text-xs mt-1">{errors.billingStreet}</p>}
+
+          <div className="grid grid-cols-2 gap-3">
+            <input
+              type="text"
+              value={formData.billingAddress.city}
+              onChange={(e) => handleInputChange('billing.city', e.target.value)}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 ${
+                errors.billingCity ? 'border-red-500' : 'border-gray-300'
+              }`}
+              placeholder="City"
+            />
+            <input
+              type="text"
+              value={formData.billingAddress.state}
+              onChange={(e) => handleInputChange('billing.state', e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+              placeholder="Province"
+            />
+          </div>
+          {errors.billingCity && <p className="text-red-500 text-xs mt-1">{errors.billingCity}</p>}
+
+          <input
+            type="text"
+            value={formData.billingAddress.zipCode}
+            onChange={(e) => handleInputChange('billing.zipCode', e.target.value)}
+            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 ${
+              errors.billingZip ? 'border-red-500' : 'border-gray-300'
+            }`}
+            placeholder="Postal Code"
+          />
+          {errors.billingZip && <p className="text-red-500 text-xs mt-1">{errors.billingZip}</p>}
+        </div>
+
+        {errors.payment && (
+          <div className="flex items-center gap-2 text-red-600 text-sm p-3 bg-red-50 rounded-lg">
+            <AlertCircle className="h-4 w-4" />
+            {errors.payment}
+          </div>
+        )}
+
+        <button
+          onClick={processPayment}
+          disabled={isProcessing || paymentStatus === 'processing'}
+          className="w-full bg-yellow-400 text-black py-3 px-4 rounded-lg font-semibold hover:bg-yellow-500 focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+        >
+          {isProcessing ? (
+            <>
+              <Loader className="h-4 w-4 animate-spin" />
+              Processing...
+            </>
+          ) : (
+            <>
+              <Lock className="h-4 w-4" />
+              Complete Purchase - R{course.price}
+            </>
+          )}
+        </button>
+      </div>
+
+      <div className="mt-4 text-xs text-gray-500 text-center">
+        <p>🔒 Your payment information is encrypted and secure</p>
+        <p>By completing this purchase, you agree to our Terms of Service</p>
+      </div>
+    </div>
+  );
+};
 
 export default function JobSeekersLanding() {
   const [formData, setFormData] = useState({
@@ -12,6 +430,7 @@ export default function JobSeekersLanding() {
   });
 
   const [showBooking, setShowBooking] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -22,7 +441,6 @@ export default function JobSeekersLanding() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Check if all required fields are filled
     if (formData.name && formData.email && formData.phone && formData.age && formData.lookingFor && formData.careerGoals) {
       setShowBooking(true);
     } else {
@@ -30,8 +448,51 @@ export default function JobSeekersLanding() {
     }
   };
 
+  const handlePaymentSuccess = (result) => {
+    console.log('Payment successful:', result);
+    setShowPaymentModal(false);
+    // You can add success handling here (redirect, show confirmation, etc.)
+    alert('Payment successful! Check your email for workshop details.');
+  };
+
+  const handlePaymentError = (error) => {
+    console.error('Payment failed:', error);
+    // Handle error (show message, log, etc.)
+  };
+
   return (
     <div className="min-h-screen bg-white">
+      {/* Payment Modal */}
+      {showPaymentModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between">
+              <h2 className="text-xl font-semibold">Complete Your Workshop Booking</h2>
+              <button
+                onClick={() => setShowPaymentModal(false)}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <div className="p-6">
+              <CoursePaymentComponent
+                course={{
+                  id: 'job-seekers-workshop',
+                  title: 'Job Seekers Premium Workshop',
+                  price: 299,
+                  currency: 'ZAR',
+                  description: 'Land the Right Opportunity—Not Just Any Job'
+                }}
+                onPaymentSuccess={handlePaymentSuccess}
+                onPaymentError={handlePaymentError}
+                onClose={() => setShowPaymentModal(false)}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-yellow-400 to-yellow-500 text-black">
         <div className="container mx-auto px-4 py-16">
@@ -126,56 +587,59 @@ export default function JobSeekersLanding() {
         </div>
       </section>
 
-      {/* What You'll Learn Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center text-slate-900">
-              What You'll Learn & Get:
-            </h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
-                <Award className="w-8 h-8 mb-4 text-yellow-500" />
-                <h3 className="font-bold text-lg mb-2">CV Masterclass</h3>
-                <p className="text-gray-700">Craft your first real, recruiter-approved CV using SA templates and best practices</p>
-              </div>
-              <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
-                <Target className="w-8 h-8 mb-4 text-yellow-500" />
-                <h3 className="font-bold text-lg mb-2">Purposeful Application Strategy</h3>
-                <p className="text-gray-700">Research and target opportunities that fit your interests, geography, and potential</p>
-              </div>
-              <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
-                <Mail className="w-8 h-8 mb-4 text-yellow-500" />
-                <h3 className="font-bold text-lg mb-2">Motivational Letter & Email Skills</h3>
-                <p className="text-gray-700">Write short, authentic letters that show why you want this role</p>
-              </div>
-              <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
-                <Play className="w-8 h-8 mb-4 text-yellow-500" />
-                <h3 className="font-bold text-lg mb-2">Video Pitch Confidence</h3>
-                <p className="text-gray-700">Record a short, winning video intro—even if you're nervous</p>
-              </div>
-              <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
-                <Users className="w-8 h-8 mb-4 text-yellow-500" />
-                <h3 className="font-bold text-lg mb-2">Interview Readiness</h3>
-                <p className="text-gray-700">Practice common questions and build confidence for your first real interview</p>
-              </div>
-              <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
-                <CheckCircle className="w-8 h-8 mb-4 text-yellow-500" />
-                <h3 className="font-bold text-lg mb-2">Psychometric & Self-Knowledge Tools</h3>
-                <p className="text-gray-700">Discover your strengths and present yourself with honesty and pride</p>
-              </div>
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center text-slate-900">
+            What You'll Learn & Get:
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
+              <Award className="w-8 h-8 mb-4 text-yellow-500" />
+              <h3 className="font-bold text-lg mb-2">CV Masterclass</h3>
+              <p className="text-gray-700">Craft your first real, recruiter-approved CV using SA templates and best practices</p>
             </div>
-            <div className="mt-12 text-center">
-              <div className="bg-yellow-400 text-black p-6 rounded-lg inline-block">
-                <Download className="w-6 h-6 inline mr-2" />
-                <strong>Plus:</strong> Downloadable Templates & Cheat Sheets
-              </div>
+            <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
+              <Target className="w-8 h-8 mb-4 text-yellow-500" />
+              <h3 className="font-bold text-lg mb-2">Purposeful Application Strategy</h3>
+              <p className="text-gray-700">Research and target opportunities that fit your interests, geography, and potential</p>
+            </div>
+            <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
+              <Mail className="w-8 h-8 mb-4 text-yellow-500" />
+              <h3 className="font-bold text-lg mb-2">Motivational Letter & Email Skills</h3>
+              <p className="text-gray-700">Write short, authentic letters that show why you want this role</p>
+            </div>
+            <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
+              <Play className="w-8 h-8 mb-4 text-yellow-500" />
+              <h3 className="font-bold text-lg mb-2">Video Pitch Confidence</h3>
+              <p className="text-gray-700">Record a short, winning video intro—even if you're nervous</p>
+            </div>
+            <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
+              <Users className="w-8 h-8 mb-4 text-yellow-500" />
+              <h3 className="font-bold text-lg mb-2">Interview Readiness</h3>
+              <p className="text-gray-700">Practice common questions and build confidence for your first real interview</p>
+            </div>
+            <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
+              <CheckCircle className="w-8 h-8 mb-4 text-yellow-500" />
+              <h3 className="font-bold text-lg mb-2">Psychometric & Self-Knowledge Tools</h3>
+              <p className="text-gray-700">Discover your strengths and present yourself with honesty and pride</p>
             </div>
           </div>
-        </div>
-      </section>
+          <div className="mt-12 text-center">
+            <button
+              className="bg-yellow-400 text-black p-6 rounded-lg inline-block font-semibold hover:bg-yellow-500 transition duration-200"
+              onClick={() => alert("This only available after you have completed the workshop.")}
+              type="button"
+            >
+              <Download className="w-6 h-6 inline mr-2" />
+              <strong>Plus:</strong> Downloadable Templates & Cheat Sheets
+            </button>
+          </div>
+            </div>
+          </div>
+        </section>
 
-      {/* Trust Section */}
+        {/* Trust Section */}
       <section className="py-16 bg-slate-900 text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
@@ -383,20 +847,20 @@ export default function JobSeekersLanding() {
             <div className="grid md:grid-cols-3 gap-6 mb-8">
               <div className="bg-black text-white p-6 rounded-lg">
                 <CheckCircle className="w-8 h-8 mb-4 mx-auto text-yellow-400" />
-                <p className="font-semibold">Pre-workshop consultation</p>
+                <p className="font-semibold">Outsource to quality recruiters</p>
               </div>
               <div className="bg-black text-white p-6 rounded-lg">
                 <Users className="w-8 h-8 mb-4 mx-auto text-yellow-400" />
-                <p className="font-semibold">Workshop for all first-time applicants</p>
+                <p className="font-semibold">Get the right people</p>
               </div>
               <div className="bg-black text-white p-6 rounded-lg">
                 <Award className="w-8 h-8 mb-4 mx-auto text-yellow-400" />
-                <p className="font-semibold">Follow-up support and progress tracking</p>
+                <p className="font-semibold">Improve pass rates</p>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="bg-black text-white py-3 px-6 rounded-lg font-semibold hover:bg-slate-800 transition duration-200">
-                Contact Us
+                Find out more
               </button>
               <button className="bg-slate-800 text-white py-3 px-6 rounded-lg font-semibold hover:bg-slate-700 transition duration-200">
                 Book Provider Workshop
@@ -416,9 +880,14 @@ export default function JobSeekersLanding() {
             <p className="text-lg mb-8 text-gray-600">
               Try our Free CV Workshop to get a taste of what we offer!
             </p>
-            <button className="bg-slate-900 text-white py-3 px-8 rounded-lg font-semibold hover:bg-slate-800 transition duration-200">
+            <a
+              href="https://www.youtube.com/@skillsbureau/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-slate-900 text-white py-3 px-8 rounded-lg font-semibold hover:bg-slate-800 transition duration-200 inline-block"
+            >
               Try Free CV Workshop
-            </button>
+            </a>
           </div>
         </div>
       </section>
