@@ -833,7 +833,7 @@ export default function JobSeekersLanding() {
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="https://outlook.office.com/book/SkillsBureauBookingsForm@skillsbureau.co.za/?ismsaljsauthenabled=true"
+                href="https://www.skillsbureau.co.za/training-providers"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-slate-800 text-white py-3 px-6 rounded-lg font-semibold hover:bg-slate-800 transition duration-200"
