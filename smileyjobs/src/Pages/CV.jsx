@@ -1,26 +1,47 @@
-import React, { useState } from 'react';
-import { Star, CheckCircle, Users, Award, Clock, MapPin, Phone, Mail, User, Target, ArrowRight, Play, Download, CreditCard, Lock, Shield, AlertCircle, Loader, X, ExternalLink } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  Star,
+  CheckCircle,
+  Users,
+  Award,
+  Clock,
+  MapPin,
+  Phone,
+  Mail,
+  User,
+  Target,
+  ArrowRight,
+  Play,
+  Download,
+  CreditCard,
+  Lock,
+  Shield,
+  AlertCircle,
+  Loader,
+  X,
+  ExternalLink,
+} from "lucide-react";
 
 // PayFast Payment Component
-const PayFastPaymentComponent = ({ 
+const PayFastPaymentComponent = ({
   course = {
-    id: 'job-seekers-workshop',
-    title: 'Job Seekers Premium Workshop',
+    id: "job-seekers-workshop",
+    title: "Job Seekers Premium Workshop",
     price: 299,
-    currency: 'ZAR',
-    description: 'Land the Right Opportunity—Not Just Any Job'
+    currency: "ZAR",
+    description: "Land the Right Opportunity—Not Just Any Job",
   },
   userDetails = {},
   onPaymentSuccess = () => {},
   onPaymentError = () => {},
   onClose = () => {},
   // PayFast credentials - replace with your actual merchant details
-  merchantId = '10000100',
-  merchantKey = '46f0cd694581a',
-  sandbox = true // Set to false for production
+  merchantId = "10000100",
+  merchantKey = "46f0cd694581a",
+  sandbox = true, // Set to false for production
 }) => {
   const [isProcessing, setIsProcessing] = useState(false);
-  const [paymentStatus, setPaymentStatus] = useState('idle');
+  const [paymentStatus, setPaymentStatus] = useState("idle");
 
   // PayFast configuration
   const payfastConfig = {
@@ -29,66 +50,68 @@ const PayFastPaymentComponent = ({
     return_url: `${window.location.origin}/payment-success`,
     cancel_url: `${window.location.origin}/payment-cancelled`,
     notify_url: `${window.location.origin}/api/payfast-notify`, // Your server endpoint
-    
+
     // Payment details
     amount: course.price.toFixed(2),
     item_name: course.title,
     item_description: course.description,
-    
+
     // User details
-    name_first: userDetails.name?.split(' ')[0] || '',
-    name_last: userDetails.name?.split(' ').slice(1).join(' ') || '',
-    email_address: userDetails.email || '',
-    cell_number: userDetails.phone || '',
-    
+    name_first: userDetails.name?.split(" ")[0] || "",
+    name_last: userDetails.name?.split(" ").slice(1).join(" ") || "",
+    email_address: userDetails.email || "",
+    cell_number: userDetails.phone || "",
+
     // Custom fields
     custom_str1: course.id,
-    custom_str2: userDetails.lookingFor || '',
-    custom_str3: userDetails.age || '',
-    
+    custom_str2: userDetails.lookingFor || "",
+    custom_str3: userDetails.age || "",
+
     // Payment method
-    payment_method: 'cc,eft,dc', // Credit card, EFT, Debit card
+    payment_method: "cc,eft,dc", // Credit card, EFT, Debit card
   };
 
   // PayFast URL (sandbox or live)
-  const payfastUrl = sandbox 
-    ? 'https://sandbox.payfast.co.za/eng/process'
-    : 'https://www.payfast.co.za/eng/process';
+  const payfastUrl = sandbox
+    ? "https://sandbox.payfast.co.za/eng/process"
+    : "https://www.payfast.co.za/eng/process";
 
   // Generate signature for PayFast (simplified version)
-  const generateSignature = (data, passphrase = '') => {
+  const generateSignature = (data, passphrase = "") => {
     // In production, this should be done server-side for security
     const sortedParams = Object.keys(data)
       .sort()
-      .map(key => `${key}=${encodeURIComponent(data[key])}`)
-      .join('&');
-    
+      .map((key) => `${key}=${encodeURIComponent(data[key])}`)
+      .join("&");
+
     // For security, signature generation should be done server-side
     // This is a simplified client-side version for demo purposes
-    return btoa(sortedParams).replace(/[^a-zA-Z0-9]/g, '').substring(0, 32);
+    return btoa(sortedParams)
+      .replace(/[^a-zA-Z0-9]/g, "")
+      .substring(0, 32);
   };
 
   const handlePayFastPayment = () => {
     setIsProcessing(true);
-    setPaymentStatus('processing');
+    setPaymentStatus("processing");
 
     try {
       // Add signature to config
       const configWithSignature = {
         ...payfastConfig,
-        signature: generateSignature(payfastConfig)
+        signature: generateSignature(payfastConfig),
       };
 
       // Create a form and submit to PayFast
-      const form = document.createElement('form');
-      form.method = 'POST';
+      const form = document.createElement("form");
+      form.method = "POST";
       form.action = payfastUrl;
-      form.target = '_blank'; // Open in new window
+      form.target = "_blank"; // Open in new window
 
       // Add all parameters as hidden inputs
-      Object.keys(configWithSignature).forEach(key => {
-        const input = document.createElement('input');
-        input.type = 'hidden';
+      Object.keys(configWithSignature).forEach((key) => {
+        const input = document.createElement("input");
+        input.type = "hidden";
         input.name = key;
         input.value = configWithSignature[key];
         form.appendChild(input);
@@ -100,12 +123,11 @@ const PayFastPaymentComponent = ({
 
       // For demo purposes, simulate success after a delay
       setTimeout(() => {
-        setPaymentStatus('redirected');
+        setPaymentStatus("redirected");
         setIsProcessing(false);
       }, 2000);
-
     } catch (error) {
-      setPaymentStatus('error');
+      setPaymentStatus("error");
       setIsProcessing(false);
       onPaymentError(error);
     }
@@ -116,18 +138,29 @@ const PayFastPaymentComponent = ({
       <Shield className="h-4 w-4" />
       <span>Secured by PayFast - South Africa's trusted payment gateway</span>
       <div className="flex gap-1 ml-2">
-        <div className="h-2 w-2 rounded-full bg-green-500" title="SSL Verified" />
-        <div className="h-2 w-2 rounded-full bg-green-500" title="PCI DSS Compliant" />
-        <div className="h-2 w-2 rounded-full bg-green-500" title="Bank Grade Security" />
+        <div
+          className="h-2 w-2 rounded-full bg-green-500"
+          title="SSL Verified"
+        />
+        <div
+          className="h-2 w-2 rounded-full bg-green-500"
+          title="PCI DSS Compliant"
+        />
+        <div
+          className="h-2 w-2 rounded-full bg-green-500"
+          title="Bank Grade Security"
+        />
       </div>
     </div>
   );
 
-  if (paymentStatus === 'redirected') {
+  if (paymentStatus === "redirected") {
     return (
       <div className="text-center">
         <ExternalLink className="h-16 w-16 text-blue-500 mx-auto mb-4" />
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">Redirected to PayFast</h3>
+        <h3 className="text-xl font-semibold text-gray-900 mb-2">
+          Redirected to PayFast
+        </h3>
         <p className="text-gray-600 mb-6">
           Complete your payment on the PayFast secure payment page.
         </p>
@@ -135,7 +168,7 @@ const PayFastPaymentComponent = ({
           <p className="text-sm text-gray-500">
             You'll be redirected back here after payment completion.
           </p>
-          <button 
+          <button
             className="w-full bg-gray-200 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-300 transition-colors"
             onClick={onClose}
           >
@@ -178,14 +211,18 @@ const PayFastPaymentComponent = ({
           </div>
           <div className="flex justify-between">
             <span className="text-gray-600">Looking for:</span>
-            <span className="font-medium capitalize">{userDetails.lookingFor}</span>
+            <span className="font-medium capitalize">
+              {userDetails.lookingFor}
+            </span>
           </div>
         </div>
       </div>
 
       {/* Payment Methods */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h4 className="font-semibold text-gray-900 mb-3">Accepted Payment Methods</h4>
+        <h4 className="font-semibold text-gray-900 mb-3">
+          Accepted Payment Methods
+        </h4>
         <div className="grid grid-cols-3 gap-3 text-xs text-center">
           <div className="bg-white p-2 rounded border">
             <CreditCard className="h-4 w-4 mx-auto mb-1 text-blue-600" />
@@ -209,7 +246,7 @@ const PayFastPaymentComponent = ({
         </p>
       </div>
 
-      {paymentStatus === 'error' && (
+      {paymentStatus === "error" && (
         <div className="flex items-center gap-2 text-red-600 text-sm p-3 bg-red-50 rounded-lg">
           <AlertCircle className="h-4 w-4" />
           Payment setup failed. Please try again or contact support.
@@ -218,7 +255,7 @@ const PayFastPaymentComponent = ({
 
       <button
         onClick={handlePayFastPayment}
-        disabled={isProcessing || paymentStatus === 'processing'}
+        disabled={isProcessing || paymentStatus === "processing"}
         className="w-full bg-yellow-400 text-black py-3 px-4 rounded-lg font-semibold hover:bg-yellow-500 focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
       >
         {isProcessing ? (
@@ -245,12 +282,12 @@ const PayFastPaymentComponent = ({
 
 export default function JobSeekersLanding() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    age: '',
-    lookingFor: '',
-    careerGoals: ''
+    name: "",
+    email: "",
+    phone: "",
+    age: "",
+    lookingFor: "",
+    careerGoals: "",
   });
 
   const [showBooking, setShowBooking] = useState(false);
@@ -259,16 +296,23 @@ export default function JobSeekersLanding() {
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (formData.name && formData.email && formData.phone && formData.age && formData.lookingFor && formData.careerGoals) {
+    if (
+      formData.name &&
+      formData.email &&
+      formData.phone &&
+      formData.age &&
+      formData.lookingFor &&
+      formData.careerGoals
+    ) {
       setShowBooking(true);
     } else {
-      alert('Please fill in all fields before submitting.');
+      alert("Please fill in all fields before submitting.");
     }
   };
 
@@ -277,15 +321,15 @@ export default function JobSeekersLanding() {
   };
 
   const handlePaymentSuccess = (result) => {
-    console.log('Payment successful:', result);
+    console.log("Payment successful:", result);
     setShowPaymentModal(false);
     // Handle success - could redirect to dashboard or show confirmation
-    alert('Payment successful! Check your email for workshop access details.');
+    alert("Payment successful! Check your email for workshop access details.");
   };
 
   const handlePaymentError = (error) => {
-    console.error('Payment failed:', error);
-    alert('Payment failed. Please try again or contact support.');
+    console.error("Payment failed:", error);
+    alert("Payment failed. Please try again or contact support.");
   };
 
   return (
@@ -295,7 +339,9 @@ export default function JobSeekersLanding() {
         <div className="fixed inset-0 bg-slate-800 bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between">
-              <h2 className="text-xl font-semibold">Complete Your Workshop Booking</h2>
+              <h2 className="text-xl font-semibold">
+                Complete Your Workshop Booking
+              </h2>
               <button
                 onClick={() => setShowPaymentModal(false)}
                 className="p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -306,11 +352,11 @@ export default function JobSeekersLanding() {
             <div className="p-6">
               <PayFastPaymentComponent
                 course={{
-                  id: 'job-seekers-workshop',
-                  title: 'Job Seekers Premium Workshop',
+                  id: "job-seekers-workshop",
+                  title: "Job Seekers Premium Workshop",
                   price: 299,
-                  currency: 'ZAR',
-                  description: 'Land the Right Opportunity—Not Just Any Job'
+                  currency: "ZAR",
+                  description: "Land the Right Opportunity—Not Just Any Job",
                 }}
                 userDetails={formData}
                 onPaymentSuccess={handlePaymentSuccess}
@@ -341,8 +387,12 @@ export default function JobSeekersLanding() {
               Land the Right Opportunity—Not Just Any Job
             </p>
             <div className="bg-slate-800 text-white p-6 rounded-lg inline-block">
-              <p className="text-lg font-medium">Premium Workshop • R299 per learner</p>
-              <p className="text-sm text-gray-300 mt-1">Secure payment via PayFast</p>
+              <p className="text-lg font-medium">
+                Premium Workshop • R299 per learner
+              </p>
+              <p className="text-sm text-gray-300 mt-1">
+                Secure payment via PayFast
+              </p>
             </div>
           </div>
         </div>
@@ -362,7 +412,9 @@ export default function JobSeekersLanding() {
               <div className="bg-slate-800 p-6 rounded-lg">
                 <div className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-yellow-400 rounded-full mt-2"></div>
-                  <p>Apply everywhere, hoping something sticks ("spray and pray")</p>
+                  <p>
+                    Apply everywhere, hoping something sticks ("spray and pray")
+                  </p>
                 </div>
               </div>
               <div className="bg-slate-800 p-6 rounded-lg">
@@ -374,19 +426,24 @@ export default function JobSeekersLanding() {
               <div className="bg-slate-800 p-6 rounded-lg">
                 <div className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-yellow-400 rounded-full mt-2"></div>
-                  <p>Don't know how to show real motivation or the right attitude</p>
+                  <p>
+                    Don't know how to show real motivation or the right attitude
+                  </p>
                 </div>
               </div>
               <div className="bg-slate-800 p-6 rounded-lg">
                 <div className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-yellow-400 rounded-full mt-2"></div>
-                  <p>Miss out because they can't tell their story confidently</p>
+                  <p>
+                    Miss out because they can't tell their story confidently
+                  </p>
                 </div>
               </div>
             </div>
             <div className="bg-red-900 border-l-4 border-red-500 p-6 rounded-lg">
               <p className="text-lg font-semibold">
-                <strong>Result?</strong> They disappear into the pile—or end up in roles that don't suit them or their future.
+                <strong>Result?</strong> They disappear into the pile—or end up
+                in roles that don't suit them or their future.
               </p>
             </div>
           </div>
@@ -401,79 +458,116 @@ export default function JobSeekersLanding() {
               We're Changing That—For Good
             </h2>
             <p className="text-xl mb-8">
-              This is not just another "how to write a CV" session. It's a premium workshop for young people and first-time job seekers who want to:
+              This is not just another "how to write a CV" session. It's a
+              premium workshop for young people and first-time job seekers who
+              want to:
             </p>
             <div className="grid md:grid-cols-3 gap-6">
               <div className="bg-slate-800 text-white p-6 rounded-lg">
                 <CheckCircle className="w-8 h-8 mb-4 mx-auto text-yellow-400" />
-                <p className="font-semibold">Land a learnership or job that actually fits</p>
+                <p className="font-semibold">
+                  Land a learnership or job that actually fits
+                </p>
               </div>
               <div className="bg-slate-800 text-white p-6 rounded-lg">
                 <Star className="w-8 h-8 mb-4 mx-auto text-yellow-400" />
-                <p className="font-semibold">Stand out with a recruiter-ready CV and video pitch</p>
+                <p className="font-semibold">
+                  Stand out with a recruiter-ready CV and video pitch
+                </p>
               </div>
               <div className="bg-slate-800 text-white p-6 rounded-lg">
                 <Target className="w-8 h-8 mb-4 mx-auto text-yellow-400" />
-                <p className="font-semibold">Apply for the right roles, for the right reasons</p>
+                <p className="font-semibold">
+                  Apply for the right roles, for the right reasons
+                </p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-        <section className="py-16 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center text-slate-900">
-            What You'll Learn & Get:
-          </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
-              <Award className="w-8 h-8 mb-4 text-yellow-500" />
-              <h3 className="font-bold text-lg mb-2">CV Masterclass</h3>
-              <p className="text-gray-700">Craft your first real, recruiter-approved CV using SA templates and best practices</p>
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center text-slate-900">
+              What You'll Learn & Get:
+            </h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
+                <Award className="w-8 h-8 mb-4 text-yellow-500" />
+                <h3 className="font-bold text-lg mb-2">CV Masterclass</h3>
+                <p className="text-gray-700">
+                  Craft your first real, recruiter-approved CV using SA
+                  templates and best practices
+                </p>
+              </div>
+              <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
+                <Target className="w-8 h-8 mb-4 text-yellow-500" />
+                <h3 className="font-bold text-lg mb-2">
+                  Purposeful Application Strategy
+                </h3>
+                <p className="text-gray-700">
+                  Research and target opportunities that fit your interests,
+                  geography, and potential
+                </p>
+              </div>
+              <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
+                <Mail className="w-8 h-8 mb-4 text-yellow-500" />
+                <h3 className="font-bold text-lg mb-2">
+                  Motivational Letter & Email Skills
+                </h3>
+                <p className="text-gray-700">
+                  Write short, authentic letters that show why you want this
+                  role
+                </p>
+              </div>
+              <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
+                <Play className="w-8 h-8 mb-4 text-yellow-500" />
+                <h3 className="font-bold text-lg mb-2">
+                  Video Pitch Confidence
+                </h3>
+                <p className="text-gray-700">
+                  Record a short, winning video intro—even if you're nervous
+                </p>
+              </div>
+              <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
+                <Users className="w-8 h-8 mb-4 text-yellow-500" />
+                <h3 className="font-bold text-lg mb-2">Interview Readiness</h3>
+                <p className="text-gray-700">
+                  Practice common questions and build confidence for your first
+                  real interview
+                </p>
+              </div>
+              <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
+                <CheckCircle className="w-8 h-8 mb-4 text-yellow-500" />
+                <h3 className="font-bold text-lg mb-2">
+                  Psychometric & Self-Knowledge Tools
+                </h3>
+                <p className="text-gray-700">
+                  Discover your strengths and present yourself with honesty and
+                  pride
+                </p>
+              </div>
             </div>
-            <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
-              <Target className="w-8 h-8 mb-4 text-yellow-500" />
-              <h3 className="font-bold text-lg mb-2">Purposeful Application Strategy</h3>
-              <p className="text-gray-700">Research and target opportunities that fit your interests, geography, and potential</p>
-            </div>
-            <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
-              <Mail className="w-8 h-8 mb-4 text-yellow-500" />
-              <h3 className="font-bold text-lg mb-2">Motivational Letter & Email Skills</h3>
-              <p className="text-gray-700">Write short, authentic letters that show why you want this role</p>
-            </div>
-            <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
-              <Play className="w-8 h-8 mb-4 text-yellow-500" />
-              <h3 className="font-bold text-lg mb-2">Video Pitch Confidence</h3>
-              <p className="text-gray-700">Record a short, winning video intro—even if you're nervous</p>
-            </div>
-            <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
-              <Users className="w-8 h-8 mb-4 text-yellow-500" />
-              <h3 className="font-bold text-lg mb-2">Interview Readiness</h3>
-              <p className="text-gray-700">Practice common questions and build confidence for your first real interview</p>
-            </div>
-            <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-yellow-400">
-              <CheckCircle className="w-8 h-8 mb-4 text-yellow-500" />
-              <h3 className="font-bold text-lg mb-2">Psychometric & Self-Knowledge Tools</h3>
-              <p className="text-gray-700">Discover your strengths and present yourself with honesty and pride</p>
+            <div className="mt-12 text-center">
+              <button
+                className="bg-yellow-400 text-black p-6 rounded-lg inline-block font-semibold hover:bg-yellow-500 transition duration-200"
+                onClick={() =>
+                  alert(
+                    "This only available after you have completed the workshop."
+                  )
+                }
+                type="button"
+              >
+                <Download className="w-6 h-6 inline mr-2" />
+                <strong>Plus:</strong> Downloadable Templates & Cheat Sheets
+              </button>
             </div>
           </div>
-          <div className="mt-12 text-center">
-            <button
-              className="bg-yellow-400 text-black p-6 rounded-lg inline-block font-semibold hover:bg-yellow-500 transition duration-200"
-              onClick={() => alert("This only available after you have completed the workshop.")}
-              type="button"
-            >
-              <Download className="w-6 h-6 inline mr-2" />
-              <strong>Plus:</strong> Downloadable Templates & Cheat Sheets
-            </button>
-          </div>
-            </div>
-          </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Trust Section */}
+      {/* Trust Section */}
       <section className="py-16 bg-slate-900 text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
@@ -483,15 +577,21 @@ export default function JobSeekersLanding() {
             <div className="grid md:grid-cols-3 gap-6">
               <div className="bg-slate-800 p-6 rounded-lg">
                 <CheckCircle className="w-8 h-8 mb-4 mx-auto text-yellow-400" />
-                <p className="font-semibold">Our learners get interviews and finish programmes</p>
+                <p className="font-semibold">
+                  Our learners get interviews and finish programmes
+                </p>
               </div>
               <div className="bg-slate-800 p-6 rounded-lg">
                 <Users className="w-8 h-8 mb-4 mx-auto text-yellow-400" />
-                <p className="font-semibold">Fewer dropouts, more success stories</p>
+                <p className="font-semibold">
+                  Fewer dropouts, more success stories
+                </p>
               </div>
               <div className="bg-slate-800 p-6 rounded-lg">
                 <Award className="w-8 h-8 mb-4 mx-auto text-yellow-400" />
-                <p className="font-semibold">Build a reputation for quality, not quantity</p>
+                <p className="font-semibold">
+                  Build a reputation for quality, not quantity
+                </p>
               </div>
             </div>
           </div>
@@ -508,8 +608,12 @@ export default function JobSeekersLanding() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="bg-yellow-400 text-black p-6 rounded-lg">
                 <div className="text-2xl font-bold mb-2">R299</div>
-                <p className="text-sm">per learner (includes all resources & templates)</p>
-                <p className="text-xs mt-1 text-gray-700">💳 Secure PayFast checkout</p>
+                <p className="text-sm">
+                  per learner (includes all resources & templates)
+                </p>
+                <p className="text-xs mt-1 text-gray-700">
+                  💳 Secure PayFast checkout
+                </p>
               </div>
               <div className="bg-slate-100 p-6 rounded-lg">
                 <MapPin className="w-8 h-8 mb-2 mx-auto text-slate-700" />
@@ -542,22 +646,32 @@ export default function JobSeekersLanding() {
               <div className="bg-slate-800 text-white p-8 rounded-lg">
                 <div className="flex mb-4">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                    <Star
+                      key={i}
+                      className="w-5 h-5 text-yellow-400 fill-current"
+                    />
                   ))}
                 </div>
                 <p className="text-lg mb-4">
-                  "I didn't just get a CV—I learned how to tell my story and get the job I actually wanted."
+                  "I didn't just get a CV—I learned how to tell my story and get
+                  the job I actually wanted."
                 </p>
-                <p className="text-sm text-gray-300">- Sarah M., Marketing Learner</p>
+                <p className="text-sm text-gray-300">
+                  - Sarah M., Marketing Learner
+                </p>
               </div>
               <div className="bg-slate-800 text-white p-8 rounded-lg">
                 <div className="flex mb-4">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                    <Star
+                      key={i}
+                      className="w-5 h-5 text-yellow-400 fill-current"
+                    />
                   ))}
                 </div>
                 <p className="text-lg mb-4">
-                  "I stopped wasting time on jobs that didn't fit me. Now I know what I want, and how to go for it."
+                  "I stopped wasting time on jobs that didn't fit me. Now I know
+                  what I want, and how to go for it."
                 </p>
                 <p className="text-sm text-gray-300">- David K., IT Intern</p>
               </div>
@@ -573,7 +687,7 @@ export default function JobSeekersLanding() {
             <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">
               Ready to Start Your Career the Right Way?
             </h2>
-            
+
             {!showBooking ? (
               <div>
                 <h3 className="text-xl font-semibold mb-6 text-center">
@@ -581,7 +695,9 @@ export default function JobSeekersLanding() {
                 </h3>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium mb-2">Name</label>
+                    <label className="block text-sm font-medium mb-2">
+                      Name
+                    </label>
                     <input
                       type="text"
                       name="name"
@@ -592,7 +708,9 @@ export default function JobSeekersLanding() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-2">Email</label>
+                    <label className="block text-sm font-medium mb-2">
+                      Email
+                    </label>
                     <input
                       type="email"
                       name="email"
@@ -603,7 +721,9 @@ export default function JobSeekersLanding() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-2">Phone</label>
+                    <label className="block text-sm font-medium mb-2">
+                      Phone
+                    </label>
                     <input
                       type="tel"
                       name="phone"
@@ -614,7 +734,9 @@ export default function JobSeekersLanding() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-2">Age</label>
+                    <label className="block text-sm font-medium mb-2">
+                      Age
+                    </label>
                     <input
                       type="number"
                       name="age"
@@ -625,7 +747,9 @@ export default function JobSeekersLanding() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-2">Are you looking for a learnership, internship, or job?</label>
+                    <label className="block text-sm font-medium mb-2">
+                      Are you looking for a learnership, internship, or job?
+                    </label>
                     <select
                       name="lookingFor"
                       value={formData.lookingFor}
@@ -640,7 +764,9 @@ export default function JobSeekersLanding() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-2">Area of interest / career goals</label>
+                    <label className="block text-sm font-medium mb-2">
+                      Area of interest / career goals
+                    </label>
                     <textarea
                       name="careerGoals"
                       value={formData.careerGoals}
@@ -662,9 +788,13 @@ export default function JobSeekersLanding() {
             ) : (
               <div className="text-center">
                 <CheckCircle className="w-16 h-16 mx-auto mb-6 text-yellow-400" />
-                <h3 className="text-2xl font-semibold mb-6">Step 2: Book and pay securely with PayFast</h3>
-                <p className="text-lg mb-8">Secure your seat and get ready to stand out!</p>
-                <button 
+                <h3 className="text-2xl font-semibold mb-6">
+                  Step 2: Book and pay securely with PayFast
+                </h3>
+                <p className="text-lg mb-8">
+                  Secure your seat and get ready to stand out!
+                </p>
+                <button
                   onClick={handleBookWorkshop}
                   className="bg-yellow-400 text-black py-4 px-8 rounded-lg font-semibold text-lg hover:bg-yellow-500 transition duration-200 flex items-center justify-center mx-auto gap-2"
                 >
@@ -680,7 +810,7 @@ export default function JobSeekersLanding() {
         </div>
       </section>
 
-      {/* Training Provider Section */}
+      {/* /* Training Provider Section */}
       <section className="py-16 bg-yellow-400 text-black">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
@@ -702,12 +832,22 @@ export default function JobSeekersLanding() {
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-slate-800 text-white py-3 px-6 rounded-lg font-semibold hover:bg-slate-800 transition duration-200">
+              <a
+                href="https://outlook.office.com/book/SkillsBureauBookingsForm@skillsbureau.co.za/?ismsaljsauthenabled=true"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-slate-800 text-white py-3 px-6 rounded-lg font-semibold hover:bg-slate-800 transition duration-200"
+              >
                 Find out more
-              </button>
-              <button className="bg-slate-800 text-white py-3 px-6 rounded-lg font-semibold hover:bg-slate-700 transition duration-200">
+              </a>
+              <a
+                href="https://outlook.office.com/book/SkillsBureauBookingsForm@skillsbureau.co.za/?ismsaljsauthenabled=true"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-slate-800 text-white py-3 px-6 rounded-lg font-semibold hover:bg-slate-700 transition duration-200"
+              >
                 Book Meeting For Learner Recruitment Solutions
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -748,7 +888,8 @@ export default function JobSeekersLanding() {
               <span>All major South African banks</span>
             </div>
             <p className="text-xs text-gray-500 mt-2">
-              PayFast is South Africa's most trusted payment gateway, processing millions of transactions for thousands of businesses.
+              PayFast is South Africa's most trusted payment gateway, processing
+              millions of transactions for thousands of businesses.
             </p>
           </div>
         </div>
