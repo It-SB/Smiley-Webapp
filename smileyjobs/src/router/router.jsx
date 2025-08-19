@@ -17,6 +17,10 @@ import { SignIn, SignUp } from "@clerk/clerk-react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase.config"; // Adjust import path if needed
 import CreateUserProfile from "../Pages/CreateProfile";
+import PaymentCancelled from "../Pages/payfast/payment-cancelled";
+import PaymentSuccess from "../Pages/payfast/payment-success";
+import PayfastGuard from "../utils/PayfastGuard";
+import ServicesPage from "../Pages/Services";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "/contact",
         element: <Contact />, // Public route
+      },
+      {
+        path: "/services",
+        element: <ServicesPage/>, // Public route
       },
       {
         path: "/my-job",
@@ -54,6 +62,22 @@ const router = createBrowserRouter([
       {
         path: "/job-seekers",
         element: <JobSeekersLanding />, // Public route
+      },
+      {
+        path: "/payment-cancelled",
+        element: (
+          // <PayfastGuard>
+            <PaymentCancelled />
+          // </PayfastGuard>
+        ), // Public route
+      },
+      {
+        path: "/payment-success",
+        element: (
+          // <PayfastGuard>
+            <PaymentSuccess />
+          // </PayfastGuard>
+        ), // Public route// Public route
       },
       {
         path: "/post-job",
