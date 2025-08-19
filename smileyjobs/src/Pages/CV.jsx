@@ -722,7 +722,7 @@ export default function JobSeekersLanding() {
                 course={{
                   id: "job-seekers-workshop",
                   title: "Job Seekers Premium Workshop",
-                  price: 0,
+                  price: 299,
                   currency: "ZAR",
                   description: "Land the Right Opportunity—Not Just Any Job",
                 }}
