@@ -48,20 +48,20 @@ export const ApproachSection = () => {
   const [selectedItem, setSelectedItem] = useState(null);
 
   return (
-    <section className="bg-[#001B38] py-16 text-white text-center">
-      <h2 className="text-3xl md:text-4xl font-bold mb-12">Our Approach</h2>
+    <section className="bg-[#001B38] py-12 px-4 text-white text-center">
+      <h2 className="text-3xl md:text-4xl font-bold mb-8">Our Approach</h2>
 
-      <div className="relative w-full max-w-5xl mx-auto flex justify-center items-center">
-        <div className=" text-[#001B38] rounded-full w-48 h-48 flex items-center justify-center font-bold text-xl shadow-md z-10">
-          {/* smiley <br /> JOBS */}
-        </div>
+      <div className="w-full max-w-6xl mx-auto flex flex-col items-center">
+        {/* Central logo or icon */}
+        
 
-        <div className="absolute inset-0 flex flex-wrap justify-center items-center gap-6">
+        {/* Responsive grid for approach items */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full">
           {approachItems.map((item, i) => (
             <button
               key={i}
               onClick={() => setSelectedItem(item)}
-              className="bg-[#001B38] text-white px-4 py-2 rounded-full border border-white shadow-md hover:scale-105 transition-transform"
+              className="bg-[#003366] hover:bg-[#00509e] text-white px-5 py-4 rounded-2xl border border-white/20 shadow transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#00bfff] text-base font-semibold min-h-[90px] flex items-center justify-center text-center"
             >
               {item.title}
             </button>
