@@ -104,30 +104,40 @@ export default function ServicesPage() {
               Our Mission
             </h2>
             <p className="text-xl text-gray-600 mb-8">
-              SmileyJobs is dedicated to helping individuals, especially those entering the tech industry, 
-              find meaningful employment opportunities by connecting first-time tech applicants with employers 
-              who value growth and potential.
+              SmileyJobs is dedicated to helping individuals, especially those
+              entering the tech industry, find meaningful employment
+              opportunities by connecting first-time tech applicants with
+              employers who value growth and potential.
             </p>
             <div className="grid md:grid-cols-3 gap-6">
               <div className="bg-white p-6 rounded-lg border border-gray-200">
                 <Target className="w-8 h-8 mb-4 mx-auto text-blue-600 text-[#fbbf24]" />
-                <h3 className="font-semibold text-lg mb-2 text-black">Potential Over Experience</h3>
+                <h3 className="font-semibold text-lg mb-2 text-black">
+                  Potential Over Experience
+                </h3>
                 <p className="text-gray-600 text-sm">
-                  We believe in your ability to grow and learn, not just what's on your CV
+                  We believe in your ability to grow and learn, not just what's
+                  on your CV
                 </p>
               </div>
               <div className="bg-white p-6 rounded-lg border border-gray-200">
                 <Users className="w-8 h-8 mb-4 mx-auto text-blue-600 text-[#fbbf24]" />
-                <h3 className="font-semibold text-lg mb-2 text-black">Meaningful Connections</h3>
+                <h3 className="font-semibold text-lg mb-2 text-black">
+                  Meaningful Connections
+                </h3>
                 <p className="text-gray-600 text-sm ">
-                  Strategic partnerships with companies that value growth-minded candidates
+                  Strategic partnerships with companies that value growth-minded
+                  candidates
                 </p>
               </div>
               <div className="bg-white p-6 rounded-lg border border-gray-200">
                 <Globe className="w-8 h-8 mb-4 mx-auto text-blue-600 text-[#fbbf24]" />
-                <h3 className="font-semibold text-lg mb-2 text-black">Global Reach</h3>
+                <h3 className="font-semibold text-lg mb-2 text-black">
+                  Global Reach
+                </h3>
                 <p className="text-gray-600 text-sm">
-                  Based in Cape Town, serving South Africa and international markets
+                  Based in Cape Town, serving South Africa and international
+                  markets
                 </p>
               </div>
             </div>
@@ -142,7 +152,7 @@ export default function ServicesPage() {
             <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center text-slate-900">
               Our Core Services
             </h2>
-            
+
             <div className="space-y-6">
               {/* Job Seeker Services */}
               <div className="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-xl p-6">
@@ -166,16 +176,19 @@ export default function ServicesPage() {
                     )}
                   </button>
                 </div>
-                
+
                 <p className="text-gray-700 mb-4">
-                  Comprehensive support for individuals seeking their first tech role or transitioning into the industry.
+                  Comprehensive support for individuals seeking their first tech
+                  role or transitioning into the industry.
                 </p>
-                
+
                 {activeService === "job-seekers" && (
                   <div className="mt-6 grid md:grid-cols-2 gap-6">
                     <div className="bg-white p-4 rounded-lg">
                       <UserCheck className="w-6 h-6 mb-3 text-blue-600" />
-                      <h4 className="font-semibold mb-2">Profile Development</h4>
+                      <h4 className="font-semibold mb-2">
+                        Profile Development
+                      </h4>
                       <ul className="text-sm text-gray-600 space-y-1">
                         <li>• User-friendly application process</li>
                         <li>• Portfolio optimization guidance</li>
@@ -239,11 +252,12 @@ export default function ServicesPage() {
                     )}
                   </button>
                 </div>
-                
+
                 <p className="text-gray-700 mb-4">
-                  Strategic partnerships with companies that value potential and growth over just experience.
+                  Strategic partnerships with companies that value potential and
+                  growth over just experience.
                 </p>
-                
+
                 {activeService === "employers" && (
                   <div className="mt-6 grid md:grid-cols-2 gap-6">
                     <div className="bg-white p-4 rounded-lg">
@@ -312,16 +326,19 @@ export default function ServicesPage() {
                     )}
                   </button>
                 </div>
-                
+
                 <p className="text-gray-700 mb-4">
-                  Specialized expertise in tech, engineering, and computer sector recruitment.
+                  Specialized expertise in tech, engineering, and computer
+                  sector recruitment.
                 </p>
-                
+
                 {activeService === "tech-focus" && (
                   <div className="mt-6 grid md:grid-cols-3 gap-6">
                     <div className="bg-white p-4 rounded-lg text-center">
                       <Code className="w-8 h-8 mb-3 mx-auto text-purple-600" />
-                      <h4 className="font-semibold mb-2">Software Development</h4>
+                      <h4 className="font-semibold mb-2">
+                        Software Development
+                      </h4>
                       <ul className="text-sm text-gray-600 space-y-1 text-left">
                         <li>• Junior Developer positions</li>
                         <li>• Full-stack opportunities</li>
@@ -431,23 +448,32 @@ export default function ServicesPage() {
             <div className="grid md:grid-cols-3 gap-8">
               <div className="bg-white p-6 rounded-lg border border-blue-200">
                 <Heart className="w-8 h-8 mb-4 mx-auto text-red-500" />
-                <h3 className="font-semibold text-lg mb-2 text-black">Potential-Focused</h3>
+                <h3 className="font-semibold text-lg mb-2 text-black">
+                  Potential-Focused
+                </h3>
                 <p className="text-gray-600 text-sm">
-                  We see your potential, not just your past. Perfect for career starters and career changers.
+                  We see your potential, not just your past. Perfect for career
+                  starters and career changers.
                 </p>
               </div>
               <div className="bg-white p-6 rounded-lg border border-blue-200">
                 <Zap className="w-8 h-8 mb-4 mx-auto text-yellow-500" />
-                <h3 className="font-semibold text-lg mb-2  text-black">User-Friendly</h3>
+                <h3 className="font-semibold text-lg mb-2  text-black">
+                  User-Friendly
+                </h3>
                 <p className="text-gray-600 text-sm">
-                  Straightforward application process designed to reduce anxiety and increase success rates.
+                  Straightforward application process designed to reduce anxiety
+                  and increase success rates.
                 </p>
               </div>
               <div className="bg-white p-6 rounded-lg border border-blue-200">
                 <Users className="w-8 h-8 mb-4 mx-auto text-blue-500 text-[#fbbf24]" />
-                <h3 className="font-semibold text-lg mb-2  text-black">Strategic Partnerships</h3>
+                <h3 className="font-semibold text-lg mb-2  text-black">
+                  Strategic Partnerships
+                </h3>
                 <p className="text-gray-600 text-sm">
-                  Exclusive relationships with employers who actively seek fresh talent and growth mindsets.
+                  Exclusive relationships with employers who actively seek fresh
+                  talent and growth mindsets.
                 </p>
               </div>
             </div>
@@ -473,8 +499,9 @@ export default function ServicesPage() {
                   ))}
                 </div>
                 <p className="text-lg mb-4 text-gray-700">
-                  "SmileyJobs helped me land my first developer role with no prior experience. 
-                  They saw my potential and connected me with a company that values growth."
+                  "SmileyJobs helped me land my first developer role with no
+                  prior experience. They saw my potential and connected me with
+                  a company that values growth."
                 </p>
                 <p className="text-sm text-gray-600">
                   - Thabo M., Junior Full Stack Developer, Cape Town
@@ -490,8 +517,9 @@ export default function ServicesPage() {
                   ))}
                 </div>
                 <p className="text-lg mb-4 text-gray-700">
-                  "After months of rejections elsewhere, SmileyJobs found me a Test Analyst position. 
-                  They understood that I was ready to learn and grow."
+                  "After months of rejections elsewhere, SmileyJobs found me a
+                  Test Analyst position. They understood that I was ready to
+                  learn and grow."
                 </p>
                 <p className="text-sm text-gray-600">
                   - Sarah K., QA Test Analyst, Johannesburg
@@ -510,21 +538,23 @@ export default function ServicesPage() {
               Ready to Start Your Tech Career?
             </h2>
             <p className="text-xl mb-8 text-gray-300">
-              Whether you're a job seeker or employer, we're here to help you succeed
+              Whether you're a job seeker or employer, we're here to help you
+              succeed
             </p>
-            
+
             <div className="grid md:grid-cols-2 gap-8 mb-8">
               <div className="bg-slate-800 p-6 rounded-lg">
                 <Search className="w-8 h-8 mb-4 mx-auto text-blue-400" />
                 <h3 className="font-semibold text-lg mb-2">Job Seekers</h3>
                 <p className="text-gray-300 mb-4 text-sm">
-                  Ready to launch your tech career? Let us help you find the perfect opportunity.
+                  Ready to launch your tech career? Let us help you find the
+                  perfect opportunity.
                 </p>
                 <a
                   href="https://www.smileyjobs.co/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors inline-flex items-center gap-2"
+                  className="bg-blue-600 border border-white text-white py-2 px-4 rounded-lg font-medium hover:bg-white hover:text-black transition-colors inline-flex items-center gap-2"
                 >
                   Browse Jobs
                   <ExternalLink className="w-4 h-4" />
@@ -534,7 +564,8 @@ export default function ServicesPage() {
                 <Building className="w-8 h-8 mb-4 mx-auto text-green-400" />
                 <h3 className="font-semibold text-lg mb-2">Employers</h3>
                 <p className="text-gray-300 mb-4 text-sm">
-                  Looking for fresh talent with growth potential? Partner with us today.
+                  Looking for fresh talent with growth potential? Partner with
+                  us today.
                 </p>
                 <button
                   onClick={() => setShowContactForm(true)}
@@ -566,103 +597,91 @@ export default function ServicesPage() {
 
       {/* Contact Form Modal */}
       {showContactForm && (
-        <div className="fixed inset-0 bg-slate-800 bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between">
-              <h2 className="text-xl font-semibold">Get in Touch</h2>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
+          <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-lg relative">
+            <button
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold"
+              onClick={() => setShowContactForm(false)}
+              aria-label="Close"
+              type="button"
+            >
+              ×
+            </button>
+            <h3 className="text-2xl font-bold mb-2 text-slate-900 text-center">
+              Partner With Us
+            </h3>
+            <p className="text-gray-600 mb-6 text-center text-sm">
+              Fill in your details and we'll get in touch within 24 hours.
+            </p>
+            <form
+              action="https://formbold.com/s/3wgvA"
+              method="POST"
+              encType="multipart/form-data"
+              className="space-y-4"
+            >
+              <div className="flex gap-4">
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  name="name"
+                  className="w-1/2 border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+                <input
+                  type="tel"
+                  placeholder="Phone Number"
+                  name="phone"
+                  className="w-1/2 border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+              <input
+                type="email"
+                placeholder="Email Address"
+                name="email"
+                className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Company / Organisation"
+                name="company"
+                className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Subject"
+                name="subject"
+                className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+              <textarea
+                name="message"
+                placeholder="How can we help you?"
+                className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[100px]"
+                required
+              />
+              {/* <div className="flex items-center justify-between">
+                <label className="block text-sm text-gray-500">
+                  <span className="mr-2">Attach File:</span>
+                  <input
+                    type="file"
+                    name="file"
+                    className="inline-block"
+                  />
+                </label>
+              </div> */}
               <button
-                onClick={() => setShowContactForm(false)}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                type="submit"
+                className="bg-blue-600 text-black py-3 px-6 rounded-lg border border-black font-semibold hover:bg-blue-700 transition-colors w-full text-lg"
               >
-                ✕
+                Send Message
               </button>
-            </div>
-            <div className="p-6">
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2">
-                    Name *
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">
-                    Phone
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">
-                    I am a... *
-                  </label>
-                  <select
-                    name="serviceType"
-                    value={formData.serviceType}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                    required
-                  >
-                    <option value="">Select one</option>
-                    <option value="job-seeker">Job Seeker</option>
-                    <option value="employer">Employer/Recruiter</option>
-                    <option value="training-provider">Training Provider</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">
-                    Message *
-                  </label>
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    rows={4}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                    placeholder="Tell us about your needs or goals..."
-                    required
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full bg-blue-600 text-black py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
-                >
-                  Send Message
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </form>
-            </div>
+            </form>
           </div>
         </div>
       )}
-
-      {/* Footer */}
       <footer className="py-8 bg-slate-800 text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
@@ -693,7 +712,7 @@ export default function ServicesPage() {
                   </a>
                 </div>
               </div>
-              
+
               <div>
                 <h3 className="font-semibold text-lg mb-4 text-green-400">
                   Quick Links
@@ -752,7 +771,8 @@ export default function ServicesPage() {
                 <span>💝 Potential Over Experience</span>
               </div>
               <p className="text-xs text-gray-500">
-                © 2025 SmileyJobs.co. All rights reserved. Empowering tech careers through meaningful connections.
+                © 2025 SmileyJobs.co. All rights reserved. Empowering tech
+                careers through meaningful connections.
               </p>
             </div>
           </div>
