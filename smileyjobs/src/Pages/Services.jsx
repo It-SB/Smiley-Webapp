@@ -582,7 +582,7 @@ export default function ServicesPage() {
                 Stay updated with the latest opportunities and success stories
               </p>
               <a
-                href="https://www.instagram.com/smileyjobs"
+                href="https://www.instagram.com/smiley_jobs"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-white text-black py-2 px-4 rounded-lg font-medium hover:bg-gray-100 transition-colors inline-flex items-center gap-2"
@@ -703,7 +703,7 @@ export default function ServicesPage() {
                     <Globe className="w-5 h-5" />
                   </a>
                   <a
-                    href="https://www.instagram.com/smileyjobs"
+                    href="https://www.instagram.com/smiley_jobs"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-400 hover:text-blue-300 transition-colors"
