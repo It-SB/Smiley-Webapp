@@ -161,19 +161,19 @@ export const Footer3Defaults = {
         { title: "Contact Us", url: "/contact" },
         {
           title: "Privacy Policy",
-          url: "/documents/Smiley_Jobs_POPIA_Privacy_Policy.pdf",
+          url: "/smileyjobs/public/assets/documents/Smiley_Jobs_POPIA_Privacy_Policy.pdf",
         },
         {
           title: "Terms of Use",
-          url: "/documents/Smiley_Jobs_Terms_of_Use.pdf",
+          url: "/smileyjobs/public/assets/documents/Smiley_Jobs_Terms_of_Use.pdf",
         },
         {
           title: "Cookie Policy",
-          url: "/documents/Smiley_Jobs_Cookie_Policy.pdf",
+          url: "/smileyjobs/public/assets/documents/Smiley_Jobs_Cookie_Policy.pdf",
         },
         {
           title: "PAIA Manual",
-          url: "/documents/Smiley_Jobs_PAIA_Manual.pdf",
+          url: "/smileyjobs/public/assets/documents/Smiley_Jobs_PAIA_Manual.pdf",
         },
       ],
     },
