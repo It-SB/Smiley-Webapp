@@ -98,7 +98,8 @@ export const Footer3 = (props) => {
                     <li key={linkIndex} className="py-1">
                       <a
                         href={link.url}
-                        {...(link.download ? { download: true } : {})}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="flex items-center gap-2 text-gray-700 hover:text-primary transition font-medium px-2 py-1 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
                       >
                         {link.icon && <span>{link.icon}</span>}
@@ -160,23 +161,19 @@ export const Footer3Defaults = {
         { title: "Contact Us", url: "/contact" },
         {
           title: "Privacy Policy",
-          url: "/smileyjobs/public/assets/documents/Smiley Jobs_POPIA_Privacy_Policy.pdf",
-          download: true,
+          url: "/assets/documents/Smiley Jobs_POPIA_Privacy_Policy.pdf",
         },
         {
           title: "Terms of Use",
-          url: "/smileyjobs/public/assets/documents/3. Smiley Jobs_Terms_of_Use.pdf",
-          download: true,
+          url: "/assets/documents/3. Smiley Jobs_Terms_of_Use.pdf",
         },
         {
           title: "Cookie Policy",
-          url: "/smileyjobs/public/assets/documents/Smiley Jobs_Cookie_Policy.pdf",
-          download: true,
+          url: "/assets/documents/Smiley Jobs_Cookie_Policy.pdf",
         },
         {
           title: "PAIA Manual",
-          url: "/smileyjobs/public/assets/documents/Smiley Jobs_PAIA_Manual.pdf",
-          download: true,
+          url: "/assets/documents/1. Smiley Jobs_PAIA_Manual.pdf",
         },
       ],
     },
