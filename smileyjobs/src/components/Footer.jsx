@@ -98,7 +98,8 @@ export const Footer3 = (props) => {
                     <li key={linkIndex} className="py-1">
                       <a
                         href={link.url}
-                        {...(link.download ? { download: true } : {})}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="flex items-center gap-2 text-gray-700 hover:text-primary transition font-medium px-2 py-1 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
                       >
                         {link.icon && <span>{link.icon}</span>}
@@ -161,22 +162,18 @@ export const Footer3Defaults = {
         {
           title: "Privacy Policy",
           url: "/documents/Smiley_Jobs_POPIA_Privacy_Policy.pdf",
-          download: "Smiley_Jobs_POPIA_Privacy_Policy.pdf",
         },
         {
           title: "Terms of Use",
           url: "/documents/Smiley_Jobs_Terms_of_Use.pdf",
-          download: "Smiley_Jobs_Terms_of_Use.pdf",
         },
         {
           title: "Cookie Policy",
           url: "/documents/Smiley_Jobs_Cookie_Policy.pdf",
-          download: "Smiley_Jobs_Cookie_Policy.pdf",
         },
         {
           title: "PAIA Manual",
           url: "/documents/Smiley_Jobs_PAIA_Manual.pdf",
-          download: "Smiley_Jobs_PAIA_Manual.pdf",
         },
       ],
     },
