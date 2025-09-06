@@ -75,3 +75,5 @@ build
 # firebase.config.js
 
 .vercel
+env.local
+env.local
