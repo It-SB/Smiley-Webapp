@@ -161,11 +161,11 @@ export const Footer3Defaults = {
         { title: "Contact Us", url: "/contact" },
         {
           title: "Privacy Policy",
-          url: "/assets/documents/Smiley Jobs_POPIA_Privacy_Policy.pdf",
+          url: "/assets/documents/Smiley Jobs_Privacy_Policy.pdf",
         },
         {
           title: "Terms of Use",
-          url: "/assets/documents/3. Smiley Jobs_Terms_of_Use.pdf",
+          url: "/assets/documents/Smiley Jobs_Website_Terms_of_Use 2026.pdf",
         },
         {
           title: "Cookie Policy",
