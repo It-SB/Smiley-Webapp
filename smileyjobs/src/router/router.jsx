@@ -41,7 +41,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/services",
-        element: <ServicesPage/>, // Public route
+        element: <ServicesPage />, // Public route
       },
       {
         path: "/my-job",
@@ -67,7 +67,7 @@ const router = createBrowserRouter([
         path: "/payment-cancelled",
         element: (
           // <PayfastGuard>
-            <PaymentCancelled />
+          <PaymentCancelled />
           // </PayfastGuard>
         ), // Public route
       },
@@ -75,7 +75,7 @@ const router = createBrowserRouter([
         path: "/payment-success",
         element: (
           // <PayfastGuard>
-            <PaymentSuccess />
+          <PaymentSuccess />
           // </PayfastGuard>
         ), // Public route// Public route
       },
@@ -116,14 +116,14 @@ const router = createBrowserRouter([
       },
     ],
   },
-  // {
-  //   path: "/login",
-  //   element: <Login />, // Public route
-  // },
-  // {
-  //   path: "/signup",
-  //   element: <SignupPage />, // Public route
-  // },
+  {
+    path: "/login",
+    element: <Login />, // Public route
+  },
+  {
+    path: "/signup",
+    element: <SignupPage />, // Public route
+  },
   {
     path: "/logins",
     element: <SignIn />, // Public route
