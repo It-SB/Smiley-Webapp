@@ -3,32 +3,17 @@ import { FaEnvelopeOpenText, FaRocket } from "react-icons/fa6";
 import { MdAccountCircle } from "react-icons/md";
 import {
   db,
-  collection,
-  addDoc,
-  query,
-  where,
-  getDocs,
 } from "../firebase/firebase.config.js";
+import { doc, setDoc } from "firebase/firestore";
 import { Link } from "react-router-dom";
 
 const Newsletter = () => {
   const [email, setEmail] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
 
-  useEffect(() => {
-    const checkEmailExists = async () => {
-      if (email) {
-        const q = query(
-          collection(db, "Subscribers"),
-          where("email", "==", email)
-        );
-        const querySnapshot = await getDocs(q);
-        setIsSubscribed(!querySnapshot.empty);
-      }
-    };
+  // We deliberately do not read the Subscribers collection from the browser.
+  // The document ID makes a subscription idempotent without exposing the list.
 
-    checkEmailExists();
-  }, [email]);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -38,10 +23,13 @@ const Newsletter = () => {
     e.preventDefault();
     if (email && !isSubscribed) {
       try {
-        await addDoc(collection(db, "Subscribers"), { email });
+        const subscriberId = encodeURIComponent(email.trim().toLowerCase());
+        await setDoc(doc(db, "Subscribers", subscriberId), {
+          email: email.trim().toLowerCase(),
+        }, { merge: true });
         alert("Subscription successful!");
         setIsSubscribed(true);
-        setEmail(""); // Clear the input field
+        setEmail("");
       } catch (error) {
         console.error("Error adding document: ", error);
         alert("Subscription failed. Please try again.");

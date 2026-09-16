@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { collection, query, where, getDocs, deleteDoc, doc } from "firebase/firestore";
-import { useUser } from "@clerk/clerk-react";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthProvider";
 import { db } from "../firebase/firebase.config";
 
 const MyJobs = () => {
-  const { user, isLoaded } = useUser();
+  const { user, loading: authLoading } = useContext(AuthContext);
   const [jobs, setJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [searchText, setSearchText] = useState("");
@@ -14,20 +15,36 @@ const MyJobs = () => {
   const itemsPerPage = 4;
 
   useEffect(() => {
-    if (!isLoaded || !user) return;
+    if (authLoading || !user) return;
 
     const fetchJobs = async () => {
       setIsLoading(true);
       try {
         const jobsQuery = query(
           collection(db, "Otherjobs"),
-          where("postedBy", "==", user.primaryEmailAddress?.emailAddress)
+          where("postedByUid", "==", user.uid)
         );
         const querySnapshot = await getDocs(jobsQuery);
-        const jobsData = querySnapshot.docs.map((doc) => ({
+        let jobsData = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
+
+        // Include older jobs created before UID ownership was added.
+        if (user.email) {
+          const legacyQuery = query(
+            collection(db, "Otherjobs"),
+            where("postedBy", "==", user.email)
+          );
+          const legacySnapshot = await getDocs(legacyQuery);
+          const existingIds = new Set(jobsData.map((job) => job.id));
+          jobsData = [
+            ...jobsData,
+            ...legacySnapshot.docs
+              .filter((doc) => !existingIds.has(doc.id))
+              .map((doc) => ({ id: doc.id, ...doc.data() })),
+          ];
+        }
         setJobs(jobsData);
         setFilteredJobs(jobsData);
       } catch (error) {
@@ -38,7 +55,7 @@ const MyJobs = () => {
     };
 
     fetchJobs();
-  }, [user, isLoaded]);
+  }, [user, authLoading]);
 
   useEffect(() => {
     const filter = jobs.filter((job) =>

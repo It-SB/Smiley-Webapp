@@ -16,6 +16,28 @@ const truncateDescription = (description, maxLength) => {
     ? description.split(" ").slice(0, maxLength).join(" ") + "..."
     : description;
 };
+const formatDate = (date) => {
+  if (!date) return "";
+
+  // Firestore Timestamp
+  if (typeof date.toDate === "function") {
+    return date.toDate().toLocaleDateString();
+  }
+
+  // JavaScript Date
+  if (date instanceof Date) {
+    return date.toLocaleDateString();
+  }
+
+  // String / number
+  const parsedDate = new Date(date);
+
+  if (!Number.isNaN(parsedDate.getTime())) {
+    return parsedDate.toLocaleDateString();
+  }
+
+  return "";
+};
 
 const Card = ({ data }) => {
   const {
@@ -48,7 +70,7 @@ const Card = ({ data }) => {
           <div className="card-details">
             {/* Display categories as a comma-separated list */}
             <h4 className="text-primary mb-1">
-              {Array.isArray(category) ? category.join(', ') : category}
+              {Array.isArray(category) ? category.join(", ") : category}
             </h4>
             <h3 className="text-lg font-semibold mb-2">{jobTitle}</h3>
 
@@ -60,7 +82,7 @@ const Card = ({ data }) => {
                 {minPrice} - {maxPrice}
               </span>
               <span className="flex items-center gap-2">
-                <FiCalendar /> {createdAt}
+                <FiCalendar /> {formatDate(createdAt)}
               </span>
             </div>
 

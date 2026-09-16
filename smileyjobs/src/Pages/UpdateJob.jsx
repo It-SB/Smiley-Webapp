@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import CreatableSelect from "react-select/creatable";
-import { collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebase.config';
 import PageHeader from '../components/PageHeader';
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthProvider';
 
 const UpdateJob = () => {
   const { id } = useParams();
@@ -13,8 +15,10 @@ const UpdateJob = () => {
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [jobData, setJobData] = useState(null);
   const [category, setCategoryOptions] = useState([]);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
+    if (!user) return;
     const fetchJobData = async () => {
       try {
         const docRef = doc(db, 'Otherjobs', id);
@@ -34,7 +38,7 @@ const UpdateJob = () => {
     };
 
     fetchJobData();
-  }, [id, reset]);
+  }, [id, reset, user]);
 
   // useEffect(() => {
   //   const fetchCategories = async () => {
@@ -56,6 +60,11 @@ const UpdateJob = () => {
   const onSubmit = async (data) => {
     data.skills = selectedOption.map(option => option.value);
     data.category = selectedCategory.map(option => option.value);
+
+    if (!user) {
+      alert("Please log in before updating a job.");
+      return;
+    }
 
     try {
       const jobRef = doc(db, 'Otherjobs', id);

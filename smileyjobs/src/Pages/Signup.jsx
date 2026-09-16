@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 const SignupPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [verificationMessage, setVerificationMessage] = useState("");
-  const { createUser, signUpWithGmail } = useContext(AuthContext);
+  const { createUser, signUpWithGmail, logOut } = useContext(AuthContext);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -27,8 +27,8 @@ const SignupPage = () => {
       if (user.emailVerified) {
         navigate(from, { replace: true });
       } else {
-        setVerificationMessage("Please verify your email address before logging in.");
-        await user.sendEmailVerification();
+        setVerificationMessage("Account created. Please verify your email address, then log in.");
+        await logOut();
       }
     } catch (error) {
       setErrorMessage("Error creating account. Please try again.");
