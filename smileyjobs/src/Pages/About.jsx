@@ -414,7 +414,7 @@ const About = () => {
 
             {subscribed ? (
               <p className="mt-8 font-medium text-[#FFD824]">
-                You're subscribed. Look out for the next one.
+                You are subscribed. Look out for the next one.
               </p>
             ) : (
               <div className="mt-8 flex flex-col sm:flex-row gap-3 max-w-md">
