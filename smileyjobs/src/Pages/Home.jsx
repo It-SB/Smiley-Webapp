@@ -4,13 +4,10 @@ import React, { useEffect, useState } from "react";
 import Banner from "../components/Banner";
 import Sidebar from "../sidebar/Sidebar";
 import Jobs from "./Jobs";
-import app from "../firebase/firebase.config";
+import { db } from "../firebase/firebase.config";
 import {
   collection,
   getDocs,
-  getFirestore,
-  orderBy,
-  query,
 } from "firebase/firestore";
 import Newsletter from "../components/Newsletter";
 import { Header1 } from "../components/Header";
@@ -35,28 +32,40 @@ const Home = () => {
     queryText: "",
     location: "",
     isLoading: true,
+    error: "",
   });
 
   const itemsPerPage = 6;
-  const db = getFirestore(app);
 
   useEffect(() => {
     getLatestJobList();
   }, []);
 
   const getLatestJobList = async () => {
-    setState((prevState) => ({ ...prevState, isLoading: true }));
-    const q = query(collection(db, "Otherjobs"), orderBy("createdAt", "desc"));
-    const querySnapShot = await getDocs(q);
-    const jobsData = querySnapShot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    setState((prevState) => ({
-      ...prevState,
-      jobs: jobsData,
-      isLoading: false,
-    }));
+    setState((prevState) => ({ ...prevState, isLoading: true, error: "" }));
+    try {
+      const querySnapShot = await getDocs(collection(db, "Otherjobs"));
+      const jobsData = querySnapShot.docs
+        .map((doc) => ({ id: doc.id, ...doc.data() }))
+        .sort((a, b) => {
+          const aTime = a.createdAt?.toMillis?.() || Date.parse(a.createdAt || a.postingDate || "") || 0;
+          const bTime = b.createdAt?.toMillis?.() || Date.parse(b.createdAt || b.postingDate || "") || 0;
+          return bTime - aTime;
+        });
+
+      setState((prevState) => ({
+        ...prevState,
+        jobs: jobsData,
+        isLoading: false,
+      }));
+    } catch (error) {
+      console.error("Error fetching jobs from Firestore:", error);
+      setState((prevState) => ({
+        ...prevState,
+        isLoading: false,
+        error: error?.message || "Unable to load jobs from Firebase.",
+      }));
+    }
   };
 
   const handleInputChange = (event) => {
@@ -186,7 +195,13 @@ const Home = () => {
         </div>
         <div className="col-span-2 backdrop-blur-sm bg-white/30 p-4 rounded border border-blue">
           {state.isLoading ? (
-            <p className="font-medium">Loading...</p>
+            <p className="font-medium">Loading jobs...</p>
+          ) : state.error ? (
+            <div>
+              <p className="font-semibold text-red-600">Unable to load jobs.</p>
+              <p className="text-sm text-gray-600 mt-1">{state.error}</p>
+              <button onClick={getLatestJobList} className="mt-3 underline">Try again</button>
+            </div>
           ) : result.length > 0 ? (
             <Jobs result={result} />
           ) : (

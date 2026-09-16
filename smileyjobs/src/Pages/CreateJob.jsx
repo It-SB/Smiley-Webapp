@@ -1,15 +1,17 @@
  
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import CreatableSelect from "react-select/creatable";
 import { db } from '../firebase/firebase.config'; // Adjust import path if needed
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { AuthContext } from "../context/AuthProvider";
 
 const CreateJob = () => {
   const [selectedOption, setSelectedOption] = useState([]);
   const [benefitsList, setBenefitsList] = useState([]);
   const [jobType, setJobType] = useState(""); // New state for job type
   const [category, setCategory] = useState([]); // New state for category
+  const { user } = useContext(AuthContext);
 
   const { register, handleSubmit, reset, watch } = useForm();
 
@@ -17,7 +19,15 @@ const CreateJob = () => {
     data.skills = selectedOption.map(option => option.value); // Convert skills to an array of strings
     data.benefits = benefitsList;
     data.jobType = jobType; // Add jobType to the data
-    data.category = selectedOption.map(option => option.value); // Add category to the data
+    data.category = category.length ? category.map(option => option.value) : selectedOption.map(option => option.value);
+    data.postedBy = user?.email || "";
+    data.postedByUid = user?.uid || "";
+    data.createdAt = serverTimestamp();
+
+    if (!user) {
+      alert("Please log in before posting a job.");
+      return;
+    }
 
     try {
       // console.log("Data before adding:", data);

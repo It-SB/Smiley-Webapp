@@ -1,0 +1,38 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Public job listings remain readable so the homepage and job details work.
+    match /Otherjobs/{jobId} {
+      allow read: if true;
+      allow create: if request.auth != null
+        && request.resource.data.postedByUid == request.auth.uid;
+      allow update, delete: if request.auth != null
+        && (resource.data.postedByUid == request.auth.uid
+          || resource.data.postedBy == request.auth.token.email);
+    }
+
+    // Categories are public lookup data.
+    match /Catergory/{categoryId} {
+      allow read: if true;
+    }
+
+    // Profiles belong to their authenticated user.
+    match /UserPost/{profileId} {
+      allow create: if request.auth != null
+        && request.resource.data.userId == request.auth.uid;
+      allow read, update, delete: if request.auth != null
+        && resource.data.userId == request.auth.uid;
+    }
+
+    // Newsletter signup is intentionally public, but the subscriber list is not readable.
+    match /Subscribers/{subscriberId} {
+      allow create, update: if true;
+      allow read, delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

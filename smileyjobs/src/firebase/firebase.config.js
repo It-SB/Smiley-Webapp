@@ -1,28 +1,36 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, query, where, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getFirestore } from "firebase/firestore";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBdEmssWSfRcBRAWW9S70ZsSoSBJvtDIRc",
-  authDomain: "smileyjobs-78778.firebaseapp.com",
-  projectId: "smileyjobs-78778",
-  storageBucket: "smileyjobs-78778.appspot.com",
-  messagingSenderId: "990753476236",
-  appId: "1:990753476236:web:93037555a2316a436ef5a9",
-  measurementId: "G-90TFFR2ZNG"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-// Initialize Firebase
+const requiredConfig = [
+  ["VITE_FIREBASE_API_KEY", firebaseConfig.apiKey],
+  ["VITE_FIREBASE_AUTH_DOMAIN", firebaseConfig.authDomain],
+  ["VITE_FIREBASE_PROJECT_ID", firebaseConfig.projectId],
+  ["VITE_FIREBASE_STORAGE_BUCKET", firebaseConfig.storageBucket],
+  ["VITE_FIREBASE_MESSAGING_SENDER_ID", firebaseConfig.messagingSenderId],
+  ["VITE_FIREBASE_APP_ID", firebaseConfig.appId],
+];
+
+const missingConfig = requiredConfig
+  .filter(([, value]) => !value)
+  .map(([name]) => name);
+
+if (missingConfig.length) {
+  throw new Error(
+    `Missing Firebase environment variables: ${missingConfig.join(", ")}`
+  );
+}
+
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const db = getFirestore(app); // Initialize Firestore
+const db = getFirestore(app);
 
 export { db };
-
 export default app;
-export {collection, query, where, getDocs,addDoc, deleteDoc, doc };
