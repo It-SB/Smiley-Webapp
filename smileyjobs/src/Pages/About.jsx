@@ -305,7 +305,7 @@ const About = () => {
 
       {/* TEAM ---------------------------------------------------------- */}
 
-      <section className="max-w-screen-xl mx-auto px-6 xl:px-16 py-24">
+      {/* <section className="max-w-screen-xl mx-auto px-6 xl:px-16 py-24">
         <SectionLabel>The people</SectionLabel>
         <h2 className="mt-4 text-3xl sm:text-4xl font-bold">Our team</h2>
 
@@ -334,7 +334,7 @@ const About = () => {
             </article>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* CV CTA -------------------------------------------------------- */}
 
