@@ -3,6 +3,14 @@ import { Link, NavLink } from "react-router-dom";
 import { FaBarsStaggered, FaXmark } from "react-icons/fa6";
 import { AuthContext } from "../context/AuthProvider";
 
+const ADMIN_EMAILS = [
+  "lettimaks@gmail.com",
+  "lemogang@smileyjobs.co",
+  "recruit@skillsbureau.co.za",
+  "lethabolesheleba2003@gmail.com",
+  "skillsbureausites@gmail.com",
+];
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logOut } = useContext(AuthContext);
@@ -11,54 +19,55 @@ const Navbar = () => {
     await logOut();
   };
 
-  // Menu toggle button
   const handleMenuToggler = () => {
-    setIsMenuOpen(!isMenuOpen);
+    setIsMenuOpen((open) => !open);
   };
 
   const navItems = [
     { path: "/", title: "Home" },
     { path: "/about", title: "About Us" },
     { path: "/services", title: "Services" },
-    // { path: "/jobs", title: "Jobs" },
-    {path: "/job-seekers", title: "CV Bootcamp" },
+    { path: "/job-seekers", title: "CV Bootcamp" },
     { path: "/contact", title: "Contact" },
   ];
 
-  // Add the "Post A Job" item only if the user's email is lettimaks@gmail.com
-  if (
-    user?.email === "lettimaks@gmail.com" ||
-    user?.email === "Lemogang@smileyjobs.co" ||
-    user?.email === "Recruit@skillsbureau.co.za" ||
-    user?.email === "lemogang@smileyjobs.co" ||
-    user?.email === "lethabolesheleba2003@gmail.com" ||
-    user?.email === "skillsbureausites@gmail.com"
-  ) {
+  const isAdmin = ADMIN_EMAILS.includes((user?.email || "").toLowerCase());
+
+  if (isAdmin) {
     navItems.push(
       { path: "/post-job", title: "Post A Job" },
       { path: "/my-job", title: "My Jobs" }
     );
   }
 
+  const initial = (user?.displayName || user?.email || "U").charAt(0).toUpperCase();
+
   return (
-    <header className="bg-yellow-200 px-24  text-blue">
-      <nav className="flex justify-between items-center py-6">
-        <a href="/" className="flex items-center text-2xl">
+    <header className="bg-yellow-200 text-blue">
+      <nav className="mx-auto flex max-w-screen-2xl items-center justify-between gap-6 px-4 py-4 sm:px-6 lg:px-10 xl:px-16">
+        {/* Logo */}
+        <a href="/" className="flex shrink-0 items-center gap-3">
           <img
             src="/Smiley Jobs Logo.png"
-            alt=""
-            className="w-16 h-16 mr-5"
+            alt="SmileyJobs"
+            className="h-11 w-11 shrink-0 lg:h-12 lg:w-12"
           />
-          <span className="hidden lg:inline">SmileyJobs</span>
+          <span className="hidden whitespace-nowrap text-xl font-semibold xl:inline">
+            SmileyJobs
+          </span>
         </a>
 
-        {/* Nav items */}
-        <ul className="hidden md:flex gap-12">
+        {/* Nav items — desktop only, own scroll room, never wrap */}
+        <ul className="hidden flex-1 items-center justify-center gap-6 overflow-x-auto lg:flex xl:gap-8">
           {navItems.map(({ path, title }) => (
-            <li key={path} className="text-base text-blue">
+            <li key={path} className="shrink-0 whitespace-nowrap text-[15px]">
               <NavLink
                 to={path}
-                className={({ isActive }) => (isActive ? "active" : "")}
+                className={({ isActive }) =>
+                  `transition-colors hover:text-blue/70 ${
+                    isActive ? "font-semibold text-blue" : "text-blue/80"
+                  }`
+                }
               >
                 {title}
               </NavLink>
@@ -66,80 +75,112 @@ const Navbar = () => {
           ))}
         </ul>
 
-        {/* Sign up / sign out buttons */}
-        <div className="text-base text-primary font-medium space-x-5 hidden lg:block">
+        {/* Auth controls — desktop only */}
+        <div className="hidden shrink-0 items-center gap-3 lg:flex">
           {user ? (
-            <div className="flex gap-4 items-center">
-              <div className="flex -space-x-2 overflow-hidden">
-                <div className="h-10 w-10 rounded-full bg-blue text-white flex items-center justify-center font-semibold">
-                  {(user.displayName || user.email || "U").charAt(0).toUpperCase()}
-                </div>
+            <>
+              <div
+                title={user.email}
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue text-sm font-semibold text-white"
+              >
+                {initial}
               </div>
               <button
                 onClick={handleLogout}
-                className="py-2 px-5 border border-blue rounded hover:bg-blue hover:text-white"
+                className="shrink-0 whitespace-nowrap rounded border border-blue px-4 py-2 text-sm font-medium transition-colors hover:bg-blue hover:text-white"
               >
                 Log out
               </button>
-            </div>
-          ) : (
-            <div className="space-x-5">
-              <Link to="/login" className="py-2 px-5 border border-blue shadow bg-yellow-400 hover:shadow-blue">
-                Log in
-              </Link>
-              <Link to="/signup" className="bg-blue py-2 px-5 shadow-2xl hover:shadow-white text-white rounded">
-                Sign up
-              </Link>
-            </div>
-          )}
-        </div>
-
-        {/* Mobile menu */}
-        <div className="md:hidden block">
-          <button onClick={handleMenuToggler}>
-            {isMenuOpen ? (
-              <FaXmark className="w-5 h-5 text-primary/75" />
-            ) : (
-              <FaBarsStaggered className="w-5 h-5 text-primary/75" />
-            )}
-          </button>
-        </div>
-      </nav>
-
-      {/* Mobile menu items */}
-      <div
-        className={`px-4 bg-blue py-5 border-rou rounded-sm ${
-          isMenuOpen ? "" : "hidden"
-        }`}
-      >
-        <ul>
-          {navItems.map(({ path, title }) => (
-            <li
-              key={path}
-              className="text-base text-white first:text-white py-1"
-            >
-              <NavLink
-                onClick={handleMenuToggler}
-                to={path}
-                className={({ isActive }) => (isActive ? "active" : "")}
-              >
-                {title}
-              </NavLink>
-            </li>
-          ))}
-
-          {user ? (
-            <li className="text-white py-1 hover:bg-blue">
-              <button onClick={handleLogout} className="text-red-400">Logout</button>
-            </li>
+            </>
           ) : (
             <>
-              <li className="text-white py-1 hover:bg-blue"><Link to="/login">Log in</Link></li>
-              <li className="text-white py-1"><Link to="/signup">Sign up</Link></li>
+              <Link
+                to="/login"
+                className="shrink-0 whitespace-nowrap rounded border border-blue bg-yellow-400 px-4 py-2 text-sm font-medium shadow transition-shadow hover:shadow-md"
+              >
+                Log in
+              </Link>
+              <Link
+                to="/signup"
+                className="shrink-0 whitespace-nowrap rounded bg-blue px-4 py-2 text-sm font-medium text-white shadow transition-opacity hover:opacity-90"
+              >
+                Sign up
+              </Link>
             </>
           )}
-        </ul>
-      </div>
+        </div>
+
+        {/* Mobile menu toggle — everything below lg */}
+        <button
+          onClick={handleMenuToggler}
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isMenuOpen}
+          className="shrink-0 rounded p-2 lg:hidden"
+        >
+          {isMenuOpen ? (
+            <FaXmark className="h-5 w-5 text-blue/80" />
+          ) : (
+            <FaBarsStaggered className="h-5 w-5 text-blue/80" />
+          )}
+        </button>
+      </nav>
+
+      {/* Mobile menu panel */}
+      {isMenuOpen && (
+        <div className="border-t border-blue/10 bg-blue px-4 pb-6 pt-4 lg:hidden">
+          <ul className="space-y-1">
+            {navItems.map(({ path, title }) => (
+              <li key={path}>
+                <NavLink
+                  onClick={handleMenuToggler}
+                  to={path}
+                  className={({ isActive }) =>
+                    `block rounded px-2 py-2.5 text-white transition-colors hover:bg-white/10 ${
+                      isActive ? "font-semibold" : ""
+                    }`
+                  }
+                >
+                  {title}
+                </NavLink>
+              </li>
+            ))}
+
+            <li className="my-2 border-t border-white/15" />
+
+            {user ? (
+              <li>
+                <button
+                  onClick={handleLogout}
+                  className="block w-full rounded px-2 py-2.5 text-left font-medium text-red-300 transition-colors hover:bg-white/10"
+                >
+                  Log out
+                </button>
+              </li>
+            ) : (
+              <>
+                <li>
+                  <Link
+                    to="/login"
+                    onClick={handleMenuToggler}
+                    className="block rounded px-2 py-2.5 text-white transition-colors hover:bg-white/10"
+                  >
+                    Log in
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/signup"
+                    onClick={handleMenuToggler}
+                    className="block rounded px-2 py-2.5 font-medium text-yellow-300 transition-colors hover:bg-white/10"
+                  >
+                    Sign up
+                  </Link>
+                </li>
+              </>
+            )}
+          </ul>
+        </div>
+      )}
     </header>
   );
 };
