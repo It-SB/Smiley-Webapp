@@ -3,10 +3,11 @@ import { useForm } from "react-hook-form";
 import CreatableSelect from "react-select/creatable";
 import { db } from "../firebase/firebase.config"; // Adjust import path if needed
 import { collection, addDoc, getDocs } from "firebase/firestore";
-import { useUser } from "@clerk/clerk-react";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthProvider";
 
 const CreateUserProfile = () => {
-  const { user } = useUser();
+  const { user } = useContext(AuthContext);
   const [selectedOption, setSelectedOption] = useState([]);
   const [benefitsList, setBenefitsList] = useState([]);
   const [preferredWorkModel, setPreferredWorkModel] = useState([]);
@@ -65,6 +66,13 @@ const CreateUserProfile = () => {
     data.category = category?.value || ""; // Add category to the data
     data.salaryBrackets = salaryBrackets; // Add salary bracket to the data
     data.selectedCurrency = selectedCurrency; // Add selectedCurrency to the data
+    data.userId = user?.uid || null;
+    data.createdAt = new Date().toISOString();
+
+    if (!user) {
+      alert("Please log in before creating a profile.");
+      return;
+    }
 
     try {
       console.log("Data before adding:", data);
@@ -115,7 +123,7 @@ const CreateUserProfile = () => {
               <label className="block mb-2 text-lg">Email</label>
               <input
                 type="email"
-                value={user?.email}
+                value={user?.email || ""}
                 className="w-full pl-3 py-1.5 focus:outline-none border border-blue rounded"
                 {...register("email")}
                 placeholder="Johnsmith@example.com"

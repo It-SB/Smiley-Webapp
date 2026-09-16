@@ -13,9 +13,6 @@ import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import About from "../Pages/About";
 import Contact from "../Pages/Contact";
 import SignupPage from "../Pages/Signup";
-import { SignIn, SignUp } from "@clerk/clerk-react";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebase/firebase.config"; // Adjust import path if needed
 import CreateUserProfile from "../Pages/CreateProfile";
 import PaymentCancelled from "../Pages/payfast/payment-cancelled";
 import PaymentSuccess from "../Pages/payfast/payment-success";
@@ -41,7 +38,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/services",
-        element: <ServicesPage/>, // Public route
+        element: <ServicesPage />, // Public route
       },
       {
         path: "/my-job",
@@ -57,7 +54,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/create-profile",
-        element: <CreateUserProfile />, // Public route
+        element: (
+          <PrivateRoute>
+            <CreateUserProfile />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/job-seekers",
@@ -67,7 +68,7 @@ const router = createBrowserRouter([
         path: "/payment-cancelled",
         element: (
           // <PayfastGuard>
-            <PaymentCancelled />
+          <PaymentCancelled />
           // </PayfastGuard>
         ), // Public route
       },
@@ -75,7 +76,7 @@ const router = createBrowserRouter([
         path: "/payment-success",
         element: (
           // <PayfastGuard>
-            <PaymentSuccess />
+          <PaymentSuccess />
           // </PayfastGuard>
         ), // Public route// Public route
       },
@@ -94,21 +95,6 @@ const router = createBrowserRouter([
             <UpdateJob />
           </PrivateRoute>
         ),
-        loader: async ({ params }) => {
-          try {
-            const jobRef = doc(db, "Otherjobs", params.id); // Adjust 'Otherjobs' to your Firestore collection name
-            const jobSnap = await getDoc(jobRef);
-
-            if (jobSnap.exists()) {
-              return jobSnap.data(); // Returns the job data if it exists
-            } else {
-              throw new Error("Job not found");
-            }
-          } catch (error) {
-            console.error("Error fetching job:", error);
-            throw new Response("Job not found", { status: 404 }); // Handles error with a 404 response
-          }
-        },
       },
       {
         path: "/jobs/:id",
@@ -116,21 +102,21 @@ const router = createBrowserRouter([
       },
     ],
   },
-  // {
-  //   path: "/login",
-  //   element: <Login />, // Public route
-  // },
-  // {
-  //   path: "/signup",
-  //   element: <SignupPage />, // Public route
-  // },
+  {
+    path: "/login",
+    element: <Login />, // Public route
+  },
+  {
+    path: "/signup",
+    element: <SignupPage />, // Public route
+  },
   {
     path: "/logins",
-    element: <SignIn />, // Public route
+    element: <Login />,
   },
   {
     path: "/signups",
-    element: <SignUp />, // Public route
+    element: <SignupPage />,
   },
 ]);
 

@@ -2,24 +2,13 @@ import React, { useContext, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { FaBarsStaggered, FaXmark } from "react-icons/fa6";
 import { AuthContext } from "../context/AuthProvider";
-import {
-  useUser,
-  useClerk,
-  SignedOut,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  UserButton,
-} from "@clerk/clerk-react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user } = useUser(); // Clerk hook to get the user object
-  const { signOut } = useClerk();
-  // console.log(user);
+  const { user, logOut } = useContext(AuthContext);
 
-  const handleLogout = () => {
-    signOut();
+  const handleLogout = async () => {
+    await logOut();
   };
 
   // Menu toggle button
@@ -38,12 +27,12 @@ const Navbar = () => {
 
   // Add the "Post A Job" item only if the user's email is lettimaks@gmail.com
   if (
-    user?.primaryEmailAddress?.emailAddress === "lettimaks@gmail.com" ||
-    user?.primaryEmailAddress?.emailAddress === "Lemogang@smileyjobs.co" ||
-    user?.primaryEmailAddress?.emailAddress === "Recruit@skillsbureau.co.za" ||
-    user?.primaryEmailAddress?.emailAddress === "lemogang@smileyjobs.co" ||
-    // user?.email === "lethabolesheleba2003@gmail.com" ||
-    user?.primaryEmailAddress?.emailAddress === "skillsbureausites@gmail.com"
+    user?.email === "lettimaks@gmail.com" ||
+    user?.email === "Lemogang@smileyjobs.co" ||
+    user?.email === "Recruit@skillsbureau.co.za" ||
+    user?.email === "lemogang@smileyjobs.co" ||
+    user?.email === "lethabolesheleba2003@gmail.com" ||
+    user?.email === "skillsbureausites@gmail.com"
   ) {
     navItems.push(
       { path: "/post-job", title: "Post A Job" },
@@ -80,52 +69,28 @@ const Navbar = () => {
         {/* Sign up / sign out buttons */}
         <div className="text-base text-primary font-medium space-x-5 hidden lg:block">
           {user ? (
-            <SignedIn>
-              <div className="flex gap-4 items-center">
-                <div className="flex -space-x-2 overflow-hidden">
-                  {user.imageUrl ? (
-                    <img
-                      className="inline-block h-10 w-10 rounded-full ring-2 ring-transparent"
-                      src={user.imageUrl}
-                      alt="User profile"
-                    />
-                  ) : (
-                    <img
-                      className="inline-block h-10 w-10 rounded-full ring-2 ring-transparent"
-                      src="https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png"
-                      alt="Default avatar"
-                    />
-                  )}
+            <div className="flex gap-4 items-center">
+              <div className="flex -space-x-2 overflow-hidden">
+                <div className="h-10 w-10 rounded-full bg-blue text-white flex items-center justify-center font-semibold">
+                  {(user.displayName || user.email || "U").charAt(0).toUpperCase()}
                 </div>
-                <button
-                  onClick={handleLogout}
-                  className="py-2 px-5 border border-blue rounded hover:bg-blue hover:text-white"
-                >
-                  Log out
-                </button>
               </div>
-            </SignedIn>
+              <button
+                onClick={handleLogout}
+                className="py-2 px-5 border border-blue rounded hover:bg-blue hover:text-white"
+              >
+                Log out
+              </button>
+            </div>
           ) : (
-            <SignedOut>
-              <div className="space-x-5">
-                <SignInButton mode="modal">
-                  <Link
-                    // to="/logins"
-                    className="py-2 px-5 border border-blue shadow bg-yellow-400 hover:shadow-blue hover:shadowrounded"
-                  >
-                    Log in
-                  </Link>
-                </SignInButton>
-                <SignUpButton mode="modal">
-                  <Link
-                    // to="/signups"
-                    className="bg-blue py-2 px-5 shadow-2xl hover:shadow-white text-white rounded"
-                  >
-                    Sign up
-                  </Link>
-                </SignUpButton>
-              </div>
-            </SignedOut>
+            <div className="space-x-5">
+              <Link to="/login" className="py-2 px-5 border border-blue shadow bg-yellow-400 hover:shadow-blue">
+                Log in
+              </Link>
+              <Link to="/signup" className="bg-blue py-2 px-5 shadow-2xl hover:shadow-white text-white rounded">
+                Sign up
+              </Link>
+            </div>
           )}
         </div>
 
@@ -164,27 +129,14 @@ const Navbar = () => {
           ))}
 
           {user ? (
-            <SignedIn>
-             
-              <li className="text-white py-1 hover:bg-blue">
-                <button onClick={handleLogout} className="text-red-400">
-                  Logout
-                </button>
-              </li>
-            </SignedIn>
+            <li className="text-white py-1 hover:bg-blue">
+              <button onClick={handleLogout} className="text-red-400">Logout</button>
+            </li>
           ) : (
-            <SignedOut>
-              <SignInButton mode="modal">
-                <li className="text-white py-1 hover:bg-blue">
-                  <Link to="/">Log in</Link>
-                </li>
-              </SignInButton>
-              <SignUpButton mode="modal">
-                <li className="text-white py-1">
-                  <Link to="/">Sign up</Link>
-                </li>
-              </SignUpButton>
-            </SignedOut>
+            <>
+              <li className="text-white py-1 hover:bg-blue"><Link to="/login">Log in</Link></li>
+              <li className="text-white py-1"><Link to="/signup">Sign up</Link></li>
+            </>
           )}
         </ul>
       </div>

@@ -1,37 +1,161 @@
- 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import CreatableSelect from "react-select/creatable";
-import { db } from '../firebase/firebase.config'; // Adjust import path if needed
-import { collection, addDoc } from "firebase/firestore";
+import { db, storage } from "../firebase/firebase.config";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { AuthContext } from "../context/AuthProvider";
 
 const CreateJob = () => {
   const [selectedOption, setSelectedOption] = useState([]);
-  const [benefitsList, setBenefitsList] = useState([]);
+  const [benefitsList, setBenefitsList] = useState([]);   
   const [jobType, setJobType] = useState(""); // New state for job type
   const [category, setCategory] = useState([]); // New state for category
+  const [logoUrl, setLogoUrl] = useState("");
+  const [postImageUrl, setPostImageUrl] = useState("");
+  const [isUploadingLogo, setIsUploadingLogo] = useState(false);
+  const [isUploadingPostImage, setIsUploadingPostImage] = useState(false);
+  const { user } = useContext(AuthContext);
 
   const { register, handleSubmit, reset, watch } = useForm();
 
-  const onSubmit = async (data) => {
-    data.skills = selectedOption.map(option => option.value); // Convert skills to an array of strings
-    data.benefits = benefitsList;
-    data.jobType = jobType; // Add jobType to the data
-    data.category = selectedOption.map(option => option.value); // Add category to the data
+  const handleCompanyLogoUpload = async (event) => {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    setIsUploadingLogo(true);
 
     try {
-      // console.log("Data before adding:", data);
-      const jobsCollection = collection(db, 'Otherjobs'); // Reference to 'Otherjobs' collection
-      await addDoc(jobsCollection, data);
+      const storageRef = ref(
+        storage,
+        `company-logos/${Date.now()}-${file.name}`,
+      );
+      await uploadBytes(storageRef, file);
+      const uploadedUrl = await getDownloadURL(storageRef);
+      setLogoUrl(uploadedUrl);
+      alert("Company logo uploaded successfully.");
+    } catch (error) {
+      console.error("Error uploading logo:", error);
+      alert("Error uploading company logo. Please try again.");
+    } finally {
+      setIsUploadingLogo(false);
+      event.target.value = "";
+    }
+  };
+
+  const handleFileUpload = async (event, type) => {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    // Basic validation
+    if (!file.type.startsWith("image/")) {
+      alert("Please select an image file.");
+      event.target.value = "";
+      return;
+    }
+
+    // 5MB limit
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Image must be smaller than 5MB.");
+      event.target.value = "";
+      return;
+    }
+
+    const isLogo = type === "logo";
+
+    if (isLogo) {
+      setIsUploadingLogo(true);
+    } else {
+      setIsUploadingPostImage(true);
+    }
+
+    try {
+      const fileExtension = file.name.split(".").pop();
+      const fileName = `${Date.now()}-${crypto.randomUUID()}.${fileExtension}`;
+
+      const folder = isLogo ? "company-logos" : "job-post-images";
+
+      const storageRef = ref(storage, `${folder}/${fileName}`);
+
+      await uploadBytes(storageRef, file);
+
+      const downloadUrl = await getDownloadURL(storageRef);
+
+      if (isLogo) {
+        setLogoUrl(downloadUrl);
+      } else {
+        setPostImageUrl(downloadUrl);
+      }
+
+      alert(`${isLogo ? "Company logo" : "Job image"} uploaded successfully.`);
+    } catch (error) {
+      console.error(`Error uploading ${isLogo ? "logo" : "job image"}:`, error);
+
+      alert(
+        `Error uploading ${isLogo ? "company logo" : "job image"}: ${
+          error?.message || "Please try again."
+        }`,
+      );
+    } finally {
+      if (isLogo) {
+        setIsUploadingLogo(false);
+      } else {
+        setIsUploadingPostImage(false);
+      }
+
+      event.target.value = "";
+    }
+  };
+
+  const onSubmit = async (data) => {
+    if (!user) {
+      alert("Please log in before posting a job.");
+      return;
+    }
+
+    const jobData = {
+      ...data,
+
+      skills: selectedOption.map((option) => option.value),
+
+      benefits: benefitsList,
+
+      jobType,
+
+      category: category.length ? category.map((option) => option.value) : [],
+
+      companyLogo: logoUrl || "",
+
+      postImage: postImageUrl || "",
+
+      postedBy: user.email || "",
+
+      postedByUid: user.uid || "",
+
+      createdAt: serverTimestamp(),
+    };
+
+    try {
+      const jobsCollection = collection(db, "Otherjobs");
+
+      await addDoc(jobsCollection, jobData);
+
       alert("Job Posted Successfully!!");
-      reset(); // Reset the form
-      setSelectedOption([]); // Clear selected skills
-      setBenefitsList([]); // Clear benefits list
-      setJobType(""); // Clear job type selection
-      setCategory([]); // Clear category selection
+
+      reset();
+
+      setSelectedOption([]);
+      setBenefitsList([]);
+      setJobType("");
+      setCategory([]);
+      setLogoUrl("");
+      setPostImageUrl("");
     } catch (error) {
       console.error("Error posting job:", error);
-      alert("Error posting job. Please try again.");
+
+      alert(`Error posting job: ${error?.message || "Please try again."}`);
     }
   };
 
@@ -48,7 +172,7 @@ const CreateJob = () => {
 
   const handleBenefitsChange = (e) => {
     const value = e.target.value;
-    const lines = value.split('\n').filter(line => line.trim() !== '');
+    const lines = value.split("\n").filter((line) => line.trim() !== "");
     setBenefitsList(lines);
   };
 
@@ -117,7 +241,10 @@ const CreateJob = () => {
           <div className="create-job-flex">
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Salary Type</label>
-              <select {...register("salaryType")} className="create-job-input rounded border border-blue">
+              <select
+                {...register("salaryType")}
+                className="create-job-input rounded border border-blue"
+              >
                 <option value="">Choose your salary</option>
                 <option value="Hourly">Hourly</option>
                 <option value="Monthly">Monthly</option>
@@ -174,8 +301,8 @@ const CreateJob = () => {
             />
           </div>
 
-           {/* 5th row */}
-           <div className="">
+          {/* 5th row */}
+          <div className="">
             <label className="block mb-2 text-lg">Category:</label>
             <CreatableSelect
               className="create-job-input rounded bg-[#FAFAFA] py-4"
@@ -190,12 +317,68 @@ const CreateJob = () => {
           <div className="create-job-flex">
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Company Logo</label>
+
               <input
-                type="url"
-                placeholder="Paste your image url: https://weshare.com/img1.jpg"
-                {...register("companyLogo")}
-                className="create-job-input rounded border border-blue"
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleFileUpload(e, "logo")}
+                disabled={isUploadingLogo}
+                className="create-job-input rounded border border-blue bg-white"
               />
+
+              {isUploadingLogo && (
+                <p className="mt-2 text-sm text-gray-500">
+                  Uploading company logo...
+                </p>
+              )}
+
+              {logoUrl && (
+                <div className="mt-4">
+                  <p className="text-sm text-green-600 mb-2">
+                    Logo uploaded successfully
+                  </p>
+
+                  <img
+                    src={logoUrl}
+                    alt="Company logo preview"
+                    className="w-24 h-24 object-contain border rounded bg-white p-2"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="create-job-flex">
+            <div className="lg:w-1/2 w-full">
+              <label className="block mb-2 text-lg">Job Post Image</label>
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleFileUpload(e, "postImage")}
+                disabled={isUploadingPostImage}
+                className="create-job-input rounded border border-blue bg-white"
+              />
+
+              {isUploadingPostImage && (
+                <p className="mt-2 text-sm text-gray-500">
+                  Uploading job image...
+                </p>
+              )}
+
+              {postImageUrl && (
+                <div className="mt-4">
+                  <p className="text-sm text-green-600 mb-2">
+                    Job image uploaded successfully
+                  </p>
+
+                  <img
+                    src={postImageUrl}
+                    alt="Job post preview"
+                    className="max-w-xs max-h-48 object-cover border rounded bg-white"
+                  />
+                </div>
+              )}
             </div>
           </div>
 
@@ -242,13 +425,17 @@ const CreateJob = () => {
               rows={6}
               {...register("description")}
               // placeholder="job description"
-              placeholder={"Mollit in laborum tempor Lorem incididunt irure. Aute eu ex ad sunt. Pariatur sint culpa do incididunt eiusmod eiusmod culpa. laborum tempor Lorem incididunt."}
+              placeholder={
+                "Mollit in laborum tempor Lorem incididunt irure. Aute eu ex ad sunt. Pariatur sint culpa do incididunt eiusmod eiusmod culpa. laborum tempor Lorem incididunt."
+              }
             />
           </div>
 
           {/* 9th row: Job Benefits */}
           <div className="w-full">
-            <label className="block mb-2 text-lg">Job Benefits (one per line)</label>
+            <label className="block mb-2 text-lg">
+              Job Benefits (one per line)
+            </label>
             <textarea
               className="w-full pl-3 py-1.5 focus:outline-none rounded border border-blue"
               rows={3}
