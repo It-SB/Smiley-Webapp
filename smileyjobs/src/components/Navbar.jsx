@@ -31,7 +31,7 @@ const Navbar = () => {
     user?.email === "Lemogang@smileyjobs.co" ||
     user?.email === "Recruit@skillsbureau.co.za" ||
     user?.email === "lemogang@smileyjobs.co" ||
-    // user?.email === "lethabolesheleba2003@gmail.com" ||
+    user?.email === "lethabolesheleba2003@gmail.com" ||
     user?.email === "skillsbureausites@gmail.com"
   ) {
     navItems.push(

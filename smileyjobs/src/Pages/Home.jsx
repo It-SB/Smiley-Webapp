@@ -5,13 +5,10 @@ import Banner from "../components/Banner";
 import Sidebar from "../sidebar/Sidebar";
 import Jobs from "./Jobs";
 import { db } from "../firebase/firebase.config";
-import {
-  collection,
-  getDocs,
-} from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import Newsletter from "../components/Newsletter";
 import { Header1 } from "../components/Header";
-import {  Footer3 } from "../components/Footer";
+import { Footer3 } from "../components/Footer";
 import Options_Button from "../components/OptionsBtn";
 // import { Layout423 } from "../components/DownloadApp";
 import MapChart from "../components/ComposableMap";
@@ -20,7 +17,7 @@ import { Layout250 } from "../components/Layout250";
 import { Testimonial1 } from "../components/Goal";
 import Logo1 from "../components/PartnerLogos";
 import PartnersSection from "../components/PartnerLogos";
-import { SolutionsPage} from "../components/SolutionsSection";
+import { SolutionsPage } from "../components/SolutionsSection";
 import { ApproachSection } from "../components/ApproachSection";
 // import {JobShow} from "../components/JobsShow";
 
@@ -42,14 +39,59 @@ const Home = () => {
   }, []);
 
   const getLatestJobList = async () => {
-    setState((prevState) => ({ ...prevState, isLoading: true, error: "" }));
+    setState((prevState) => ({
+      ...prevState,
+      isLoading: true,
+      error: "",
+    }));
+
     try {
       const querySnapShot = await getDocs(collection(db, "Otherjobs"));
+
       const jobsData = querySnapShot.docs
-        .map((doc) => ({ id: doc.id, ...doc.data() }))
+        .map((doc) => {
+          const data = doc.data();
+
+          let createdAt = null;
+
+          // Firestore Timestamp
+          if (data.createdAt?.toDate) {
+            createdAt = data.createdAt.toDate();
+          }
+
+          // Existing Date
+          else if (data.createdAt instanceof Date) {
+            createdAt = data.createdAt;
+          }
+
+          // String/number date
+          else if (data.createdAt) {
+            const parsedDate = new Date(data.createdAt);
+
+            if (!Number.isNaN(parsedDate.getTime())) {
+              createdAt = parsedDate;
+            }
+          }
+
+          // Fallback to postingDate
+          else if (data.postingDate) {
+            const parsedDate = new Date(data.postingDate);
+
+            if (!Number.isNaN(parsedDate.getTime())) {
+              createdAt = parsedDate;
+            }
+          }
+
+          return {
+            id: doc.id,
+            ...data,
+            createdAt,
+          };
+        })
         .sort((a, b) => {
-          const aTime = a.createdAt?.toMillis?.() || Date.parse(a.createdAt || a.postingDate || "") || 0;
-          const bTime = b.createdAt?.toMillis?.() || Date.parse(b.createdAt || b.postingDate || "") || 0;
+          const aTime = a.createdAt?.getTime?.() || 0;
+          const bTime = b.createdAt?.getTime?.() || 0;
+
           return bTime - aTime;
         });
 
@@ -60,6 +102,7 @@ const Home = () => {
       }));
     } catch (error) {
       console.error("Error fetching jobs from Firestore:", error);
+
       setState((prevState) => ({
         ...prevState,
         isLoading: false,
@@ -128,7 +171,7 @@ const Home = () => {
       filteredJobs = filteredJobs.filter(
         (job) =>
           job.jobTitle &&
-          job.jobTitle.toLowerCase().includes(state.queryText.toLowerCase())
+          job.jobTitle.toLowerCase().includes(state.queryText.toLowerCase()),
       );
     }
 
@@ -137,7 +180,7 @@ const Home = () => {
       filteredJobs = filteredJobs.filter(
         (job) =>
           job.jobLocation &&
-          job.jobLocation.toLowerCase().includes(state.location.toLowerCase())
+          job.jobLocation.toLowerCase().includes(state.location.toLowerCase()),
       );
     }
 
@@ -164,22 +207,21 @@ const Home = () => {
 
   const result = filteredItems().slice(
     calculatePageRange().startIndex,
-    calculatePageRange().endIndex
+    calculatePageRange().endIndex,
   );
 
   return (
     <div className="">
-      
       {/* <Options_Button /> */}
-      {/* <MapChart /> */}  
+      {/* <MapChart /> */}
       <Header1 />
-      <PartnersSection/>
+      <PartnersSection />
 
       <Layout192 />
       {/* <SolutionsSection/> */}
-      <SolutionsPage/>
-      <ApproachSection/>
-      
+      <SolutionsPage />
+      <ApproachSection />
+
       {/* <Layout250/>
       <Testimonial1/> */}
       <Banner
@@ -200,7 +242,9 @@ const Home = () => {
             <div>
               <p className="font-semibold text-red-600">Unable to load jobs.</p>
               <p className="text-sm text-gray-600 mt-1">{state.error}</p>
-              <button onClick={getLatestJobList} className="mt-3 underline">Try again</button>
+              <button onClick={getLatestJobList} className="mt-3 underline">
+                Try again
+              </button>
             </div>
           ) : result.length > 0 ? (
             <Jobs result={result} />
@@ -244,7 +288,7 @@ const Home = () => {
       {/* <JobShow/> */}
       {/* <Layout423/> */}
       {/* <Contact24 /> */}
-      <Footer3/>
+      <Footer3 />
     </div>
   );
 };
