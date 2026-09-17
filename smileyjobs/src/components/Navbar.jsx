@@ -8,6 +8,7 @@ const ADMIN_EMAILS = [
   "lemogang@smileyjobs.co",
   "recruit@skillsbureau.co.za",
   "lethabolesheleba2003@gmail.com",
+  "ntivoredolf@gmail.com",
   "skillsbureausites@gmail.com",
 ];
 
